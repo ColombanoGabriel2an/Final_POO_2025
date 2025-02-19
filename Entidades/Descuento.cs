@@ -8,8 +8,8 @@ namespace Entidades
 {
     public class Descuento
     {
-        public int ID { get; set; }
-        public string Descripción { get; set; }
+        public int DescuentoId { get; set; }
+        public string Descripcion { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public decimal Porcentaje { get; set; }
@@ -19,9 +19,9 @@ namespace Entidades
         public string Emisor { get; set; }
         public string Rubro { get; set; }
 
-        public Descuento(string descripción, DateTime fechaInicio, DateTime fechaFin, decimal porcentaje, decimal montoFijo, decimal topeMonto, string banco, string emisor, string rubro)
+        public Descuento(string descripcion, DateTime fechaInicio, DateTime fechaFin, decimal porcentaje, decimal montoFijo, decimal topeMonto, string banco, string emisor, string rubro)
         {
-            Descripción = descripción;
+            Descripcion = descripcion;
             FechaInicio = fechaInicio;
             FechaFin = fechaFin;
             Porcentaje = porcentaje;
@@ -32,7 +32,7 @@ namespace Entidades
             Rubro = rubro;
         }
 
-        public bool EsVálido(DateTime fecha)
+        public bool EsValido(DateTime fecha)
         {
             return fecha >= FechaInicio && fecha <= FechaFin;
         }

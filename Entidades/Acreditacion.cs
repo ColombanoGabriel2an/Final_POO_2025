@@ -6,23 +6,27 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class Acreditación
+    public class Acreditacion
     {
-        public int ID { get; set; }
+        public int AcreditacionId { get; set; }
         public Tarjeta Tarjeta { get; set; }
         public DateTime Fecha { get; set; }
-        public string Descripción { get; set; }
+        public string Descripcion { get; set; }
         public decimal Monto { get; set; }
         public string MedioDePago { get; set; }
 
-        public Acreditación(Tarjeta tarjeta, DateTime fecha, string descripción, decimal monto, string medioDePago)
+        public Acreditacion(Tarjeta tarjeta, DateTime fecha, string descripcion, decimal monto, string medioDePago)
         {
             Tarjeta = tarjeta;
             Fecha = fecha;
-            Descripción = descripción;
+            Descripcion = descripcion;
             Monto = monto;
             MedioDePago = medioDePago;
         }
+
+        // ---------------------------------------------------
+        public int TarjetaId { get; set; }
+
     }
 
 }

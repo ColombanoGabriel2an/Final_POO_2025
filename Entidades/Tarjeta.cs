@@ -8,7 +8,7 @@ namespace Entidades
 {
     public abstract class Tarjeta
     {
-        public int ID { get; set; }
+        public int TarjetaId { get; set; }
         public string Numero { get; set; }
         public DateTime FechaVencimiento { get; set; }
         public string Banco { get; set; }
@@ -40,19 +40,27 @@ namespace Entidades
 
     public class TarjetaCredito : Tarjeta
     {
-        public decimal Límite { get; set; }
+        public decimal Limite { get; set; }
         public decimal Disponible { get; set; }
-        public bool IsExtensión { get; set; }
+        public bool IsExtension { get; set; }
         public Persona Tenedor { get; set; }
 
-        public TarjetaCredito(string numero, DateTime fechaVencimiento, string banco, string entidadEmisora, Persona titular, string alias, bool isExtensión, Persona tenedor, decimal límite, decimal disponible)
+        public TarjetaCredito(string numero, DateTime fechaVencimiento, string banco, string entidadEmisora, Persona titular, string alias, bool isExtension, Persona tenedor, decimal limite, decimal disponible)
             : base(numero, fechaVencimiento, banco, entidadEmisora, titular, alias)
         {
-            IsExtensión = isExtensión;
+            IsExtension = isExtension;
             Tenedor = tenedor;
-            Límite = límite;
+            Limite = limite;
             Disponible = disponible;
         }
+
+        // ---------------------------------------------------
+        public int PersonaId { get; set; }
+
+        // Relaciones con Acreditaciones y Consumos
+        public virtual ICollection<Acreditacion> Acreditaciones { get; set; } = new List<Acreditacion>();
+        public virtual ICollection<Consumo> Consumos { get; set; } = new List<Consumo>();
     }
+}
 
 }

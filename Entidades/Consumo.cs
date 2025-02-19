@@ -8,29 +8,28 @@ namespace Entidades
 {
     public class Consumo
     {
-        public int ID { get; set; }
+        public int ConsumoId { get; set; }
         public Tarjeta Tarjeta { get; set; }
         public DateTime Fecha { get; set; }
         public string Hora { get; set; }
-        public string Descripción { get; set; }
+        public string Descripcion { get; set; }
         public decimal Monto { get; set; }
         public string Moneda { get; set; }
-        public List<Descuento> DescuentosAplicados { get; set; }
+        public List<Descuento> DescuentosAplicados { get; set; } = new List<Descuento>();
 
-        public Consumo(Tarjeta tarjeta, DateTime fecha, string hora, string descripción, decimal monto, string moneda)
+        public Consumo(Tarjeta tarjeta, DateTime fecha, string hora, string descripcion, decimal monto, string moneda)
         {
             Tarjeta = tarjeta;
             Fecha = fecha;
             Hora = hora;
-            Descripción = descripción;
+            Descripcion = descripcion;
             Monto = monto;
             Moneda = moneda;
-            DescuentosAplicados = new List<Descuento>();
         }
 
         public void AplicarDescuento(Descuento descuento)
         {
-            if (descuento.EsVálido(Fecha) && !DescuentosAplicados.Contains(descuento))
+            if (descuento.EsValido(Fecha) && !DescuentosAplicados.Contains(descuento))
             {
                 DescuentosAplicados.Add(descuento);
             }
@@ -52,6 +51,11 @@ namespace Entidades
             }
             return montoFinal;
         }
-    }
 
+        // ---------------------------------------------------
+        public int TarjetaId { get; set; }
+
+        // Lista de descuentos aplicados (modelo simple; si fuera many-to-many, se necesitaria una tabla intermedia)
+    }
 }
+

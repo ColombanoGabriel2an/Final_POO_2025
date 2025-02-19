@@ -1,24 +1,40 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entidades;
+using Microsoft.EntityFrameworkCore;
+using Modelo;
 
 namespace Entidades
 {
     public class ServicioReporte
     {
-        public List<Consumo> GenerarReportePorTarjeta(Tarjeta tarjeta, DateTime desde, DateTime hasta)
+        private readonly Context _context;
+
+        // Se inyecta el contexto en el constructor
+        public ServicioReporte(Context context)
         {
-            var consumos = RepositorioConsumo.Listar();
-            return consumos.Where(c => c.Tarjeta.ID == tarjeta.ID && c.Fecha >= desde && c.Fecha <= hasta).ToList();
+            _context = context;
         }
 
-        public List<Consumo> GenerarReportePorFecha(DateTime desde, DateTime hasta)
+        // Reporte de consumos por tarjeta en un rango de fechas
+        public List<Consumo> GenerarReportePorTarjeta(int tarjetaId, DateTime fechaInicio, DateTime fechaFin)
         {
-            var consumos = RepositorioConsumo.Listar();
-            return consumos.Where(c => c.Fecha >= desde && c.Fecha <= hasta).ToList();
+            return _context.Consumos
+                .Where(c => c.TarjetaId == tarjetaId && c.Fecha >= fechaInicio && c.Fecha <= fechaFin)
+                .Include(c => c.Tarjeta)
+                .ToList();
+        }
+
+        // Reporte general de consumos en un rango de fechas
+        public List<Consumo> GenerarReportePorFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+            return _context.Consumos
+                .Where(c => c.Fecha >= fechaInicio && c.Fecha <= fechaFin)
+                .Include(c => c.Tarjeta)
+                .ToList();
         }
     }
-
 }
+

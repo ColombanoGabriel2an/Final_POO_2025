@@ -31,6 +31,10 @@ namespace Entidades
     {
         public decimal Saldo { get; set; }
 
+        public TarjetaDebito() : base("", default, "", "", null!, "")
+        {
+            // Deja vacio o con valores por defecto
+        }
         public TarjetaDebito(string numero, DateTime fechaVencimiento, string banco, string entidadEmisora, Persona titular, string alias, decimal saldo)
             : base(numero, fechaVencimiento, banco, entidadEmisora, titular, alias)
         {
@@ -45,6 +49,10 @@ namespace Entidades
         public bool IsExtension { get; set; }
         public Persona Tenedor { get; set; }
 
+        public TarjetaCredito() : base("", default, "", "", null!, "")
+        {
+            // Deja vacio o con valores por defecto
+        }
         public TarjetaCredito(string numero, DateTime fechaVencimiento, string banco, string entidadEmisora, Persona titular, string alias, bool isExtension, Persona tenedor, decimal limite, decimal disponible)
             : base(numero, fechaVencimiento, banco, entidadEmisora, titular, alias)
         {
@@ -63,4 +71,4 @@ namespace Entidades
     }
 }
 
-}
+

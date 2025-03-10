@@ -15,6 +15,8 @@ namespace Entidades
         public decimal Monto { get; set; }
         public string MedioDePago { get; set; }
 
+        public Acreditacion() { }
+
         public Acreditacion(Tarjeta tarjeta, DateTime fecha, string descripcion, decimal monto, string medioDePago)
         {
             Tarjeta = tarjeta;

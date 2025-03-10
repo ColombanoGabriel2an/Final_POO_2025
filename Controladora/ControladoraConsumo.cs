@@ -10,7 +10,7 @@ namespace Controladora
     public class ControladoraConsumo
     {
         private Context context;
-        private static ControladoraConsumo instancia;
+        private static ControladoraConsumo? instancia;
 
         public static ControladoraConsumo Instancia
         {

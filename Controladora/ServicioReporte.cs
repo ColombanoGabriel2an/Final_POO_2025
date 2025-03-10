@@ -1,12 +1,11 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entidades;
 using Microsoft.EntityFrameworkCore;
 using Modelo;
 
-namespace Entidades
+namespace Controladora
 {
     public class ServicioReporte
     {
@@ -37,4 +36,3 @@ namespace Entidades
         }
     }
 }
-

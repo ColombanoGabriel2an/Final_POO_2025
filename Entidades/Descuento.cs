@@ -19,6 +19,7 @@ namespace Entidades
         public string Emisor { get; set; }
         public string Rubro { get; set; }
 
+        public Descuento() { }
         public Descuento(string descripcion, DateTime fechaInicio, DateTime fechaFin, decimal porcentaje, decimal montoFijo, decimal topeMonto, string banco, string emisor, string rubro)
         {
             Descripcion = descripcion;

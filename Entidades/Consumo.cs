@@ -17,6 +17,7 @@ namespace Entidades
         public string Moneda { get; set; }
         public List<Descuento> DescuentosAplicados { get; set; } = new List<Descuento>();
 
+        public Consumo() { }
         public Consumo(Tarjeta tarjeta, DateTime fecha, string hora, string descripcion, decimal monto, string moneda)
         {
             Tarjeta = tarjeta;

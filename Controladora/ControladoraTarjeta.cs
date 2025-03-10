@@ -10,7 +10,7 @@ namespace Controladora
     public class ControladoraTarjeta
     {
         private Context context;
-        private static ControladoraTarjeta instancia;
+        private static ControladoraTarjeta? instancia;
 
         public static ControladoraTarjeta Instancia
         {

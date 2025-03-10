@@ -10,7 +10,7 @@ namespace Controladora
     public class ControladoraAcreditacion
     {
         private Context context;
-        private static ControladoraAcreditacion instancia;
+        private static ControladoraAcreditacion? instancia;
 
         public static ControladoraAcreditacion Instancia
         {

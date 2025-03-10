@@ -1,27 +1,74 @@
 ﻿using Entidades;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
+using Modelo;
+using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Modelo
 {
     public class Context : DbContext
     {
+        // DbSet para las clases que subiste
         public DbSet<Persona> Personas { get; set; }
         public DbSet<Tarjeta> Tarjetas { get; set; }
-        public DbSet<Acreditacion> Acreditaciones { get; set; }
+        public DbSet<TarjetaDebito> TarjetasDebito { get; set; }
+        public DbSet<TarjetaCredito> TarjetasCredito { get; set; }
         public DbSet<Consumo> Consumos { get; set; }
         public DbSet<Descuento> Descuentos { get; set; }
+        public DbSet<Acreditacion> Acreditaciones { get; set; }
 
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Reemplaza "YourConnectionStringHere" con tu cadena de conexión real.
-            optionsBuilder.UseSqlServer("YourConnectionStringHere");
+            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=DBregistros;
+            Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=True;
+            Encrypt=False;TrustServerCertificate=False");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Aquí puedes agregar configuraciones adicionales con Fluent API si es necesario.
+            // 1. Herencia Tarjeta (TPH: Table per Hierarchy)
+            modelBuilder.Entity<Tarjeta>()
+                .HasDiscriminator<string>("TipoTarjeta")
+                .HasValue<TarjetaDebito>("Debito")
+                .HasValue<TarjetaCredito>("Credito");
+
+            // 2. Relacion Persona <-> Tarjeta (Titular)
+            //    Tarjeta es abstract, pero TarjetaDebito/TarjetaCredito heredan de ella
+            modelBuilder.Entity<Tarjeta>()
+                .HasOne(t => t.Titular)
+                .WithMany(p => p.Tarjetas)
+                .HasForeignKey("PersonaId");
+            // Se usa "PersonaId" como FK (asegura que exista esa propiedad en la DB).
+
+            // 3. Consumo -> Tarjeta
+            modelBuilder.Entity<Consumo>()
+                .HasOne(c => c.Tarjeta)
+                .WithMany()
+                // Si quieres que TarjetaCredito tenga ICollection<Consumo> en su definicion, cambia a .WithMany(tc => tc.Consumos)
+                .HasForeignKey(c => c.TarjetaId);
+
+            // 4. Acreditacion -> Tarjeta
+            modelBuilder.Entity<Acreditacion>()
+                .HasOne(a => a.Tarjeta)
+                .WithMany()
+                // Igual que arriba, si TarjetaCredito tiene ICollection<Acreditacion>, usa .WithMany(tc => tc.Acreditaciones)
+                .HasForeignKey(a => a.TarjetaId);
+
+            // 5. Many-to-Many: Consumo <-> Descuento
+            //    Como Descuento no tiene la coleccion inversa, se usa WithMany() sin parametros
+            modelBuilder.Entity<Consumo>()
+                .HasMany(c => c.DescuentosAplicados)
+                .WithMany();
+
+            // Agrega mas configuraciones si lo necesitas
         }
     }
 }
+

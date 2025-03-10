@@ -1,4 +1,4 @@
-﻿ususing Entidades;
+﻿using Entidades;
 using Microsoft.EntityFrameworkCore;
 using Modelo;
 using System;
@@ -10,7 +10,7 @@ namespace Controladora
     public class ControladoraDescuento
     {
         private Context context;
-        private static ControladoraDescuento instancia;
+        private static ControladoraDescuento? instancia;
 
         public static ControladoraDescuento Instancia
         {

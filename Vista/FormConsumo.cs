@@ -471,6 +471,10 @@ namespace Vista
         {
             if (e.Item != null && e.Item.Tag is Descuento descuento)
             {
+
+                if (_consumo.DescuentosAplicados == null)
+                    _consumo.DescuentosAplicados = new List<Descuento>();
+
                 if (e.Item.Checked)
                 {
 
@@ -487,11 +491,9 @@ namespace Vista
                         (d.Descripcion == descuento.Descripcion && d.Banco == descuento.Banco));
                 }
 
-
                 ActualizarMontoFinal();
             }
         }
-
         private void ActualizarMontos()
         {
             txtMontoOriginal.Text = $"{_consumo.Moneda} {_consumo.Monto:N2}";
@@ -500,17 +502,97 @@ namespace Vista
 
         private void ActualizarMontoFinal()
         {
-            decimal montoFinal = _consumo.CalcularMontoFinal();
+            // Limpiar el resumen de descuentos
+            lvResumenDescuentos.Items.Clear();
+
+            decimal montoFinal = _consumo.Monto;
+            decimal ahorroTotal = 0;
+
+            // Procesar cada descuento aplicado
+            foreach (var descuento in _consumo.DescuentosAplicados)
+            {
+                decimal ahorroDescuento = 0;
+                string tipoDescuento;
+
+                // Calcular el ahorro según tipo de descuento
+                if (descuento.Porcentaje > 0)
+                {
+                    // Descuento porcentual
+                    ahorroDescuento = _consumo.Monto * (descuento.Porcentaje / 100m);
+
+                    // Aplicar tope si existe
+                    if (descuento.TopeReintegro > 0 && ahorroDescuento > descuento.TopeReintegro)
+                        ahorroDescuento = descuento.TopeReintegro;
+
+                    tipoDescuento = $"{descuento.Porcentaje}%";
+                }
+                else if (descuento.MontoFijo > 0)
+                {
+                    // Descuento de monto fijo
+                    ahorroDescuento = descuento.MontoFijo;
+                    tipoDescuento = "Monto fijo";
+                }
+                else
+                {
+                    tipoDescuento = "Otro";
+                    ahorroDescuento = 0;
+                }
+
+                // Añadir al listview de resumen
+                ListViewItem item = new ListViewItem(descuento.Nombre ?? descuento.Descripcion);
+                item.SubItems.Add(tipoDescuento);
+                item.SubItems.Add($"${ahorroDescuento:N2}");
+                item.SubItems.Add(descuento.Banco);
+
+                // Destacar visualmente los descuentos más significativos
+                if (ahorroDescuento > 0)
+                {
+                    decimal porcentajeAhorro = ahorroDescuento / _consumo.Monto;
+
+                    if (porcentajeAhorro >= 0.3m)      // 30% o más
+                        item.BackColor = Color.LightGreen;
+                    else if (porcentajeAhorro >= 0.15m) // 15% o más
+                        item.BackColor = Color.PaleGreen;
+                    else if (porcentajeAhorro >= 0.05m) // 5% o más
+                        item.BackColor = Color.LightCyan;
+                }
+
+                lvResumenDescuentos.Items.Add(item);
+
+                // Acumular el ahorro
+                ahorroTotal += ahorroDescuento;
+            }
+
+            // Aplicar el ahorro total
+            montoFinal -= ahorroTotal;
+            if (montoFinal < 0) montoFinal = 0;
+
+            // Actualizar etiqueta de ahorro total
+            lblAhorroTotal.Text = $"Ahorro Total: ${ahorroTotal:N2}";
+
+            // Actualizar monto final
             txtMontoFinal.Text = $"{_consumo.Moneda} {montoFinal:N2}";
 
-
+            // Destacar el ahorro con color
             if (montoFinal < _consumo.Monto)
             {
                 txtMontoFinal.ForeColor = Color.Green;
+                lblAhorroTotal.ForeColor = Color.Green;
             }
             else
             {
                 txtMontoFinal.ForeColor = SystemColors.WindowText;
+                lblAhorroTotal.ForeColor = SystemColors.WindowText;
+            }
+
+            // Si no hay descuentos aplicados, mostrar mensaje informativo
+            if (_consumo.DescuentosAplicados.Count == 0)
+            {
+                ListViewItem noItem = new ListViewItem("No hay descuentos aplicados");
+                noItem.SubItems.Add("-");
+                noItem.SubItems.Add("-");
+                noItem.SubItems.Add("-");
+                lvResumenDescuentos.Items.Add(noItem);
             }
         }
 

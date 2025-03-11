@@ -12,7 +12,7 @@ namespace Vista
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, </param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -30,372 +30,459 @@ namespace Vista
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblTitulo = new System.Windows.Forms.Label();
-            this.lblTarjeta = new System.Windows.Forms.Label();
-            this.cmbTarjeta = new System.Windows.Forms.ComboBox();
-            this.lblFecha = new System.Windows.Forms.Label();
-            this.dtpFecha = new System.Windows.Forms.DateTimePicker();
-            this.lblHora = new System.Windows.Forms.Label();
-            this.dtpHora = new System.Windows.Forms.DateTimePicker();
-            this.lblDescripcion = new System.Windows.Forms.Label();
-            this.txtDescripcion = new System.Windows.Forms.TextBox();
-            this.lblComercio = new System.Windows.Forms.Label();
-            this.txtComercio = new System.Windows.Forms.TextBox();
-            this.lblRubro = new System.Windows.Forms.Label();
-            this.cmbRubro = new System.Windows.Forms.ComboBox();
-            this.lblMonto = new System.Windows.Forms.Label();
-            this.numMonto = new System.Windows.Forms.NumericUpDown();
-            this.lblMoneda = new System.Windows.Forms.Label();
-            this.cmbMoneda = new System.Windows.Forms.ComboBox();
-            this.gbDescuentos = new System.Windows.Forms.GroupBox();
-            this.lvDescuentos = new System.Windows.Forms.ListView();
-            this.chDescripcion = new System.Windows.Forms.ColumnHeader();
-            this.chBanco = new System.Windows.Forms.ColumnHeader();
-            this.chValor = new System.Windows.Forms.ColumnHeader();
-            this.chVigencia = new System.Windows.Forms.ColumnHeader();
-            this.chSeleccionar = new System.Windows.Forms.ColumnHeader();
-            this.btnBuscarDescuentos = new System.Windows.Forms.Button();
-            this.lblMontoOriginal = new System.Windows.Forms.Label();
-            this.txtMontoOriginal = new System.Windows.Forms.TextBox();
-            this.lblMontoFinal = new System.Windows.Forms.Label();
-            this.txtMontoFinal = new System.Windows.Forms.TextBox();
-            this.lblLimiteDisponible = new System.Windows.Forms.Label();
-            this.txtLimiteDisponible = new System.Windows.Forms.TextBox();
-            this.chkEsRecurrente = new System.Windows.Forms.CheckBox();
-            this.btnGuardar = new System.Windows.Forms.Button();
-            this.btnCancelar = new System.Windows.Forms.Button();
-
+            lblTitulo = new Label();
+            lblTarjeta = new Label();
+            cmbTarjeta = new ComboBox();
+            lblFecha = new Label();
+            dtpFecha = new DateTimePicker();
+            lblHora = new Label();
+            dtpHora = new DateTimePicker();
+            lblDescripcion = new Label();
+            txtDescripcion = new TextBox();
+            lblComercio = new Label();
+            txtComercio = new TextBox();
+            lblRubro = new Label();
+            cmbRubro = new ComboBox();
+            lblMonto = new Label();
+            numMonto = new NumericUpDown();
+            lblMoneda = new Label();
+            cmbMoneda = new ComboBox();
+            lvDescuentos = new ListView();
+            chDescripcion = new ColumnHeader();
+            chBanco = new ColumnHeader();
+            chValor = new ColumnHeader();
+            chVigencia = new ColumnHeader();
+            chSeleccionar = new ColumnHeader();
+            btnBuscarDescuentos = new Button();
+            lblMontoOriginal = new Label();
+            txtMontoOriginal = new TextBox();
+            lblMontoFinal = new Label();
+            txtMontoFinal = new TextBox();
+            lblLimiteDisponible = new Label();
+            txtLimiteDisponible = new TextBox();
+            chkEsRecurrente = new CheckBox();
+            btnGuardar = new Button();
+            btnCancelar = new Button();
+            gbConsumosActuales = new GroupBox();
+            dgvConsumosActuales = new DataGridView();
+            lblTotalConsumosActuales = new Label();
+            gbResumenDescuentos = new GroupBox();
+            lvResumenDescuentos = new ListView();
+            lblAhorroTotal = new Label();
+            ((System.ComponentModel.ISupportInitialize)numMonto).BeginInit();
+            gbConsumosActuales.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvConsumosActuales).BeginInit();
+            gbResumenDescuentos.SuspendLayout();
+            SuspendLayout();
+            // 
             // lblTitulo
-            this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitulo.Location = new System.Drawing.Point(12, 9);
-            this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(182, 24);
-            this.lblTitulo.TabIndex = 0;
-            this.lblTitulo.Text = "Registro de Consumo";
-
+            // 
+            lblTitulo.AutoSize = true;
+            lblTitulo.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Point);
+            lblTitulo.Location = new Point(14, 10);
+            lblTitulo.Margin = new Padding(4, 0, 4, 0);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(212, 24);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.Text = "Registro de Consumo";
+            // 
             // lblTarjeta
-            this.lblTarjeta.AutoSize = true;
-            this.lblTarjeta.Location = new System.Drawing.Point(14, 50);
-            this.lblTarjeta.Name = "lblTarjeta";
-            this.lblTarjeta.Size = new System.Drawing.Size(46, 13);
-            this.lblTarjeta.TabIndex = 1;
-            this.lblTarjeta.Text = "Tarjeta:";
-
+            // 
+            lblTarjeta.AutoSize = true;
+            lblTarjeta.Location = new Point(16, 58);
+            lblTarjeta.Margin = new Padding(4, 0, 4, 0);
+            lblTarjeta.Name = "lblTarjeta";
+            lblTarjeta.Size = new Size(44, 15);
+            lblTarjeta.TabIndex = 1;
+            lblTarjeta.Text = "Tarjeta:";
+            // 
             // cmbTarjeta
-            this.cmbTarjeta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTarjeta.FormattingEnabled = true;
-            this.cmbTarjeta.Location = new System.Drawing.Point(120, 50);
-            this.cmbTarjeta.Name = "cmbTarjeta";
-            this.cmbTarjeta.Size = new System.Drawing.Size(250, 21);
-            this.cmbTarjeta.TabIndex = 2;
-            this.cmbTarjeta.SelectedIndexChanged += new System.EventHandler(this.cmbTarjeta_SelectedIndexChanged);
-
+            // 
+            cmbTarjeta.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTarjeta.FormattingEnabled = true;
+            cmbTarjeta.Location = new Point(140, 58);
+            cmbTarjeta.Margin = new Padding(4, 3, 4, 3);
+            cmbTarjeta.Name = "cmbTarjeta";
+            cmbTarjeta.Size = new Size(291, 23);
+            cmbTarjeta.TabIndex = 2;
+            cmbTarjeta.SelectedIndexChanged += cmbTarjeta_SelectedIndexChanged;
+            // 
             // lblFecha
-            this.lblFecha.AutoSize = true;
-            this.lblFecha.Location = new System.Drawing.Point(14, 80);
-            this.lblFecha.Name = "lblFecha";
-            this.lblFecha.Size = new System.Drawing.Size(40, 13);
-            this.lblFecha.TabIndex = 3;
-            this.lblFecha.Text = "Fecha:";
-
+            // 
+            lblFecha.AutoSize = true;
+            lblFecha.Location = new Point(16, 92);
+            lblFecha.Margin = new Padding(4, 0, 4, 0);
+            lblFecha.Name = "lblFecha";
+            lblFecha.Size = new Size(41, 15);
+            lblFecha.TabIndex = 3;
+            lblFecha.Text = "Fecha:";
+            // 
             // dtpFecha
-            this.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFecha.Location = new System.Drawing.Point(120, 80);
-            this.dtpFecha.Name = "dtpFecha";
-            this.dtpFecha.Size = new System.Drawing.Size(120, 20);
-            this.dtpFecha.TabIndex = 4;
-            this.dtpFecha.ValueChanged += new System.EventHandler(this.dtpFecha_ValueChanged);
-
+            // 
+            dtpFecha.Format = DateTimePickerFormat.Short;
+            dtpFecha.Location = new Point(140, 92);
+            dtpFecha.Margin = new Padding(4, 3, 4, 3);
+            dtpFecha.Name = "dtpFecha";
+            dtpFecha.Size = new Size(139, 23);
+            dtpFecha.TabIndex = 4;
+            dtpFecha.ValueChanged += dtpFecha_ValueChanged;
+            // 
             // lblHora
-            this.lblHora.AutoSize = true;
-            this.lblHora.Location = new System.Drawing.Point(250, 80);
-            this.lblHora.Name = "lblHora";
-            this.lblHora.Size = new System.Drawing.Size(33, 13);
-            this.lblHora.TabIndex = 5;
-            this.lblHora.Text = "Hora:";
-
+            // 
+            lblHora.AutoSize = true;
+            lblHora.Location = new Point(292, 92);
+            lblHora.Margin = new Padding(4, 0, 4, 0);
+            lblHora.Name = "lblHora";
+            lblHora.Size = new Size(36, 15);
+            lblHora.TabIndex = 5;
+            lblHora.Text = "Hora:";
+            // 
             // dtpHora
-            this.dtpHora.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpHora.Location = new System.Drawing.Point(290, 80);
-            this.dtpHora.Name = "dtpHora";
-            this.dtpHora.ShowUpDown = true;
-            this.dtpHora.Size = new System.Drawing.Size(80, 20);
-            this.dtpHora.TabIndex = 6;
-
+            // 
+            dtpHora.Format = DateTimePickerFormat.Time;
+            dtpHora.Location = new Point(338, 92);
+            dtpHora.Margin = new Padding(4, 3, 4, 3);
+            dtpHora.Name = "dtpHora";
+            dtpHora.ShowUpDown = true;
+            dtpHora.Size = new Size(93, 23);
+            dtpHora.TabIndex = 6;
+            // 
             // lblDescripcion
-            this.lblDescripcion.AutoSize = true;
-            this.lblDescripcion.Location = new System.Drawing.Point(14, 110);
-            this.lblDescripcion.Name = "lblDescripcion";
-            this.lblDescripcion.Size = new System.Drawing.Size(66, 13);
-            this.lblDescripcion.TabIndex = 7;
-            this.lblDescripcion.Text = "Descripción:";
-
+            // 
+            lblDescripcion.AutoSize = true;
+            lblDescripcion.Location = new Point(16, 127);
+            lblDescripcion.Margin = new Padding(4, 0, 4, 0);
+            lblDescripcion.Name = "lblDescripcion";
+            lblDescripcion.Size = new Size(72, 15);
+            lblDescripcion.TabIndex = 7;
+            lblDescripcion.Text = "Descripción:";
+            // 
             // txtDescripcion
-            this.txtDescripcion.Location = new System.Drawing.Point(120, 110);
-            this.txtDescripcion.Multiline = true;
-            this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(250, 40);
-            this.txtDescripcion.TabIndex = 8;
-
+            // 
+            txtDescripcion.Location = new Point(140, 127);
+            txtDescripcion.Margin = new Padding(4, 3, 4, 3);
+            txtDescripcion.Multiline = true;
+            txtDescripcion.Name = "txtDescripcion";
+            txtDescripcion.Size = new Size(291, 46);
+            txtDescripcion.TabIndex = 8;
+            // 
             // lblComercio
-            this.lblComercio.AutoSize = true;
-            this.lblComercio.Location = new System.Drawing.Point(14, 160);
-            this.lblComercio.Name = "lblComercio";
-            this.lblComercio.Size = new System.Drawing.Size(54, 13);
-            this.lblComercio.TabIndex = 9;
-            this.lblComercio.Text = "Comercio:";
-
+            // 
+            lblComercio.AutoSize = true;
+            lblComercio.Location = new Point(16, 185);
+            lblComercio.Margin = new Padding(4, 0, 4, 0);
+            lblComercio.Name = "lblComercio";
+            lblComercio.Size = new Size(62, 15);
+            lblComercio.TabIndex = 9;
+            lblComercio.Text = "Comercio:";
+            // 
             // txtComercio
-            this.txtComercio.Location = new System.Drawing.Point(120, 160);
-            this.txtComercio.Name = "txtComercio";
-            this.txtComercio.Size = new System.Drawing.Size(250, 20);
-            this.txtComercio.TabIndex = 10;
-
+            // 
+            txtComercio.Location = new Point(140, 185);
+            txtComercio.Margin = new Padding(4, 3, 4, 3);
+            txtComercio.Name = "txtComercio";
+            txtComercio.Size = new Size(291, 23);
+            txtComercio.TabIndex = 10;
+            // 
             // lblRubro
-            this.lblRubro.AutoSize = true;
-            this.lblRubro.Location = new System.Drawing.Point(14, 190);
-            this.lblRubro.Name = "lblRubro";
-            this.lblRubro.Size = new System.Drawing.Size(39, 13);
-            this.lblRubro.TabIndex = 11;
-            this.lblRubro.Text = "Rubro:";
-
+            // 
+            lblRubro.AutoSize = true;
+            lblRubro.Location = new Point(16, 219);
+            lblRubro.Margin = new Padding(4, 0, 4, 0);
+            lblRubro.Name = "lblRubro";
+            lblRubro.Size = new Size(42, 15);
+            lblRubro.TabIndex = 11;
+            lblRubro.Text = "Rubro:";
+            // 
             // cmbRubro
-            this.cmbRubro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbRubro.FormattingEnabled = true;
-            this.cmbRubro.Location = new System.Drawing.Point(120, 190);
-            this.cmbRubro.Name = "cmbRubro";
-            this.cmbRubro.Size = new System.Drawing.Size(250, 21);
-            this.cmbRubro.TabIndex = 12;
-
+            // 
+            cmbRubro.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbRubro.FormattingEnabled = true;
+            cmbRubro.Location = new Point(140, 219);
+            cmbRubro.Margin = new Padding(4, 3, 4, 3);
+            cmbRubro.Name = "cmbRubro";
+            cmbRubro.Size = new Size(291, 23);
+            cmbRubro.TabIndex = 12;
+            // 
             // lblMonto
-            this.lblMonto.AutoSize = true;
-            this.lblMonto.Location = new System.Drawing.Point(14, 220);
-            this.lblMonto.Name = "lblMonto";
-            this.lblMonto.Size = new System.Drawing.Size(40, 13);
-            this.lblMonto.TabIndex = 13;
-            this.lblMonto.Text = "Monto:";
-
+            // 
+            lblMonto.AutoSize = true;
+            lblMonto.Location = new Point(16, 254);
+            lblMonto.Margin = new Padding(4, 0, 4, 0);
+            lblMonto.Name = "lblMonto";
+            lblMonto.Size = new Size(46, 15);
+            lblMonto.TabIndex = 13;
+            lblMonto.Text = "Monto:";
+            // 
             // numMonto
-            this.numMonto.DecimalPlaces = 2;
-            this.numMonto.Location = new System.Drawing.Point(120, 220);
-            this.numMonto.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
-            this.numMonto.Name = "numMonto";
-            this.numMonto.Size = new System.Drawing.Size(120, 20);
-            this.numMonto.TabIndex = 14;
-            this.numMonto.ValueChanged += new System.EventHandler(this.numMonto_ValueChanged);
-
+            // 
+            numMonto.DecimalPlaces = 2;
+            numMonto.Location = new Point(140, 254);
+            numMonto.Margin = new Padding(4, 3, 4, 3);
+            numMonto.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numMonto.Name = "numMonto";
+            numMonto.Size = new Size(140, 23);
+            numMonto.TabIndex = 14;
+            numMonto.ValueChanged += numMonto_ValueChanged;
+            // 
             // lblMoneda
-            this.lblMoneda.AutoSize = true;
-            this.lblMoneda.Location = new System.Drawing.Point(250, 220);
-            this.lblMoneda.Name = "lblMoneda";
-            this.lblMoneda.Size = new System.Drawing.Size(49, 13);
-            this.lblMoneda.TabIndex = 15;
-            this.lblMoneda.Text = "Moneda:";
-
+            // 
+            lblMoneda.AutoSize = true;
+            lblMoneda.Location = new Point(292, 254);
+            lblMoneda.Margin = new Padding(4, 0, 4, 0);
+            lblMoneda.Name = "lblMoneda";
+            lblMoneda.Size = new Size(54, 15);
+            lblMoneda.TabIndex = 15;
+            lblMoneda.Text = "Moneda:";
+            // 
             // cmbMoneda
-            this.cmbMoneda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbMoneda.FormattingEnabled = true;
-            this.cmbMoneda.Items.AddRange(new object[] { "ARS", "USD", "EUR" });
-            this.cmbMoneda.Location = new System.Drawing.Point(300, 220);
-            this.cmbMoneda.Name = "cmbMoneda";
-            this.cmbMoneda.Size = new System.Drawing.Size(70, 21);
-            this.cmbMoneda.TabIndex = 16;
-
-            // gbDescuentos
-            this.gbDescuentos.Location = new System.Drawing.Point(14, 250);
-            this.gbDescuentos.Name = "gbDescuentos";
-            this.gbDescuentos.Size = new System.Drawing.Size(520, 200);
-            this.gbDescuentos.TabIndex = 17;
-            this.gbDescuentos.TabStop = false;
-            this.gbDescuentos.Text = "Descuentos Aplicables";
-
+            // 
+            cmbMoneda.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMoneda.FormattingEnabled = true;
+            cmbMoneda.Items.AddRange(new object[] { "ARS", "USD", "EUR" });
+            cmbMoneda.Location = new Point(350, 254);
+            cmbMoneda.Margin = new Padding(4, 3, 4, 3);
+            cmbMoneda.Name = "cmbMoneda";
+            cmbMoneda.Size = new Size(81, 23);
+            cmbMoneda.TabIndex = 16;
+            // 
             // lvDescuentos
-            this.lvDescuentos.CheckBoxes = true;
-            this.lvDescuentos.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-                this.chDescripcion,
-                this.chBanco,
-                this.chValor,
-                this.chVigencia
-            });
-            this.lvDescuentos.FullRowSelect = true;
-            this.lvDescuentos.GridLines = true;
-            this.lvDescuentos.HideSelection = false;
-            this.lvDescuentos.Location = new System.Drawing.Point(20, 290);
-            this.lvDescuentos.Name = "lvDescuentos";
-            this.lvDescuentos.Size = new System.Drawing.Size(500, 150);
-            this.lvDescuentos.TabIndex = 18;
-            this.lvDescuentos.UseCompatibleStateImageBehavior = false;
-            this.lvDescuentos.View = System.Windows.Forms.View.Details;
-            this.lvDescuentos.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lvDescuentos_ItemChecked);
-
-            // chDescripcion
-            this.chDescripcion.Text = "Descripción";
-            this.chDescripcion.Width = 200;
-
-            // chBanco
-            this.chBanco.Text = "Banco/Entidad";
-            this.chBanco.Width = 100;
-
-            // chValor
-            this.chValor.Text = "Valor";
-            this.chValor.Width = 100;
-
-            // chVigencia
-            this.chVigencia.Text = "Vigencia";
-            this.chVigencia.Width = 100;
-
+            // 
+            lvDescuentos.CheckBoxes = true;
+            lvDescuentos.Columns.AddRange(new ColumnHeader[] { chDescripcion, chBanco, chValor, chVigencia });
+            lvDescuentos.FullRowSelect = true;
+            lvDescuentos.GridLines = true;
+            lvDescuentos.Location = new Point(16, 288);
+            lvDescuentos.Margin = new Padding(4, 3, 4, 3);
+            lvDescuentos.Name = "lvDescuentos";
+            lvDescuentos.Size = new Size(606, 127);
+            lvDescuentos.TabIndex = 18;
+            lvDescuentos.UseCompatibleStateImageBehavior = false;
+            lvDescuentos.View = View.Details;
+            lvDescuentos.ItemChecked += lvDescuentos_ItemChecked;
+            // 
             // btnBuscarDescuentos
-            this.btnBuscarDescuentos.Location = new System.Drawing.Point(390, 220);
-            this.btnBuscarDescuentos.Name = "btnBuscarDescuentos";
-            this.btnBuscarDescuentos.Size = new System.Drawing.Size(130, 25);
-            this.btnBuscarDescuentos.TabIndex = 19;
-            this.btnBuscarDescuentos.Text = "Buscar Descuentos";
-            this.btnBuscarDescuentos.UseVisualStyleBackColor = true;
-            this.btnBuscarDescuentos.Click += new System.EventHandler(this.btnBuscarDescuentos_Click);
-
+            // 
+            btnBuscarDescuentos.Location = new Point(455, 254);
+            btnBuscarDescuentos.Margin = new Padding(4, 3, 4, 3);
+            btnBuscarDescuentos.Name = "btnBuscarDescuentos";
+            btnBuscarDescuentos.Size = new Size(152, 29);
+            btnBuscarDescuentos.TabIndex = 19;
+            btnBuscarDescuentos.Text = "Buscar Descuentos";
+            btnBuscarDescuentos.UseVisualStyleBackColor = true;
+            btnBuscarDescuentos.Click += btnBuscarDescuentos_Click;
+            // 
             // lblMontoOriginal
-            this.lblMontoOriginal.AutoSize = true;
-            this.lblMontoOriginal.Location = new System.Drawing.Point(14, 460);
-            this.lblMontoOriginal.Name = "lblMontoOriginal";
-            this.lblMontoOriginal.Size = new System.Drawing.Size(78, 13);
-            this.lblMontoOriginal.TabIndex = 20;
-            this.lblMontoOriginal.Text = "Monto Original:";
-
+            // 
+            lblMontoOriginal.AutoSize = true;
+            lblMontoOriginal.Location = new Point(16, 581);
+            lblMontoOriginal.Margin = new Padding(4, 0, 4, 0);
+            lblMontoOriginal.Name = "lblMontoOriginal";
+            lblMontoOriginal.Size = new Size(91, 15);
+            lblMontoOriginal.TabIndex = 20;
+            lblMontoOriginal.Text = "Monto Original:";
+            // 
             // txtMontoOriginal
-            this.txtMontoOriginal.Location = new System.Drawing.Point(120, 460);
-            this.txtMontoOriginal.Name = "txtMontoOriginal";
-            this.txtMontoOriginal.ReadOnly = true;
-            this.txtMontoOriginal.Size = new System.Drawing.Size(100, 20);
-            this.txtMontoOriginal.TabIndex = 21;
-
+            // 
+            txtMontoOriginal.Location = new Point(140, 581);
+            txtMontoOriginal.Margin = new Padding(4, 3, 4, 3);
+            txtMontoOriginal.Name = "txtMontoOriginal";
+            txtMontoOriginal.ReadOnly = true;
+            txtMontoOriginal.Size = new Size(116, 23);
+            txtMontoOriginal.TabIndex = 21;
+            // 
             // lblMontoFinal
-            this.lblMontoFinal.AutoSize = true;
-            this.lblMontoFinal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMontoFinal.Location = new System.Drawing.Point(250, 460);
-            this.lblMontoFinal.Name = "lblMontoFinal";
-            this.lblMontoFinal.Size = new System.Drawing.Size(78, 13);
-            this.lblMontoFinal.TabIndex = 22;
-            this.lblMontoFinal.Text = "Monto Final:";
-
+            // 
+            lblMontoFinal.AutoSize = true;
+            lblMontoFinal.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+            lblMontoFinal.Location = new Point(292, 581);
+            lblMontoFinal.Margin = new Padding(4, 0, 4, 0);
+            lblMontoFinal.Name = "lblMontoFinal";
+            lblMontoFinal.Size = new Size(77, 13);
+            lblMontoFinal.TabIndex = 22;
+            lblMontoFinal.Text = "Monto Final:";
+            // 
             // txtMontoFinal
-            this.txtMontoFinal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMontoFinal.Location = new System.Drawing.Point(330, 460);
-            this.txtMontoFinal.Name = "txtMontoFinal";
-            this.txtMontoFinal.ReadOnly = true;
-            this.txtMontoFinal.Size = new System.Drawing.Size(100, 20);
-            this.txtMontoFinal.TabIndex = 23;
-
+            // 
+            txtMontoFinal.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+            txtMontoFinal.Location = new Point(385, 581);
+            txtMontoFinal.Margin = new Padding(4, 3, 4, 3);
+            txtMontoFinal.Name = "txtMontoFinal";
+            txtMontoFinal.ReadOnly = true;
+            txtMontoFinal.Size = new Size(116, 20);
+            txtMontoFinal.TabIndex = 23;
+            // 
             // lblLimiteDisponible
-            this.lblLimiteDisponible.AutoSize = true;
-            this.lblLimiteDisponible.Location = new System.Drawing.Point(14, 490);
-            this.lblLimiteDisponible.Name = "lblLimiteDisponible";
-            this.lblLimiteDisponible.Size = new System.Drawing.Size(99, 13);
-            this.lblLimiteDisponible.TabIndex = 24;
-            this.lblLimiteDisponible.Text = "Límite/Disponible:";
-
+            // 
+            lblLimiteDisponible.AutoSize = true;
+            lblLimiteDisponible.Location = new Point(16, 615);
+            lblLimiteDisponible.Margin = new Padding(4, 0, 4, 0);
+            lblLimiteDisponible.Name = "lblLimiteDisponible";
+            lblLimiteDisponible.Size = new Size(104, 15);
+            lblLimiteDisponible.TabIndex = 24;
+            lblLimiteDisponible.Text = "Límite/Disponible:";
+            // 
             // txtLimiteDisponible
-            this.txtLimiteDisponible.Location = new System.Drawing.Point(120, 490);
-            this.txtLimiteDisponible.Name = "txtLimiteDisponible";
-            this.txtLimiteDisponible.ReadOnly = true;
-            this.txtLimiteDisponible.Size = new System.Drawing.Size(100, 20);
-            this.txtLimiteDisponible.TabIndex = 25;
-
+            // 
+            txtLimiteDisponible.Location = new Point(140, 615);
+            txtLimiteDisponible.Margin = new Padding(4, 3, 4, 3);
+            txtLimiteDisponible.Name = "txtLimiteDisponible";
+            txtLimiteDisponible.ReadOnly = true;
+            txtLimiteDisponible.Size = new Size(116, 23);
+            txtLimiteDisponible.TabIndex = 25;
+            // 
             // chkEsRecurrente
-            this.chkEsRecurrente.AutoSize = true;
-            this.chkEsRecurrente.Location = new System.Drawing.Point(330, 490);
-            this.chkEsRecurrente.Name = "chkEsRecurrente";
-            this.chkEsRecurrente.Size = new System.Drawing.Size(115, 17);
-            this.chkEsRecurrente.TabIndex = 26;
-            this.chkEsRecurrente.Text = "Consumo recurrente";
-            this.chkEsRecurrente.UseVisualStyleBackColor = true;
-
+            // 
+            chkEsRecurrente.AutoSize = true;
+            chkEsRecurrente.Location = new Point(385, 615);
+            chkEsRecurrente.Margin = new Padding(4, 3, 4, 3);
+            chkEsRecurrente.Name = "chkEsRecurrente";
+            chkEsRecurrente.Size = new Size(135, 19);
+            chkEsRecurrente.TabIndex = 26;
+            chkEsRecurrente.Text = "Consumo recurrente";
+            chkEsRecurrente.UseVisualStyleBackColor = true;
+            // 
             // btnGuardar
-            this.btnGuardar.Location = new System.Drawing.Point(170, 520);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(100, 30);
-            this.btnGuardar.TabIndex = 27;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = true;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
-
+            // 
+            btnGuardar.Location = new Point(198, 650);
+            btnGuardar.Margin = new Padding(4, 3, 4, 3);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(117, 35);
+            btnGuardar.TabIndex = 27;
+            btnGuardar.Text = "Guardar";
+            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click;
+            // 
             // btnCancelar
-            this.btnCancelar.Location = new System.Drawing.Point(280, 520);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(100, 30);
-            this.btnCancelar.TabIndex = 28;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-
-            // Panel de consumos
-            this.gbConsumosActuales = new System.Windows.Forms.GroupBox();
-            this.gbConsumosActuales.Text = "Consumos actuales de la tarjeta";
-            this.gbConsumosActuales.Location = new System.Drawing.Point(550, 50);
-            this.gbConsumosActuales.Size = new System.Drawing.Size(400, 400);
-            this.Controls.Add(this.gbConsumosActuales);
-
-            // DataGridView para consumos
-            this.dgvConsumosActuales = new System.Windows.Forms.DataGridView();
-            this.dgvConsumosActuales.Location = new System.Drawing.Point(10, 20);
-            this.dgvConsumosActuales.Size = new System.Drawing.Size(380, 350);
-            this.dgvConsumosActuales.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvConsumosActuales.AllowUserToAddRows = false;
-            this.dgvConsumosActuales.AllowUserToDeleteRows = false;
-            this.dgvConsumosActuales.ReadOnly = true;
-            this.gbConsumosActuales.Controls.Add(this.dgvConsumosActuales);
-
-            // Label para totales
-            this.lblTotalConsumosActuales = new System.Windows.Forms.Label();
-            this.lblTotalConsumosActuales.Location = new System.Drawing.Point(10, 375);
-            this.lblTotalConsumosActuales.Size = new System.Drawing.Size(380, 20);
-            this.lblTotalConsumosActuales.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblTotalConsumosActuales.Font = new System.Drawing.Font(this.Font, System.Drawing.FontStyle.Bold);
-            this.gbConsumosActuales.Controls.Add(this.lblTotalConsumosActuales);
-
-            // Aumentar tamaño del formulario para incluir el panel nuevo
-            this.ClientSize = new System.Drawing.Size(970, 580);
-
+            // 
+            btnCancelar.Location = new Point(327, 650);
+            btnCancelar.Margin = new Padding(4, 3, 4, 3);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(117, 35);
+            btnCancelar.TabIndex = 28;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
+            // 
+            // gbConsumosActuales
+            // 
+            gbConsumosActuales.Controls.Add(dgvConsumosActuales);
+            gbConsumosActuales.Controls.Add(lblTotalConsumosActuales);
+            gbConsumosActuales.Location = new Point(642, 58);
+            gbConsumosActuales.Margin = new Padding(4, 3, 4, 3);
+            gbConsumosActuales.Name = "gbConsumosActuales";
+            gbConsumosActuales.Padding = new Padding(4, 3, 4, 3);
+            gbConsumosActuales.Size = new Size(467, 462);
+            gbConsumosActuales.TabIndex = 0;
+            gbConsumosActuales.TabStop = false;
+            gbConsumosActuales.Text = "Consumos actuales de la tarjeta";
+            // 
+            // dgvConsumosActuales
+            // 
+            dgvConsumosActuales.AllowUserToAddRows = false;
+            dgvConsumosActuales.AllowUserToDeleteRows = false;
+            dgvConsumosActuales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvConsumosActuales.Location = new Point(12, 23);
+            dgvConsumosActuales.Margin = new Padding(4, 3, 4, 3);
+            dgvConsumosActuales.Name = "dgvConsumosActuales";
+            dgvConsumosActuales.ReadOnly = true;
+            dgvConsumosActuales.Size = new Size(443, 404);
+            dgvConsumosActuales.TabIndex = 0;
+            // 
+            // lblTotalConsumosActuales
+            // 
+            lblTotalConsumosActuales.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            lblTotalConsumosActuales.Location = new Point(12, 433);
+            lblTotalConsumosActuales.Margin = new Padding(4, 0, 4, 0);
+            lblTotalConsumosActuales.Name = "lblTotalConsumosActuales";
+            lblTotalConsumosActuales.Size = new Size(443, 23);
+            lblTotalConsumosActuales.TabIndex = 1;
+            lblTotalConsumosActuales.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // gbResumenDescuentos
+            // 
+            gbResumenDescuentos.Controls.Add(lvResumenDescuentos);
+            gbResumenDescuentos.Controls.Add(lblAhorroTotal);
+            gbResumenDescuentos.Location = new Point(16, 420);
+            gbResumenDescuentos.Margin = new Padding(4, 3, 4, 3);
+            gbResumenDescuentos.Name = "gbResumenDescuentos";
+            gbResumenDescuentos.Padding = new Padding(4, 3, 4, 3);
+            gbResumenDescuentos.Size = new Size(607, 138);
+            gbResumenDescuentos.TabIndex = 29;
+            gbResumenDescuentos.TabStop = false;
+            gbResumenDescuentos.Text = "Resumen de Descuentos Aplicados";
+            // 
+            // lvResumenDescuentos
+            // 
+            lvResumenDescuentos.FullRowSelect = true;
+            lvResumenDescuentos.GridLines = true;
+            lvResumenDescuentos.Location = new Point(12, 23);
+            lvResumenDescuentos.Margin = new Padding(4, 3, 4, 3);
+            lvResumenDescuentos.Name = "lvResumenDescuentos";
+            lvResumenDescuentos.Size = new Size(583, 80);
+            lvResumenDescuentos.TabIndex = 30;
+            lvResumenDescuentos.UseCompatibleStateImageBehavior = false;
+            lvResumenDescuentos.View = View.Details;
+            // 
+            // lblAhorroTotal
+            // 
+            lblAhorroTotal.AutoSize = true;
+            lblAhorroTotal.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            lblAhorroTotal.Location = new Point(408, 110);
+            lblAhorroTotal.Margin = new Padding(4, 0, 4, 0);
+            lblAhorroTotal.Name = "lblAhorroTotal";
+            lblAhorroTotal.Size = new Size(129, 15);
+            lblAhorroTotal.TabIndex = 31;
+            lblAhorroTotal.Text = "Ahorro Total: $0.00";
+            lblAhorroTotal.TextAlign = ContentAlignment.MiddleRight;
+            // 
             // FormConsumo
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(550, 570);
-            this.Controls.Add(this.lblTitulo);
-            this.Controls.Add(this.lblTarjeta);
-            this.Controls.Add(this.cmbTarjeta);
-            this.Controls.Add(this.lblFecha);
-            this.Controls.Add(this.dtpFecha);
-            this.Controls.Add(this.lblHora);
-            this.Controls.Add(this.dtpHora);
-            this.Controls.Add(this.lblDescripcion);
-            this.Controls.Add(this.txtDescripcion);
-            this.Controls.Add(this.lblComercio);
-            this.Controls.Add(this.txtComercio);
-            this.Controls.Add(this.lblRubro);
-            this.Controls.Add(this.cmbRubro);
-            this.Controls.Add(this.lblMonto);
-            this.Controls.Add(this.numMonto);
-            this.Controls.Add(this.lblMoneda);
-            this.Controls.Add(this.cmbMoneda);
-            this.Controls.Add(this.gbDescuentos);
-            this.Controls.Add(this.lvDescuentos);
-            this.Controls.Add(this.btnBuscarDescuentos);
-            this.Controls.Add(this.lblMontoOriginal);
-            this.Controls.Add(this.txtMontoOriginal);
-            this.Controls.Add(this.lblMontoFinal);
-            this.Controls.Add(this.txtMontoFinal);
-            this.Controls.Add(this.lblLimiteDisponible);
-            this.Controls.Add(this.txtLimiteDisponible);
-            this.Controls.Add(this.chkEsRecurrente);
-            this.Controls.Add(this.btnGuardar);
-            this.Controls.Add(this.btnCancelar);
-            this.Name = "FormConsumo";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Registro de Consumo";
-            this.Load += new System.EventHandler(this.FormConsumo_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numMonto)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1370, 749);
+            Controls.Add(gbConsumosActuales);
+            Controls.Add(gbResumenDescuentos);
+            Controls.Add(lblTitulo);
+            Controls.Add(lblTarjeta);
+            Controls.Add(cmbTarjeta);
+            Controls.Add(lblFecha);
+            Controls.Add(dtpFecha);
+            Controls.Add(lblHora);
+            Controls.Add(dtpHora);
+            Controls.Add(lblDescripcion);
+            Controls.Add(txtDescripcion);
+            Controls.Add(lblComercio);
+            Controls.Add(txtComercio);
+            Controls.Add(lblRubro);
+            Controls.Add(cmbRubro);
+            Controls.Add(lblMonto);
+            Controls.Add(numMonto);
+            Controls.Add(lblMoneda);
+            Controls.Add(cmbMoneda);
+            Controls.Add(lvDescuentos);
+            Controls.Add(btnBuscarDescuentos);
+            Controls.Add(lblMontoOriginal);
+            Controls.Add(txtMontoOriginal);
+            Controls.Add(lblMontoFinal);
+            Controls.Add(txtMontoFinal);
+            Controls.Add(lblLimiteDisponible);
+            Controls.Add(txtLimiteDisponible);
+            Controls.Add(chkEsRecurrente);
+            Controls.Add(btnGuardar);
+            Controls.Add(btnCancelar);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "FormConsumo";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Registro de Consumo";
+            Load += FormConsumo_Load;
+            ((System.ComponentModel.ISupportInitialize)numMonto).EndInit();
+            gbConsumosActuales.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvConsumosActuales).EndInit();
+            gbResumenDescuentos.ResumeLayout(false);
+            gbResumenDescuentos.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -417,7 +504,6 @@ namespace Vista
         private System.Windows.Forms.NumericUpDown numMonto;
         private System.Windows.Forms.Label lblMoneda;
         private System.Windows.Forms.ComboBox cmbMoneda;
-        private System.Windows.Forms.GroupBox gbDescuentos;
         private System.Windows.Forms.ListView lvDescuentos;
         private System.Windows.Forms.ColumnHeader chDescripcion;
         private System.Windows.Forms.ColumnHeader chBanco;
@@ -437,5 +523,8 @@ namespace Vista
         private System.Windows.Forms.GroupBox gbConsumosActuales;
         private System.Windows.Forms.DataGridView dgvConsumosActuales;
         private System.Windows.Forms.Label lblTotalConsumosActuales;
+        private System.Windows.Forms.GroupBox gbResumenDescuentos;
+        private System.Windows.Forms.ListView lvResumenDescuentos;
+        private System.Windows.Forms.Label lblAhorroTotal;
     }
 }

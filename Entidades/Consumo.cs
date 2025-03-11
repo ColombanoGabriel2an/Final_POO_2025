@@ -39,47 +39,37 @@ namespace Entidades
         public decimal CalcularMontoFinal()
         {
             decimal montoFinal = Monto;
-            decimal ahorroTotal = 0;
 
             foreach (var descuento in DescuentosAplicados)
             {
-                decimal ahorroDescuento = 0;
-
-                if (!descuento.EsValido(Fecha))
+                // No calcular si el descuento no está activo o está fuera de fecha
+                if (!descuento.Activo || !descuento.EsValido(Fecha))
                     continue;
 
-                if (Monto < descuento.MontoMinimo)
-                    continue;
-
+                // Aplicar descuento porcentual
                 if (descuento.Porcentaje > 0)
                 {
-                    ahorroDescuento = Monto * (descuento.Porcentaje / 100m);
+                    decimal ahorro = montoFinal * (descuento.Porcentaje / 100m);
 
-                    if (descuento.TopeReintegro > 0 && ahorroDescuento > descuento.TopeReintegro)
-                        ahorroDescuento = descuento.TopeReintegro;
+                    // Aplicar tope de reintegro si existe
+                    if (descuento.TopeReintegro > 0 && ahorro > descuento.TopeReintegro)
+                        ahorro = descuento.TopeReintegro;
+
+                    montoFinal -= ahorro;
                 }
+                // Aplicar descuento de monto fijo
                 else if (descuento.MontoFijo > 0)
                 {
-                    ahorroDescuento = descuento.MontoFijo;
-
-
-                    if (descuento.TopeReintegro > 0 && ahorroDescuento > descuento.TopeReintegro)
-                        ahorroDescuento = descuento.TopeReintegro;
+                    montoFinal -= descuento.MontoFijo;
                 }
-
-                ahorroTotal += ahorroDescuento;
             }
 
-
-            montoFinal -= ahorroTotal;
-
-
+            // Evitar montos negativos
             if (montoFinal < 0)
                 montoFinal = 0;
 
             return montoFinal;
         }
-
 
         public int TarjetaId { get; set; }
     }

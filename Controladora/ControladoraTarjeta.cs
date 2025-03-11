@@ -81,10 +81,11 @@ namespace Controladora
             var persona3 = ControladoraPersona.Instancia.ListarPersonas().First(p => p.PersonaId == 3);
             var persona4 = ControladoraPersona.Instancia.ListarPersonas().First(p => p.PersonaId == 4);
 
-            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaDebito("1111222233334444", new DateTime(2026, 12, 31), "Banco BBVA", "VISA", persona1, "BBVA Mati", 0), persona1);
-            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaCredito("5555666677778888", new DateTime(2028, 10, 01), "Banco Macro", "Mastercard", persona2, "Macro Mati", true, persona2, 10000, 5000), persona2);
-            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaCredito("1234123412341234", new DateTime(2027, 01, 01), "Banco Santander", "Cabal", persona3, "Cabal Gabi", false, persona3, 15000, 12000), persona3);
-            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaDebito("567856785678", new DateTime(2030, 02, 02), "Banco BBVA", "Mastercard", persona4, "Naranja Pedro", 0), persona4);
+            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaDebito("1111222233334444", new DateTime(2026, 12, 31), "Banco BBVA", "VISA", persona1, "BBVA Mati", 100000), persona1);
+            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaCredito("5555666677778888", new DateTime(2028, 10, 01), "Banco Macro", "Mastercard", persona2, "Macro Mati", true, persona2, 1000000, 500000), persona2);
+            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaCredito("1234123412341234", new DateTime(2027, 01, 01), "Banco Santander", "VISA", persona3, "VISA Gabi", false, persona3, 1500000, 1200000), persona3);
+            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaDebito("567856785678", new DateTime(2030, 02, 02), "Banco BBVA", "Mastercard", persona4, "Naranja Pedro", 200000), persona4);
+            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaCredito("5555666677778888", new DateTime(2028, 10, 01), "Banco BBVA", "Mastercard", persona1, "BBVA MC Mati", true, persona1, 1000000, 500000), persona1);
         }
     }
 }

@@ -202,7 +202,7 @@ namespace Controladora
                 TopeReintegro = 4000,
                 Banco = "Banco Macro",
                 Emisor = "VISA",
-                Rubro = "Ropa",
+                Rubro = "Indumentaria",
                 Tipo = "Porcentual",
                 Activo = true,
                 Acumulable = false
@@ -223,12 +223,33 @@ namespace Controladora
                 TopeReintegro = 5000,
                 Banco = "Banco Macro",
                 Emisor = "Mastercard",
-                Rubro = "Ropa",
+                Rubro = "Indumentaria",
                 Tipo = "Mixto",
                 Activo = true,
                 Acumulable = true
             };
             ControladoraDescuento.Instancia.CrearDescuento(descuento8);
+
+            // Indumentaria - Cuotas + Descuento
+            Descuento descuento9 = new Descuento
+            {
+                Codigo = "ROPA6C20",
+                Nombre = "Cuotas + Descuento",
+                Descripcion = "6 cuotas sin interés + 20% off",
+                FechaInicio = new DateTime(2025, 01, 01),
+                FechaFin = new DateTime(2025, 12, 31),
+                Porcentaje = 20,
+                MontoFijo = 0,
+                MontoMinimo = 2000,
+                TopeReintegro = 5000,
+                Banco = "Banco BBVA",
+                Emisor = "Mastercard",
+                Rubro = "Indumentaria",
+                Tipo = "Mixto",
+                Activo = true,
+                Acumulable = true
+            };
+            ControladoraDescuento.Instancia.CrearDescuento(descuento9);
         }
 
     }

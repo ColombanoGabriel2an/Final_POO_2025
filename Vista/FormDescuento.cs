@@ -70,7 +70,6 @@ namespace Vista
                 dgvDescuentos.Columns["FechaFin"].Width = 100;
             }
         }
-
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
@@ -83,24 +82,50 @@ namespace Vista
                     return;
                 }
 
-                var descuento = new Descuento
-                {
-                    Codigo = txtCodigo.Text,
-                    Nombre = txtNombre.Text,
-                    Descripcion = txtDescripcion.Text,
-                    Porcentaje = nudPorcentaje.Value,
-                    FechaInicio = dtpFechaInicio.Value,
-                    FechaFin = dtpFechaFin.Value,
-                    Tipo = cmbTipo.SelectedItem.ToString(),
-                    EntidadBancaria = cmbEntidadBancaria.SelectedItem.ToString(),
-                    TopeReintegro = nudTopeReintegro.Value,
-                    Activo = chkActivo.Checked,
-                    Acumulable = chkAcumulable.Checked
-                };
+                // Buscar si el descuento ya existe por el código
+                var descuentoExistente = ControladoraDescuento.Instancia.ListarDescuentos()
+                    .FirstOrDefault(d => d.Codigo == txtCodigo.Text);
 
-                // Guardar el descuento
-                string resultado = ControladoraDescuento.Instancia.CrearDescuento(descuento);
-                MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (descuentoExistente != null)
+                {
+                    // Si el descuento ya existe, actualizar los valores
+                    descuentoExistente.Nombre = txtNombre.Text;
+                    descuentoExistente.Descripcion = txtDescripcion.Text;
+                    descuentoExistente.Porcentaje = nudPorcentaje.Value;
+                    descuentoExistente.FechaInicio = dtpFechaInicio.Value;
+                    descuentoExistente.FechaFin = dtpFechaFin.Value;
+                    descuentoExistente.Tipo = cmbTipo.SelectedItem.ToString();
+                    //descuentoExistente.EntidadBancaria = cmbEntidadBancaria.SelectedItem.ToString();
+                    descuentoExistente.TopeReintegro = nudTopeReintegro.Value;
+                    descuentoExistente.Activo = chkActivo.Checked;
+                    descuentoExistente.Acumulable = chkAcumulable.Checked;
+
+                    // Guardar el descuento actualizado
+                    string resultado = ControladoraDescuento.Instancia.ActualizarDescuento(descuentoExistente);
+                    MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    // Si el descuento no existe, crear uno nuevo
+                    var nuevoDescuento = new Descuento
+                    {
+                        Codigo = txtCodigo.Text,
+                        Nombre = txtNombre.Text,
+                        Descripcion = txtDescripcion.Text,
+                        Porcentaje = nudPorcentaje.Value,
+                        FechaInicio = dtpFechaInicio.Value,
+                        FechaFin = dtpFechaFin.Value,
+                        Tipo = cmbTipo.SelectedItem.ToString(),
+                        //EntidadBancaria = cmbEntidadBancaria.SelectedItem.ToString(),
+                        TopeReintegro = nudTopeReintegro.Value,
+                        Activo = chkActivo.Checked,
+                        Acumulable = chkAcumulable.Checked
+                    };
+
+                    // Guardar el nuevo descuento
+                    string resultado = ControladoraDescuento.Instancia.CrearDescuento(nuevoDescuento);
+                    MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
                 // Actualizar el DataGridView
                 ActualizarDataGridView();
@@ -114,6 +139,7 @@ namespace Vista
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        
 
         private void dgvDescuentos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -140,7 +166,7 @@ namespace Vista
                 dtpFechaInicio.Value = descuento.FechaInicio;
                 dtpFechaFin.Value = descuento.FechaFin;
                 cmbTipo.SelectedItem = descuento.Tipo;
-                cmbEntidadBancaria.SelectedItem = descuento.EntidadBancaria;
+                //cmbEntidadBancaria.SelectedItem = descuento.EntidadBancaria;
                 nudTopeReintegro.Value = descuento.TopeReintegro;
                 chkActivo.Checked = descuento.Activo;
                 chkAcumulable.Checked = descuento.Acumulable;

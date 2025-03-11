@@ -79,9 +79,9 @@ namespace Controladora
                 Porcentaje = 30,
                 MontoFijo = 0,
                 TopeReintegro = 3000,
-                Banco = "Santander",
-                EntidadBancaria = "Santander",
-                Emisor = "Visa",
+                Banco = "Banco Santander",
+                //EntidadBancaria = "Banco Santander",
+                Emisor = "VISA",
                 Rubro = "Supermercados",
                 Tipo = "Porcentual",
                 Activo = true,
@@ -100,8 +100,8 @@ namespace Controladora
                 Porcentaje = 50,
                 MontoFijo = 0,
                 TopeReintegro = 1500,
-                Banco = "BBVA",
-                EntidadBancaria = "BBVA",
+                Banco = "Banco BBVA",
+                //EntidadBancaria = "Banco BBVA",
                 Emisor = "American Express",
                 Rubro = "Restaurantes",
                 Tipo = "Porcentual",
@@ -122,7 +122,7 @@ namespace Controladora
                 MontoFijo = 0,
                 TopeReintegro = 1000,
                 Banco = "Banco Nación",
-                EntidadBancaria = "Banco Nación",
+                //EntidadBancaria = "Banco Nación",
                 Emisor = "Mastercard",
                 Rubro = "Farmacias",
                 Tipo = "Porcentual",
@@ -142,12 +142,12 @@ namespace Controladora
                 Porcentaje = 0,
                 MontoFijo = 500,
                 TopeReintegro = 3000,
-                Banco = "BBVA",
-                EntidadBancaria = "BBVA",
-                Emisor = "Visa",
+                Banco = "Banco BBVA",
+                //EntidadBancaria = "Banco BBVA",
+                Emisor = "VISA",
                 Rubro = "Farmacias",
                 Tipo = "Monto Fijo",
-                Activo = true,
+                Activo = false,
                 Acumulable = false
             };
             ControladoraDescuento.Instancia.CrearDescuento(descuento4);
@@ -164,9 +164,9 @@ namespace Controladora
                 MontoFijo = 0,
                 MontoMinimo = 0,
                 TopeReintegro = 10000,
-                Banco = "Santander",
-                EntidadBancaria = "Santander",
-                Emisor = "Visa",
+                Banco = "Banco Nación",
+                //EntidadBancaria = "Banco Nación",
+                Emisor = "VISA",
                 Rubro = "Electrónica",
                 Tipo = "Financiación",
                 Activo = true,
@@ -185,8 +185,8 @@ namespace Controladora
                 Porcentaje = 20,
                 MontoFijo = 0,
                 TopeReintegro = 5000,
-                Banco = "BBVA",
-                EntidadBancaria = "BBVA",
+                Banco = "Banco BBVA",
+                //EntidadBancaria = "Banco BBVA",
                 Emisor = "Mastercard",
                 Rubro = "Electrónica",
                 Tipo = "Porcentual",
@@ -206,13 +206,13 @@ namespace Controladora
                 Porcentaje = 30,
                 MontoFijo = 0,
                 TopeReintegro = 4000,
-                Banco = "Macro",
-                EntidadBancaria = "Macro",
-                Emisor = "Visa",
-                Rubro = "Ropa",
+                Banco = "Banco Macro",
+                //EntidadBancaria = "Banco Macro",
+                Emisor = "VISA",
+                Rubro = "Indumentaria",
                 Tipo = "Porcentual",
-                Activo = true,
-                Acumulable = false
+                Activo = false,
+                Acumulable = true
             };
             ControladoraDescuento.Instancia.CrearDescuento(descuento7);
 
@@ -228,15 +228,34 @@ namespace Controladora
                 MontoFijo = 0,
                 MontoMinimo = 2000,
                 TopeReintegro = 5000,
-                Banco = "Macro",
-                EntidadBancaria = "Macro",
+                Banco = "Banco Macro",
+                //EntidadBancaria = "Banco Macro",
                 Emisor = "Mastercard",
-                Rubro = "Ropa",
+                Rubro = "Indumentaria",
                 Tipo = "Mixto",
                 Activo = true,
                 Acumulable = true
             };
             ControladoraDescuento.Instancia.CrearDescuento(descuento8);
+        }
+        public string ActualizarDescuento(Descuento descuento)
+        {
+            try
+            {
+                var descuentoExistente = descuentos.FirstOrDefault(d => d.DescuentoId == descuento.DescuentoId);
+                if (descuentoExistente != null)
+                {
+                    // Simplemente actualizar las propiedades
+                    descuentoExistente = descuento; // Esto reemplaza el objeto entero
+
+                    return "Descuento actualizado correctamente";
+                }
+                return "Descuento no encontrado";
+            }
+            catch (Exception)
+            {
+                return "Ocurrió un error al actualizar el descuento";
+            }
         }
 
     }

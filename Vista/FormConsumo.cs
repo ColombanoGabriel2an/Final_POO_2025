@@ -386,45 +386,6 @@ namespace Vista
             }
         }
 
-        private void SimularDescuentosDisponibles()
-        {
-            _descuentosDisponibles = new List<Descuento>
-            {
-                new Descuento
-                {
-                    Descripcion = "Promoción fin de semana",
-                    Porcentaje = 10,
-                    FechaInicio = DateTime.Today.AddDays(-10),
-                    FechaFin = DateTime.Today.AddDays(20),
-                    EntidadBancaria = "Banco Nación"
-                },
-                new Descuento
-                {
-                    Descripcion = "Descuento primera compra",
-                    MontoFijo = 500,
-                    FechaInicio = DateTime.Today.AddDays(-30),
-                    FechaFin = DateTime.Today.AddDays(60),
-                    EntidadBancaria = "VISA"
-                }
-            };
-
-
-            if (!_esNuevoConsumo)
-            {
-                foreach (var descuentoAplicado in _consumo.DescuentosAplicados)
-                {
-                    var descuentoEnLista = _descuentosDisponibles.FirstOrDefault(d =>
-                        d.Descripcion == descuentoAplicado.Descripcion &&
-                        d.EntidadBancaria == descuentoAplicado.EntidadBancaria);
-
-                    if (descuentoEnLista == null)
-                    {
-                        _descuentosDisponibles.Add(descuentoAplicado);
-                    }
-                }
-            }
-        }
-
         private void MostrarDescuentosEnListView()
         {
             lvDescuentos.Items.Clear();

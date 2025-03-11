@@ -84,11 +84,10 @@
             this.cmbEntidadEmisora.FormattingEnabled = true;
             this.cmbEntidadEmisora.Items.AddRange(new object[] {
           "VISA",
-          "MasterCard",
+          "Mastercard",
           "American Express",
           "Naranja",
           "Cabal",
-          "Diners Club"
       });
             this.cmbEntidadEmisora.Location = new System.Drawing.Point(12, 178);
             this.cmbEntidadEmisora.Name = "cmbEntidadEmisora";

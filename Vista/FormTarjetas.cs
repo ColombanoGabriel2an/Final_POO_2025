@@ -18,6 +18,36 @@ public partial class FormTarjetas : Form
     CargarCombos();
   }
 
+  private void CargarCombos()
+  {
+    // Tipo de Tarjeta
+    cboTipoTarjeta.Items.AddRange(new string[] { "Débito", "Crédito" });
+
+    // Bancos
+    txtBanco.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+    txtBanco.AutoCompleteSource = AutoCompleteSource.CustomSource;
+    txtBanco.AutoCompleteCustomSource.AddRange(new string[]
+    {
+        "Banco Nación",
+        "Banco Galicia",
+        "Banco Santander",
+        "BBVA",
+        "Banco Macro",
+        "Banco Provincia"
+    });
+
+    // Emisoras
+    txtEmisora.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+    txtEmisora.AutoCompleteSource = AutoCompleteSource.CustomSource;
+    txtEmisora.AutoCompleteCustomSource.AddRange(new string[]
+    {
+        "Visa",
+        "Mastercard",
+        "American Express",
+        "Cabal"
+    });
+  }
+
   private void btnGuardar_Click(object sender, EventArgs e)
   {
     using (var context = new Context())

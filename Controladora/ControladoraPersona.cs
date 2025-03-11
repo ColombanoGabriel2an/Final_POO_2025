@@ -1,6 +1,4 @@
 ﻿using Entidades;
-using Microsoft.EntityFrameworkCore;
-using Modelo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +7,7 @@ namespace Controladora
 {
     public class ControladoraPersona
     {
-        private Context context;
+        private List<Persona> personas;
         private static ControladoraPersona? instancia;
 
         public static ControladoraPersona Instancia
@@ -26,30 +24,35 @@ namespace Controladora
 
         private ControladoraPersona()
         {
-            context = new Context();
+            personas = new List<Persona>();
         }
 
-        // Lista todas las personas, incluyendo sus tarjetas relacionadas
+        // Lista todas las personas
         public List<Persona> ListarPersonas()
         {
             try
             {
-                return context.Personas.Include(p => p.Tarjetas).ToList();
+                return personas;
             }
             catch (Exception)
             {
-                // Maneja o registra el error según convenga
                 return new List<Persona>();
             }
         }
 
-        // Crea una nueva persona en la base de datos
+        // Crea una nueva persona en la lista
         public string CrearPersona(Persona persona)
         {
             try
             {
-                context.Personas.Add(persona);
-                context.SaveChanges();
+                // Generar ID si es necesario
+                if (persona.PersonaId <= 0)
+                {
+                    persona.PersonaId = personas.Count > 0
+                        ? personas.Max(p => p.PersonaId) + 1 : 1;
+                }
+
+                personas.Add(persona);
                 return "Persona creada correctamente";
             }
             catch (Exception)
@@ -63,9 +66,18 @@ namespace Controladora
         {
             try
             {
-                context.Entry(persona).State = EntityState.Modified;
-                context.SaveChanges();
-                return "Persona actualizada correctamente";
+                var personaExistente = personas.FirstOrDefault(p => p.PersonaId == persona.PersonaId);
+                if (personaExistente != null)
+                {
+                    // Elimina la persona anterior y agrega la actualizada
+                    personas.Remove(personaExistente);
+                    personas.Add(persona);
+                    return "Persona actualizada correctamente";
+                }
+                else
+                {
+                    return "Persona no encontrada";
+                }
             }
             catch (Exception)
             {
@@ -73,16 +85,15 @@ namespace Controladora
             }
         }
 
-        // Elimina una persona de la base de datos
+        // Elimina una persona de la lista
         public string BorrarPersona(Persona persona)
         {
             try
             {
-                var personaEncontrada = context.Personas.FirstOrDefault(p => p.PersonaId == persona.PersonaId);
+                var personaEncontrada = personas.FirstOrDefault(p => p.PersonaId == persona.PersonaId);
                 if (personaEncontrada != null)
                 {
-                    context.Personas.Remove(personaEncontrada);
-                    context.SaveChanges();
+                    personas.Remove(personaEncontrada);
                     return "Persona eliminada correctamente";
                 }
                 else

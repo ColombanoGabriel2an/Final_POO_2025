@@ -1,6 +1,4 @@
 ﻿using Entidades;
-using Microsoft.EntityFrameworkCore;
-using Modelo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +7,7 @@ namespace Controladora
 {
     public class ControladoraDescuento
     {
-        private Context context;
+        private List<Descuento> descuentos;
         private static ControladoraDescuento? instancia;
 
         public static ControladoraDescuento Instancia
@@ -26,21 +24,25 @@ namespace Controladora
 
         private ControladoraDescuento()
         {
-            context = new Context();
+            descuentos = new List<Descuento>();
         }
 
         public List<Descuento> ListarDescuentos()
         {
-            return context.Descuentos.ToList();
+            return descuentos;
         }
 
         public string CrearDescuento(Descuento descuento)
         {
             try
             {
-                // Validar fechas o condiciones específicas según lo necesites.
-                context.Descuentos.Add(descuento);
-                context.SaveChanges();
+                if (descuento.DescuentoId <= 0)
+                {
+                    descuento.DescuentoId = descuentos.Count > 0
+                        ? descuentos.Max(d => d.DescuentoId) + 1 : 1;
+                }
+
+                descuentos.Add(descuento);
                 return $"Descuento '{descuento.Descripcion}' creado correctamente";
             }
             catch (Exception)
@@ -53,11 +55,10 @@ namespace Controladora
         {
             try
             {
-                var descuentoEncontrado = context.Descuentos.FirstOrDefault(d => d.DescuentoId == descuento.DescuentoId);
+                var descuentoEncontrado = descuentos.FirstOrDefault(d => d.DescuentoId == descuento.DescuentoId);
                 if (descuentoEncontrado != null)
                 {
-                    context.Descuentos.Remove(descuentoEncontrado);
-                    context.SaveChanges();
+                    descuentos.Remove(descuentoEncontrado);
                     return "Descuento eliminado correctamente";
                 }
                 else

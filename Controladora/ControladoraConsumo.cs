@@ -1,6 +1,4 @@
 ﻿using Entidades;
-using Microsoft.EntityFrameworkCore;
-using Modelo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +7,7 @@ namespace Controladora
 {
     public class ControladoraConsumo
     {
-        private Context context;
+        private List<Consumo> consumos;
         private static ControladoraConsumo? instancia;
 
         public static ControladoraConsumo Instancia
@@ -26,26 +24,33 @@ namespace Controladora
 
         private ControladoraConsumo()
         {
-            context = new Context();
+            consumos = new List<Consumo>();
         }
 
         public List<Consumo> ListarConsumos()
         {
-            return context.Consumos.Include(c => c.Tarjeta).ToList();
+            return consumos;
         }
 
         public string CrearConsumo(Consumo consumo, Tarjeta tarjeta)
         {
             try
             {
-                var tarjetaEncontrada = context.Tarjetas.FirstOrDefault(t => t.TarjetaId == tarjeta.TarjetaId);
+                var tarjetaEncontrada = ControladoraTarjeta.Instancia.ListarTarjetas()
+                    .FirstOrDefault(t => t.TarjetaId == tarjeta.TarjetaId);
+
                 if (tarjetaEncontrada == null)
                     return "La tarjeta no existe";
 
+                // Generar ID si es necesario
+                if (consumo.ConsumoId <= 0)
+                {
+                    consumo.ConsumoId = consumos.Count > 0
+                        ? consumos.Max(c => c.ConsumoId) + 1 : 1;
+                }
+
                 consumo.Tarjeta = tarjetaEncontrada;
-                // Aquí podrías aplicar validaciones y calcular descuentos si es necesario.
-                context.Consumos.Add(consumo);
-                context.SaveChanges();
+                consumos.Add(consumo);
                 return $"Consumo registrado para la tarjeta {tarjetaEncontrada.Numero}";
             }
             catch (Exception)
@@ -58,11 +63,12 @@ namespace Controladora
         {
             try
             {
-                var consumoEncontrado = context.Consumos.FirstOrDefault(c => c.ConsumoId == consumo.ConsumoId);
+                var consumoEncontrado = consumos
+                    .FirstOrDefault(c => c.ConsumoId == consumo.ConsumoId);
+
                 if (consumoEncontrado != null)
                 {
-                    context.Consumos.Remove(consumoEncontrado);
-                    context.SaveChanges();
+                    consumos.Remove(consumoEncontrado);
                     return "Consumo eliminado correctamente";
                 }
                 else

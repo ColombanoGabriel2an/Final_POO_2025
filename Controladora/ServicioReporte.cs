@@ -9,30 +9,73 @@ namespace Controladora
 {
     public class ServicioReporte
     {
-        private readonly Context _context;
+        private static ServicioReporte? instancia;
 
-        // Se inyecta el contexto en el constructor
-        public ServicioReporte(Context context)
+        public static ServicioReporte Instancia
         {
-            _context = context;
+            get
+            {
+                if (instancia == null)
+                {
+                    instancia = new ServicioReporte();
+                }
+                return instancia;
+            }
         }
 
         // Reporte de consumos por tarjeta en un rango de fechas
         public List<Consumo> GenerarReportePorTarjeta(int tarjetaId, DateTime fechaInicio, DateTime fechaFin)
         {
-            return _context.Consumos
-                .Where(c => c.TarjetaId == tarjetaId && c.Fecha >= fechaInicio && c.Fecha <= fechaFin)
-                .Include(c => c.Tarjeta)
-                .ToList();
+            List<Consumo> resultado = new List<Consumo>();
+            List<Consumo> todosLosConsumos = ControladoraConsumo.Instancia.ListarConsumos();
+
+            foreach (var consumo in todosLosConsumos)
+            {
+                if (consumo.Tarjeta.TarjetaId == tarjetaId &&
+                    consumo.Fecha >= fechaInicio &&
+                    consumo.Fecha <= fechaFin)
+                {
+                    resultado.Add(consumo);
+                }
+            }
+
+            return resultado;
         }
 
         // Reporte general de consumos en un rango de fechas
         public List<Consumo> GenerarReportePorFecha(DateTime fechaInicio, DateTime fechaFin)
         {
-            return _context.Consumos
-                .Where(c => c.Fecha >= fechaInicio && c.Fecha <= fechaFin)
-                .Include(c => c.Tarjeta)
-                .ToList();
+            List<Consumo> resultado = new List<Consumo>();
+            List<Consumo> todosLosConsumos = ControladoraConsumo.Instancia.ListarConsumos();
+
+            foreach (var consumo in todosLosConsumos)
+            {
+                if (consumo.Fecha >= fechaInicio && consumo.Fecha <= fechaFin)
+                {
+                    resultado.Add(consumo);
+                }
+            }
+
+            return resultado;
+        }
+
+        // Método adicional para generar reporte de acreditaciones por tarjeta
+        public List<Acreditacion> GenerarReporteAcreditacionesPorTarjeta(int tarjetaId, DateTime fechaInicio, DateTime fechaFin)
+        {
+            List<Acreditacion> resultado = new List<Acreditacion>();
+            List<Acreditacion> todasLasAcreditaciones = ControladoraAcreditacion.Instancia.ListarAcreditaciones();
+
+            foreach (var acreditacion in todasLasAcreditaciones)
+            {
+                if (acreditacion.Tarjeta.TarjetaId == tarjetaId &&
+                    acreditacion.Fecha >= fechaInicio &&
+                    acreditacion.Fecha <= fechaFin)
+                {
+                    resultado.Add(acreditacion);
+                }
+            }
+
+            return resultado;
         }
     }
 }

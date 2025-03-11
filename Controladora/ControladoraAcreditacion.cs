@@ -1,6 +1,4 @@
 ﻿using Entidades;
-using Microsoft.EntityFrameworkCore;
-using Modelo; // Si tu Context se encuentra en Modelo
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +7,7 @@ namespace Controladora
 {
     public class ControladoraAcreditacion
     {
-        private Context context;
+        private List<Acreditacion> acreditaciones;
         private static ControladoraAcreditacion? instancia;
 
         public static ControladoraAcreditacion Instancia
@@ -26,28 +24,36 @@ namespace Controladora
 
         private ControladoraAcreditacion()
         {
-            context = new Context();
+            acreditaciones = new List<Acreditacion>();
         }
 
         public List<Acreditacion> ListarAcreditaciones()
         {
-            return context.Acreditaciones.Include(a => a.Tarjeta).ToList();
+            return acreditaciones;
         }
 
         public string CrearAcreditacion(Acreditacion acreditacion, Tarjeta tarjeta)
         {
             try
             {
-                var tarjetaEncontrada = context.Tarjetas.FirstOrDefault(t => t.TarjetaId == tarjeta.TarjetaId);
+                var tarjetaEncontrada = ControladoraTarjeta.Instancia.ListarTarjetas()
+                    .FirstOrDefault(t => t.TarjetaId == tarjeta.TarjetaId);
+
                 if (tarjetaEncontrada == null)
                     return "La tarjeta no existe";
 
-                // Asocia la tarjeta encontrada a la acreditación.
+                // Generar ID si es necesario
+                if (acreditacion.AcreditacionId <= 0)
+                {
+                    acreditacion.AcreditacionId = acreditaciones.Count > 0
+                        ? acreditaciones.Max(a => a.AcreditacionId) + 1 : 1;
+                }
+
+                // Asocia la tarjeta encontrada a la acreditación
                 acreditacion.Tarjeta = tarjetaEncontrada;
 
-                // Aquí podrías incluir lógica para actualizar saldos, etc.
-                context.Acreditaciones.Add(acreditacion);
-                context.SaveChanges();
+                // Aquí lógica para actualizar saldos, etc.
+                acreditaciones.Add(acreditacion);
                 return $"Acreditación creada para la tarjeta {tarjetaEncontrada.Numero}";
             }
             catch (Exception)
@@ -60,11 +66,12 @@ namespace Controladora
         {
             try
             {
-                var acreditacionEncontrada = context.Acreditaciones.FirstOrDefault(a => a.AcreditacionId == acreditacion.AcreditacionId);
+                var acreditacionEncontrada = acreditaciones
+                    .FirstOrDefault(a => a.AcreditacionId == acreditacion.AcreditacionId);
+
                 if (acreditacionEncontrada != null)
                 {
-                    context.Acreditaciones.Remove(acreditacionEncontrada);
-                    context.SaveChanges();
+                    acreditaciones.Remove(acreditacionEncontrada);
                     return "Acreditación eliminada correctamente";
                 }
                 else

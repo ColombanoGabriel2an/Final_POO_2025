@@ -66,5 +66,14 @@ namespace Controladora
                 return "Ocurrió un error al eliminar el descuento";
             }
         }
+
+        public void PrecargarDescuentos()
+        {
+            ControladoraDescuento.Instancia.CrearDescuento(new Descuento("Descuento del 10%", new DateTime(2025, 01, 01), new DateTime(2025, 12, 31), 10, 0, 0, "Banco Nación", "Emisor", "Electrónica"));
+            ControladoraDescuento.Instancia.CrearDescuento(new Descuento("Descuento del 20%", new DateTime(2025, 01, 01), new DateTime(2025, 12, 31), 20, 0, 0, "BBVA", "Emisor", "Ropa"));
+            ControladoraDescuento.Instancia.CrearDescuento(new Descuento("12 Cuotas sin interés", new DateTime(2025, 01, 01), new DateTime(2025, 12, 31), 0, 0, 0, "Cabal", "Emisor", "Muebles"));
+            ControladoraDescuento.Instancia.CrearDescuento(new Descuento("Promo 15%", new DateTime(2025, 01, 01), new DateTime(2025, 12, 31), 15, 0, 0, "Macro", "Emisor", "Automóvil"));
+        }
+
     }
 }

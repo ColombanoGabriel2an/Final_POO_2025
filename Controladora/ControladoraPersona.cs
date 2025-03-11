@@ -103,5 +103,12 @@ namespace Controladora
                 return "Ocurrió un error al eliminar la persona";
             }
         }
+        public void PrecargarPersonas()
+        {
+            ControladoraPersona.Instancia.CrearPersona(new Persona("Gabriel", "Colombano", "44555998"));
+            ControladoraPersona.Instancia.CrearPersona(new Persona("Matias", "Llanos", "12355666"));
+            ControladoraPersona.Instancia.CrearPersona(new Persona("Laureano", "Gallegos", "12577889"));
+            ControladoraPersona.Instancia.CrearPersona(new Persona("Pedro", "Lopez", "13344895"));
+        }
     }
 }

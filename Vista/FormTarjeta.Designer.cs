@@ -10,7 +10,7 @@
         private System.Windows.Forms.Label lblAlias;
         private System.Windows.Forms.Label lblLimite;
         private System.Windows.Forms.Label lblDisponible;
-        private System.Windows.Forms.Label lblTenedorId;
+        
 
         protected override void Dispose(bool disposing)
         {
@@ -31,7 +31,7 @@
             this.txtLimite = new System.Windows.Forms.TextBox();
             this.txtDisponible = new System.Windows.Forms.TextBox();
             this.chkIsExtension = new System.Windows.Forms.CheckBox();
-            this.txtTenedorId = new System.Windows.Forms.TextBox();
+            this.cmbTenedor = new System.Windows.Forms.ComboBox();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.lblNumero = new System.Windows.Forms.Label();
             this.lblFechaVencimiento = new System.Windows.Forms.Label();
@@ -40,7 +40,8 @@
             this.lblAlias = new System.Windows.Forms.Label();
             this.lblLimite = new System.Windows.Forms.Label();
             this.lblDisponible = new System.Windows.Forms.Label();
-            this.lblTenedorId = new System.Windows.Forms.Label();
+            this.lblTenedor = new System.Windows.Forms.Label();
+            this.dgvTarjetas = new System.Windows.Forms.DataGridView();
             this.SuspendLayout();
             // 
             // txtNumero
@@ -128,13 +129,14 @@
             this.chkIsExtension.Text = "Es Extensión";
             this.chkIsExtension.UseVisualStyleBackColor = true;
             // 
-            // txtTenedorId
+            // cmbTenedor
             // 
-            this.txtTenedorId.Location = new System.Drawing.Point(12, 428);
-            this.txtTenedorId.Name = "txtTenedorId";
-            this.txtTenedorId.Size = new System.Drawing.Size(200, 20);
-            this.txtTenedorId.TabIndex = 8;
-            this.txtTenedorId.PlaceholderText = "ID del Tenedor";
+            this.cmbTenedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTenedor.FormattingEnabled = true;
+            this.cmbTenedor.Location = new System.Drawing.Point(12, 428);
+            this.cmbTenedor.Name = "cmbTenedor";
+            this.cmbTenedor.Size = new System.Drawing.Size(200, 21);
+            this.cmbTenedor.TabIndex = 8;
             // 
             // btnGuardar
             // 
@@ -209,19 +211,35 @@
             this.lblDisponible.TabIndex = 16;
             this.lblDisponible.Text = "Disponible:";
             // 
-            // lblTenedorId
+            // lblTenedor
             // 
-            this.lblTenedorId.AutoSize = true;
-            this.lblTenedorId.Location = new System.Drawing.Point(12, 412);
-            this.lblTenedorId.Name = "lblTenedorId";
-            this.lblTenedorId.Size = new System.Drawing.Size(63, 13);
-            this.lblTenedorId.TabIndex = 17;
-            this.lblTenedorId.Text = "ID Tenedor:";
+            this.lblTenedor.AutoSize = true;
+            this.lblTenedor.Location = new System.Drawing.Point(12, 412);
+            this.lblTenedor.Name = "lblTenedor";
+            this.lblTenedor.Size = new System.Drawing.Size(52, 13);
+            this.lblTenedor.TabIndex = 17;
+            this.lblTenedor.Text = "Tenedor:";
+            // 
+            // dgvTarjetas
+            // 
+            this.dgvTarjetas.AllowUserToAddRows = false;
+            this.dgvTarjetas.AllowUserToDeleteRows = false;
+            this.dgvTarjetas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvTarjetas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTarjetas.Location = new System.Drawing.Point(250, 28);
+            this.dgvTarjetas.MultiSelect = false;
+            this.dgvTarjetas.Name = "dgvTarjetas";
+            this.dgvTarjetas.ReadOnly = true;
+            this.dgvTarjetas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTarjetas.Size = new System.Drawing.Size(500, 473);
+            this.dgvTarjetas.TabIndex = 18;
+            this.dgvTarjetas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTarjetas_CellClick);
             // 
             // TarjetaForm
             // 
-            this.ClientSize = new System.Drawing.Size(224, 513);
-            this.Controls.Add(this.lblTenedorId);
+            this.ClientSize = new System.Drawing.Size(770, 513);
+            this.Controls.Add(this.dgvTarjetas);
+            this.Controls.Add(this.lblTenedor);
             this.Controls.Add(this.lblDisponible);
             this.Controls.Add(this.lblLimite);
             this.Controls.Add(this.lblAlias);
@@ -230,7 +248,7 @@
             this.Controls.Add(this.lblFechaVencimiento);
             this.Controls.Add(this.lblNumero);
             this.Controls.Add(this.btnGuardar);
-            this.Controls.Add(this.txtTenedorId);
+            this.Controls.Add(this.cmbTenedor);
             this.Controls.Add(this.chkIsExtension);
             this.Controls.Add(this.txtDisponible);
             this.Controls.Add(this.txtLimite);
@@ -240,7 +258,9 @@
             this.Controls.Add(this.dtpFechaVencimiento);
             this.Controls.Add(this.txtNumero);
             this.Name = "TarjetaForm";
-            this.Text = "Formulario de Tarjeta";
+            this.Text = "Gestión de Tarjetas";
+            this.Load += new System.EventHandler(this.FormTarjeta_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTarjetas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -253,7 +273,9 @@
         private System.Windows.Forms.TextBox txtLimite;
         private System.Windows.Forms.TextBox txtDisponible;
         private System.Windows.Forms.CheckBox chkIsExtension;
-        private System.Windows.Forms.TextBox txtTenedorId;
+        private System.Windows.Forms.ComboBox cmbTenedor;
         private System.Windows.Forms.Button btnGuardar;
+        private System.Windows.Forms.DataGridView dgvTarjetas;
+        private System.Windows.Forms.Label lblTenedor;
     }
 }

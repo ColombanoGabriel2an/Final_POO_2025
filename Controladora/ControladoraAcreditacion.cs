@@ -79,5 +79,14 @@ namespace Controladora
                 return "Ocurrió un error al eliminar la acreditación";
             }
         }
+
+        public void PrecargarAcreditaciones()
+        {
+            var tarjeta1 = ControladoraTarjeta.Instancia.ListarTarjetas().First(t => t.TarjetaId == 1);
+            var tarjeta2 = ControladoraTarjeta.Instancia.ListarTarjetas().First(t => t.TarjetaId == 2);
+            ControladoraAcreditacion.Instancia.CrearAcreditacion(new Acreditacion(tarjeta1, new DateTime(2025, 01, 10), "Acreditación por pago de factura", 500, "Transferencia"), tarjeta1);
+            ControladoraAcreditacion.Instancia.CrearAcreditacion(new Acreditacion(tarjeta2, new DateTime(2025, 01, 10), "Acreditación por pago de factura", 500, "Transferencia"), tarjeta2);
+        }
+
     }
 }

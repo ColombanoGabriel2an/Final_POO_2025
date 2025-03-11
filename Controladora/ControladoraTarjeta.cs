@@ -74,5 +74,17 @@ namespace Controladora
                 return "Ocurrió un error al eliminar la tarjeta";
             }
         }
+        public void PrecargarTarjetas()
+        {
+            var persona1 = ControladoraPersona.Instancia.ListarPersonas().First(p => p.PersonaId == 1);
+            var persona2 = ControladoraPersona.Instancia.ListarPersonas().First(p => p.PersonaId == 2);
+            var persona3 = ControladoraPersona.Instancia.ListarPersonas().First(p => p.PersonaId == 3);
+            var persona4 = ControladoraPersona.Instancia.ListarPersonas().First(p => p.PersonaId == 4);
+
+            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaDebito("1111222233334444", new DateTime(2026, 12, 31), "BBVA", "VISA", persona1, "BBVA Mati", 0), persona1);
+            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaCredito("5555666677778888", new DateTime(2028, 10, 01), "Macro", "MasterCard", persona2, "Macro Mati", true, persona2, 10000, 5000), persona2);
+            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaCredito("1234123412341234", new DateTime(2027, 01, 01), "Santander", "Cabal", persona3, "Cabal Gabi", false, persona3, 15000, 12000), persona3);
+            ControladoraTarjeta.Instancia.CrearTarjeta(new TarjetaDebito("567856785678", new DateTime(2030, 02, 02), "Naranja", "VISA", persona4, "Naranja Pedro", 0), persona4);
+        }
     }
 }

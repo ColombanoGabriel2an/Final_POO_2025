@@ -328,6 +328,34 @@ namespace Vista
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
 
+            // Panel de consumos
+            this.gbConsumosActuales = new System.Windows.Forms.GroupBox();
+            this.gbConsumosActuales.Text = "Consumos actuales de la tarjeta";
+            this.gbConsumosActuales.Location = new System.Drawing.Point(550, 50);
+            this.gbConsumosActuales.Size = new System.Drawing.Size(400, 400);
+            this.Controls.Add(this.gbConsumosActuales);
+
+            // DataGridView para consumos
+            this.dgvConsumosActuales = new System.Windows.Forms.DataGridView();
+            this.dgvConsumosActuales.Location = new System.Drawing.Point(10, 20);
+            this.dgvConsumosActuales.Size = new System.Drawing.Size(380, 350);
+            this.dgvConsumosActuales.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvConsumosActuales.AllowUserToAddRows = false;
+            this.dgvConsumosActuales.AllowUserToDeleteRows = false;
+            this.dgvConsumosActuales.ReadOnly = true;
+            this.gbConsumosActuales.Controls.Add(this.dgvConsumosActuales);
+
+            // Label para totales
+            this.lblTotalConsumosActuales = new System.Windows.Forms.Label();
+            this.lblTotalConsumosActuales.Location = new System.Drawing.Point(10, 375);
+            this.lblTotalConsumosActuales.Size = new System.Drawing.Size(380, 20);
+            this.lblTotalConsumosActuales.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblTotalConsumosActuales.Font = new System.Drawing.Font(this.Font, System.Drawing.FontStyle.Bold);
+            this.gbConsumosActuales.Controls.Add(this.lblTotalConsumosActuales);
+
+            // Aumentar tamaño del formulario para incluir el panel nuevo
+            this.ClientSize = new System.Drawing.Size(970, 580);
+
             // FormConsumo
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -406,5 +434,8 @@ namespace Vista
         private System.Windows.Forms.CheckBox chkEsRecurrente;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.GroupBox gbConsumosActuales;
+        private System.Windows.Forms.DataGridView dgvConsumosActuales;
+        private System.Windows.Forms.Label lblTotalConsumosActuales;
     }
 }

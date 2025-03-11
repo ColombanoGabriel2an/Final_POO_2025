@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Entidades;
+using Controladora;
 
 namespace Vista
 {
@@ -64,19 +65,41 @@ namespace Vista
 
         private void CargarTarjetas()
         {
-            // En un caso real, esto vendría de un servicio o repositorio
-            _tarjetas = new List<Tarjeta>();
-            // Simular la carga de tarjetas desde la base de datos
-            // TODO: Reemplazar con llamada al servicio correspondiente
-
-            cmbTarjeta.Items.Clear();
-            foreach (var tarjeta in _tarjetas)
+            try
             {
-                cmbTarjeta.Items.Add($"{tarjeta.Alias} - {tarjeta.Numero.Substring(12, 4)}");
-            }
+                // Obtener tarjetas desde la controladora
+                _tarjetas = ControladoraTarjeta.Instancia.ListarTarjetas();
 
-            if (_tarjetas.Count > 0)
-                cmbTarjeta.SelectedIndex = 0;
+                // Verificar si hay tarjetas
+                if (_tarjetas.Count == 0)
+                {
+                    MessageBox.Show("No hay tarjetas registradas. Por favor, registre tarjetas primero.",
+                        "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // Cargar las tarjetas en el ComboBox
+                cmbTarjeta.Items.Clear();
+                foreach (var tarjeta in _tarjetas)
+                {
+                    // Asegurar que el número tiene al menos 4 caracteres para evitar errores
+                    string ultimosDigitos = tarjeta.Numero.Length >= 4 ?
+                        tarjeta.Numero.Substring(tarjeta.Numero.Length - 4) : tarjeta.Numero;
+
+                    string tipoTarjeta = tarjeta is TarjetaCredito ? "Crédito" : "Débito";
+                    string nombreTitular = tarjeta.Titular?.Nombre ?? "Sin titular";
+
+                    cmbTarjeta.Items.Add($"{tipoTarjeta} - {tarjeta.Banco} - *{ultimosDigitos} - {nombreTitular}");
+                }
+
+                if (_tarjetas.Count > 0)
+                    cmbTarjeta.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar las tarjetas: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void CargarRubros()
@@ -145,6 +168,9 @@ namespace Vista
                 _consumo.Tarjeta = _tarjetas[cmbTarjeta.SelectedIndex];
                 _consumo.TarjetaId = _consumo.Tarjeta.TarjetaId;
                 ActualizarInformacionTarjeta();
+
+                // Actualizar lista de consumos
+                MostrarConsumosDeTarjeta();
             }
         }
 
@@ -455,6 +481,56 @@ namespace Vista
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        // Método para mostrar los consumos de la tarjeta seleccionada
+        private void MostrarConsumosDeTarjeta()
+        {
+            if (_consumo.Tarjeta == null) return;
+
+            // Obtener consumos para la tarjeta seleccionada
+            var todosLosConsumos = ControladoraConsumo.Instancia.ListarConsumos();
+            List<Consumo> consumosTarjeta = new List<Consumo>();
+
+            // Filtrar manualmente
+            foreach (var consumo in todosLosConsumos)
+            {
+                if (consumo.TarjetaId == _consumo.TarjetaId)
+                {
+                    consumosTarjeta.Add(consumo);
+                }
+            }
+
+            // Verificar si hay datos para mostrar
+            if (dgvConsumosActuales.Columns.Count == 0)
+            {
+                // Configurar columnas si es la primera vez
+                dgvConsumosActuales.Columns.Add("Fecha", "Fecha");
+                dgvConsumosActuales.Columns.Add("Descripcion", "Descripción");
+                dgvConsumosActuales.Columns.Add("Comercio", "Comercio");
+                dgvConsumosActuales.Columns.Add("Monto", "Monto");
+            }
+
+            dgvConsumosActuales.Rows.Clear();
+
+            foreach (var consumo in consumosTarjeta)
+            {
+                int rowIndex = dgvConsumosActuales.Rows.Add();
+                DataGridViewRow row = dgvConsumosActuales.Rows[rowIndex];
+
+                row.Cells["Fecha"].Value = consumo.Fecha.ToShortDateString();
+                row.Cells["Descripcion"].Value = consumo.Descripcion;
+                row.Cells["Comercio"].Value = "Comercio"; // Suponiendo que tienes esta propiedad
+                row.Cells["Monto"].Value = $"{consumo.Moneda} {consumo.Monto:N2}";
+
+                // Destacar montos altos
+                if (consumo.Monto > 5000)
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightPink;
+                }
+            }
+
+            lblTotalConsumosActuales.Text = $"Total: {consumosTarjeta.Count} consumos";
         }
     }
 }

@@ -77,5 +77,13 @@ namespace Controladora
                 return "Ocurrió un error al eliminar el consumo";
             }
         }
+        public void PrecargarConsumos()
+        {
+            var tarjeta1 = ControladoraTarjeta.Instancia.ListarTarjetas().First(t => t.TarjetaId == 1);
+            var tarjeta2 = ControladoraTarjeta.Instancia.ListarTarjetas().First(t => t.TarjetaId == 2);
+            ControladoraConsumo.Instancia.CrearConsumo(new Consumo(tarjeta1, new DateTime(2025, 01, 15), "12:30", "Compra en tienda de tecnología", 300, "USD"), tarjeta1);
+            ControladoraConsumo.Instancia.CrearConsumo(new Consumo(tarjeta2, new DateTime(2025, 01, 15), "14:00", "Compra en tienda de ropa", 500, "USD"), tarjeta2);
+        }
+
     }
 }

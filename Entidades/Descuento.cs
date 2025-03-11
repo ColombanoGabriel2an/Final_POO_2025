@@ -37,6 +37,28 @@ namespace Entidades
         {
             return fecha >= FechaInicio && fecha <= FechaFin;
         }
+
+        public bool AplicaParaConsumo(Consumo consumo)
+        {
+            return EsValido(consumo.Fecha) &&
+                   Banco == consumo.Tarjeta.Banco &&
+                   Rubro == consumo.Rubro;
+        }
+
+        public decimal CalcularDescuento(decimal montoOriginal)
+        {
+            if (Porcentaje > 0)
+            {
+                return Math.Min(montoOriginal * (Porcentaje / 100), TopeMonto);
+            }
+            return Math.Min(MontoFijo, TopeMonto);
+        }
+
+        public string ObtenerInformacionResumen()
+        {
+            string tipo = Porcentaje > 0 ? $"{Porcentaje}%" : $"${MontoFijo}";
+            return $"{Descripcion} - {tipo} - Tope: ${TopeMonto:F2}";
+        }
     }
 
 }

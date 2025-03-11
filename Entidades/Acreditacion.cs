@@ -28,6 +28,25 @@ namespace Entidades
 
         // ---------------------------------------------------
         public int TarjetaId { get; set; }
+        public bool ProcesarAcreditacion()
+        {
+            if (Tarjeta is TarjetaDebito td)
+            {
+                td.Saldo += Monto;
+                return true;
+            }
+            else if (Tarjeta is TarjetaCredito tc)
+            {
+                tc.Disponible += Monto;
+                return true;
+            }
+            return false;
+        }
+
+        public string ObtenerInformacionResumen()
+        {
+            return $"{Fecha.ToShortDateString()} | {Descripcion} | ${Monto:F2} | {MedioDePago}";
+        }
 
     }
 

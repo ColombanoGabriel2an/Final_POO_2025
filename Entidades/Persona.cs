@@ -14,7 +14,7 @@ namespace Entidades
         public string Apellido { get; set; }
         public string DNI { get; set; }
         // Considera agregar mas propiedades segun los requisitos del sistema
-        public Persona() 
+        public Persona()
         {
             Nombre = "";
             Apellido = "";
@@ -29,6 +29,20 @@ namespace Entidades
 
         // Relaciones (si aplicable)
         public virtual List<Tarjeta> Tarjetas { get; set; } = new List<Tarjeta>();
+        public string ObtenerNombreCompleto()
+        {
+            return $"{Apellido}, {Nombre}";
+        }
+
+        public List<Tarjeta> ObtenerTarjetasActivas()
+        {
+            return Tarjetas.Where(t => t.FechaVencimiento > DateTime.Now).ToList();
+        }
+
+        public override string ToString()
+        {
+            return ObtenerNombreCompleto();
+        }
     }
 
 }

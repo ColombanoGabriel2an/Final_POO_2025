@@ -22,9 +22,12 @@ namespace Vista
                 // Preseleccionar el primer elemento de cada ComboBox
                 if (cmbTipo.Items.Count > 0)
                     cmbTipo.SelectedIndex = 0;
-
-                if (cmbEntidadBancaria.Items.Count > 0)
-                    cmbEntidadBancaria.SelectedIndex = 0;
+                if (cmbBanco.Items.Count > 0)
+                    cmbBanco.SelectedIndex = 0;
+                if (cmbEmisor.Items.Count > 0)
+                    cmbEmisor.SelectedIndex = 0;
+                if (cmbRubro.Items.Count > 0)
+                    cmbRubro.SelectedIndex = 0;
 
                 // Cargar descuentos en el DataGridView
                 ActualizarDataGridView();
@@ -42,14 +45,17 @@ namespace Vista
 
             dgvDescuentos.DataSource = null;
 
-            // Crear una lista de objetos anónimos para mostrar solo las propiedades relevantes de los descuentos
+            // Crear una lista de objetos anónimos para mostrar propiedades relevantes
             var descuentosVista = descuentos.Select(d => new
             {
                 ID = d.DescuentoId,
                 Código = d.Codigo,
                 Nombre = d.Nombre,
+                Banco = d.Banco,
+                Emisor = d.Emisor,
+                Rubro = d.Rubro,
                 Porcentaje = d.Porcentaje,
-                TopeReintegro = d.TopeReintegro, // Monto máximo a reintegrar
+                TopeReintegro = d.TopeReintegro,
                 Activo = d.Activo ? "Sí" : "No",
                 FechaInicio = d.FechaInicio.ToShortDateString(),
                 FechaFin = d.FechaFin.ToShortDateString()
@@ -62,14 +68,18 @@ namespace Vista
             {
                 dgvDescuentos.Columns["ID"].Width = 40;
                 dgvDescuentos.Columns["Código"].Width = 80;
-                dgvDescuentos.Columns["Nombre"].Width = 150;
+                dgvDescuentos.Columns["Nombre"].Width = 120;
+                dgvDescuentos.Columns["Banco"].Width = 100;
+                dgvDescuentos.Columns["Emisor"].Width = 100;
+                dgvDescuentos.Columns["Rubro"].Width = 100;
                 dgvDescuentos.Columns["Porcentaje"].Width = 60;
                 dgvDescuentos.Columns["TopeReintegro"].Width = 100;
                 dgvDescuentos.Columns["Activo"].Width = 50;
-                dgvDescuentos.Columns["FechaInicio"].Width = 100;
-                dgvDescuentos.Columns["FechaFin"].Width = 100;
+                dgvDescuentos.Columns["FechaInicio"].Width = 80;
+                dgvDescuentos.Columns["FechaFin"].Width = 80;
             }
         }
+
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
@@ -82,50 +92,32 @@ namespace Vista
                     return;
                 }
 
-                // Buscar si el descuento ya existe por el código
-                var descuentoExistente = ControladoraDescuento.Instancia.ListarDescuentos()
-                    .FirstOrDefault(d => d.Codigo == txtCodigo.Text);
-
-                if (descuentoExistente != null)
+                var descuento = new Descuento
                 {
-                    // Si el descuento ya existe, actualizar los valores
-                    descuentoExistente.Nombre = txtNombre.Text;
-                    descuentoExistente.Descripcion = txtDescripcion.Text;
-                    descuentoExistente.Porcentaje = nudPorcentaje.Value;
-                    descuentoExistente.FechaInicio = dtpFechaInicio.Value;
-                    descuentoExistente.FechaFin = dtpFechaFin.Value;
-                    descuentoExistente.Tipo = cmbTipo.SelectedItem.ToString();
-                    //descuentoExistente.EntidadBancaria = cmbEntidadBancaria.SelectedItem.ToString();
-                    descuentoExistente.TopeReintegro = nudTopeReintegro.Value;
-                    descuentoExistente.Activo = chkActivo.Checked;
-                    descuentoExistente.Acumulable = chkAcumulable.Checked;
+                    Codigo = txtCodigo.Text,
+                    Nombre = txtNombre.Text,
+                    Descripcion = txtDescripcion.Text,
+                    Porcentaje = nudPorcentaje.Value,
+                    FechaInicio = dtpFechaInicio.Value,
+                    FechaFin = dtpFechaFin.Value,
+                    Tipo = cmbTipo.SelectedItem.ToString(),
+                    Banco = cmbBanco.SelectedItem.ToString(),  // Ahora añadimos el banco
+                    Emisor = cmbEmisor.SelectedItem.ToString(), // Añadimos el emisor
+                    Rubro = cmbRubro.SelectedItem.ToString(),  // Añadimos el rubro
+                    TopeReintegro = nudTopeReintegro.Value,
+                    Activo = chkActivo.Checked,
+                    Acumulable = chkAcumulable.Checked
+                };
 
-                    // Guardar el descuento actualizado
-                    string resultado = ControladoraDescuento.Instancia.ActualizarDescuento(descuentoExistente);
-                    MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
+                // Si se está editando un descuento existente, mantener su ID
+                if (descuentoSeleccionado != null)
                 {
-                    // Si el descuento no existe, crear uno nuevo
-                    var nuevoDescuento = new Descuento
-                    {
-                        Codigo = txtCodigo.Text,
-                        Nombre = txtNombre.Text,
-                        Descripcion = txtDescripcion.Text,
-                        Porcentaje = nudPorcentaje.Value,
-                        FechaInicio = dtpFechaInicio.Value,
-                        FechaFin = dtpFechaFin.Value,
-                        Tipo = cmbTipo.SelectedItem.ToString(),
-                        //EntidadBancaria = cmbEntidadBancaria.SelectedItem.ToString(),
-                        TopeReintegro = nudTopeReintegro.Value,
-                        Activo = chkActivo.Checked,
-                        Acumulable = chkAcumulable.Checked
-                    };
-
-                    // Guardar el nuevo descuento
-                    string resultado = ControladoraDescuento.Instancia.CrearDescuento(nuevoDescuento);
-                    MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    descuento.DescuentoId = descuentoSeleccionado.DescuentoId;
                 }
+
+                // Guardar el descuento
+                string resultado = ControladoraDescuento.Instancia.CrearDescuento(descuento);
+                MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Actualizar el DataGridView
                 ActualizarDataGridView();
@@ -139,7 +131,6 @@ namespace Vista
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
 
         private void dgvDescuentos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -165,8 +156,31 @@ namespace Vista
                 nudPorcentaje.Value = descuento.Porcentaje;
                 dtpFechaInicio.Value = descuento.FechaInicio;
                 dtpFechaFin.Value = descuento.FechaFin;
-                cmbTipo.SelectedItem = descuento.Tipo;
-                //cmbEntidadBancaria.SelectedItem = descuento.EntidadBancaria;
+
+                // Seleccionar el tipo si existe en el combo
+                if (!string.IsNullOrEmpty(descuento.Tipo) && cmbTipo.Items.Contains(descuento.Tipo))
+                    cmbTipo.SelectedItem = descuento.Tipo;
+                else
+                    cmbTipo.SelectedIndex = 0;
+
+                // Seleccionar el banco si existe en el combo
+                if (!string.IsNullOrEmpty(descuento.Banco) && cmbBanco.Items.Contains(descuento.Banco))
+                    cmbBanco.SelectedItem = descuento.Banco;
+                else
+                    cmbBanco.SelectedIndex = 0;
+
+                // Seleccionar el emisor si existe en el combo
+                if (!string.IsNullOrEmpty(descuento.Emisor) && cmbEmisor.Items.Contains(descuento.Emisor))
+                    cmbEmisor.SelectedItem = descuento.Emisor;
+                else
+                    cmbEmisor.SelectedIndex = 0;
+
+                // Seleccionar el rubro si existe en el combo
+                if (!string.IsNullOrEmpty(descuento.Rubro) && cmbRubro.Items.Contains(descuento.Rubro))
+                    cmbRubro.SelectedItem = descuento.Rubro;
+                else
+                    cmbRubro.SelectedIndex = 0;
+
                 nudTopeReintegro.Value = descuento.TopeReintegro;
                 chkActivo.Checked = descuento.Activo;
                 chkAcumulable.Checked = descuento.Acumulable;
@@ -187,10 +201,13 @@ namespace Vista
             dtpFechaInicio.Value = DateTime.Today;
             dtpFechaFin.Value = DateTime.Today.AddDays(30);
             cmbTipo.SelectedIndex = 0;
-            cmbEntidadBancaria.SelectedIndex = 0;
+            cmbBanco.SelectedIndex = 0;  // Resetear banco
+            cmbEmisor.SelectedIndex = 0; // Resetear emisor
+            cmbRubro.SelectedIndex = 0;  // Resetear rubro
             nudTopeReintegro.Value = 5000;  // Valor predeterminado para el Tope de Reintegro
             chkActivo.Checked = true;
             chkAcumulable.Checked = false;
+            descuentoSeleccionado = null; // Limpiar la referencia al descuento seleccionado
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
@@ -215,6 +232,6 @@ namespace Vista
             }
         }
 
-       
+
     }
 }

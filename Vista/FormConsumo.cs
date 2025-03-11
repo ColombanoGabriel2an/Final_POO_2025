@@ -281,7 +281,7 @@ namespace Vista
                     bool aplicable = true;
                     string razonNoAplicable = "";
 
-
+                    // Verificación de activación
                     if (!descuento.Activo)
                     {
                         aplicable = false;
@@ -289,7 +289,7 @@ namespace Vista
                         continue;
                     }
 
-
+                    // Verificación de fecha
                     if (!descuento.EsValido(dtpFecha.Value))
                     {
                         aplicable = false;
@@ -298,15 +298,15 @@ namespace Vista
                     }
 
 
-                    bool coincideEntidad = false;
-                    if (string.IsNullOrEmpty(descuento.EntidadBancaria) ||
-                        descuento.EntidadBancaria == "Todas" ||
-                        descuento.EntidadBancaria.Equals(_consumo.Tarjeta.Banco, StringComparison.OrdinalIgnoreCase) ||
-                        descuento.EntidadBancaria.Equals(_consumo.Tarjeta.EntidadEmisora, StringComparison.OrdinalIgnoreCase))
+                    bool coincideBanco = false;
+                    if (string.IsNullOrEmpty(descuento.Banco) ||
+                        descuento.Banco == "Todas" ||
+                        descuento.Banco.Equals(_consumo.Tarjeta.Banco, StringComparison.OrdinalIgnoreCase))
                     {
-                        coincideEntidad = true;
+                        coincideBanco = true;
                     }
 
+                    // Verificación de emisor
                     bool coincideEmisor = false;
                     if (string.IsNullOrEmpty(descuento.Emisor) ||
                         descuento.Emisor == "Todas" ||
@@ -315,14 +315,14 @@ namespace Vista
                         coincideEmisor = true;
                     }
 
-                    if (!coincideEntidad || !coincideEmisor)
+                    if (!coincideBanco || !coincideEmisor)
                     {
                         aplicable = false;
-                        razonNoAplicable = "No coincide entidad bancaria o emisor";
+                        razonNoAplicable = "No coincide banco o emisor";
                         continue;
                     }
 
-
+                    // Verificación de rubro
                     if (!string.IsNullOrEmpty(descuento.Rubro) &&
                         descuento.Rubro != "Todos" &&
                         !descuento.Rubro.Equals(rubroSeleccionado, StringComparison.OrdinalIgnoreCase))
@@ -332,7 +332,7 @@ namespace Vista
                         continue;
                     }
 
-
+                    // Verificación de monto mínimo
                     if (numMonto.Value < descuento.MontoMinimo)
                     {
                         aplicable = false;
@@ -340,30 +340,14 @@ namespace Vista
                         continue;
                     }
 
-
+                    // Si pasó todas las validaciones, el descuento es aplicable
                     if (aplicable)
                     {
-
-                        decimal ahorroEstimado = 0;
-
-                        if (descuento.Porcentaje > 0)
-                        {
-                            ahorroEstimado = numMonto.Value * (descuento.Porcentaje / 100m);
-                            if (descuento.TopeReintegro > 0 && ahorroEstimado > descuento.TopeReintegro)
-                                ahorroEstimado = descuento.TopeReintegro;
-                        }
-                        else if (descuento.MontoFijo > 0)
-                        {
-                            ahorroEstimado = descuento.MontoFijo;
-                        }
-
-
-
-
                         _descuentosDisponibles.Add(descuento);
                     }
                 }
 
+                // Ordenar los descuentos por mayor beneficio
                 _descuentosDisponibles = _descuentosDisponibles
                     .OrderByDescending(d => d.Porcentaje > 0 ?
                         Math.Min(numMonto.Value * (d.Porcentaje / 100m), d.TopeReintegro > 0 ? d.TopeReintegro : decimal.MaxValue) :
@@ -375,7 +359,7 @@ namespace Vista
                 if (_descuentosDisponibles.Count == 0)
                 {
                     MessageBox.Show("No se encontraron descuentos aplicables para esta tarjeta y monto.\n" +
-                                   "Verifique que la fecha, entidad bancaria, rubro y monto cumplan con los requisitos.",
+                                   "Verifique que la fecha, banco, emisor, rubro y monto cumplan con los requisitos.",
                         "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -410,8 +394,7 @@ namespace Vista
                 ListViewItem item = new ListViewItem(descripcionCompleta);
 
 
-                string entidadInfo = !string.IsNullOrEmpty(descuento.EntidadBancaria) ?
-                    descuento.EntidadBancaria : descuento.Banco ?? "Todas";
+                string entidadInfo = descuento.Banco ?? "Todas";
 
                 if (!string.IsNullOrEmpty(descuento.Emisor) && descuento.Emisor != "Todas")
                     entidadInfo += $" / {descuento.Emisor}";
@@ -500,8 +483,8 @@ namespace Vista
                 {
 
                     _consumo.DescuentosAplicados.RemoveAll(d =>
-                        d.Descripcion == descuento.Descripcion &&
-                        d.EntidadBancaria == descuento.EntidadBancaria);
+                        d.DescuentoId == descuento.DescuentoId ||
+                        (d.Descripcion == descuento.Descripcion && d.Banco == descuento.Banco));
                 }
 
 

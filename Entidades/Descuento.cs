@@ -17,11 +17,8 @@ namespace Entidades
         public decimal Porcentaje { get; set; }
         public decimal MontoMinimo { get; set; }
         public string Tipo { get; set; }
-        //public string EntidadBancaria { get; set; }
         public bool Activo { get; set; }
         public bool Acumulable { get; set; }
-
-        // Campos originales para mantener compatibilidad
         public decimal MontoFijo { get; set; }
         public decimal TopeReintegro { get; set; }
         public string Banco { get; set; }
@@ -45,7 +42,6 @@ namespace Entidades
             MontoFijo = montoFijo;
             TopeReintegro = topeReintegro;
             Banco = banco;
-            //EntidadBancaria = banco; // Sincronizar con el nuevo campo
             Emisor = emisor;
             Rubro = rubro;
             Activo = true;

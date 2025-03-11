@@ -84,9 +84,21 @@ namespace Controladora
         {
             var tarjeta1 = ControladoraTarjeta.Instancia.ListarTarjetas().First(t => t.TarjetaId == 1);
             var tarjeta2 = ControladoraTarjeta.Instancia.ListarTarjetas().First(t => t.TarjetaId == 2);
-            ControladoraAcreditacion.Instancia.CrearAcreditacion(new Acreditacion(tarjeta1, new DateTime(2025, 01, 10), "Acreditación por pago de factura", 500, "Transferencia"), tarjeta1);
-            ControladoraAcreditacion.Instancia.CrearAcreditacion(new Acreditacion(tarjeta2, new DateTime(2025, 01, 10), "Acreditación por pago de factura", 500, "Transferencia"), tarjeta2);
-        }
+            }
+        
+            public int GenerarIdAcreditacion()
+            {
+                if (acreditaciones.Count > 0)
+                {
+                    return acreditaciones.Max(a => a.AcreditacionId) + 1;
+                }
+                else
+                {
+                    return 1; // Si no hay acreditaciones, el primer ID será 1
+                }
+            }
 
+            // Método para crear una nueva acreditación
+           
+        }
     }
-}

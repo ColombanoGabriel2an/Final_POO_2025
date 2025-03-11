@@ -1,15 +1,10 @@
 ﻿using Entidades;
-using Microsoft.EntityFrameworkCore;
-using Modelo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Controladora
 {
     public class ControladoraTarjeta
     {
-        private Context context;
+        private List<Tarjeta> tarjetas;
         private static ControladoraTarjeta? instancia;
 
         public static ControladoraTarjeta Instancia
@@ -26,25 +21,33 @@ namespace Controladora
 
         private ControladoraTarjeta()
         {
-            context = new Context();
+            tarjetas = new List<Tarjeta>();
         }
 
         public List<Tarjeta> ListarTarjetas()
         {
-            return context.Tarjetas.Include(t => t.Titular).ToList();
+            return tarjetas;
         }
 
         public string CrearTarjeta(Tarjeta tarjeta, Persona titular)
         {
             try
             {
-                var personaEncontrada = context.Personas.FirstOrDefault(p => p.PersonaId == titular.PersonaId);
+                var personaEncontrada = ControladoraPersona.Instancia.ListarPersonas()
+                    .FirstOrDefault(p => p.PersonaId == titular.PersonaId);
+
                 if (personaEncontrada == null)
                     return "El titular no existe";
 
+                // Generar ID si es necesario
+                if (tarjeta.TarjetaId <= 0)
+                {
+                    tarjeta.TarjetaId = tarjetas.Count > 0
+                        ? tarjetas.Max(t => t.TarjetaId) + 1 : 1;
+                }
+
                 tarjeta.Titular = personaEncontrada;
-                context.Tarjetas.Add(tarjeta);
-                context.SaveChanges();
+                tarjetas.Add(tarjeta);
                 return $"Tarjeta {tarjeta.Numero} creada para {personaEncontrada.Nombre}";
             }
             catch (Exception)
@@ -57,11 +60,10 @@ namespace Controladora
         {
             try
             {
-                var tarjetaEncontrada = context.Tarjetas.FirstOrDefault(t => t.TarjetaId == tarjeta.TarjetaId);
+                var tarjetaEncontrada = tarjetas.FirstOrDefault(t => t.TarjetaId == tarjeta.TarjetaId);
                 if (tarjetaEncontrada != null)
                 {
-                    context.Tarjetas.Remove(tarjetaEncontrada);
-                    context.SaveChanges();
+                    tarjetas.Remove(tarjetaEncontrada);
                     return "Tarjeta eliminada correctamente";
                 }
                 else

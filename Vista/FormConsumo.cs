@@ -612,7 +612,6 @@ namespace Vista
                     MessageBox.Show("Consumo guardado correctamente.", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     DialogResult = DialogResult.OK;
-                    Close();
                 }
             }
             catch (Exception ex)

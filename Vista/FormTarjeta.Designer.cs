@@ -10,7 +10,9 @@
         private System.Windows.Forms.Label lblAlias;
         private System.Windows.Forms.Label lblLimite;
         private System.Windows.Forms.Label lblDisponible;
-        
+        private System.Windows.Forms.GroupBox gbTipoTarjeta;
+        private System.Windows.Forms.RadioButton rbCredito;
+        private System.Windows.Forms.RadioButton rbDebito;
 
         protected override void Dispose(bool disposing)
         {
@@ -42,11 +44,14 @@
             this.lblDisponible = new System.Windows.Forms.Label();
             this.lblTenedor = new System.Windows.Forms.Label();
             this.dgvTarjetas = new System.Windows.Forms.DataGridView();
+            this.gbTipoTarjeta = new System.Windows.Forms.GroupBox();
+            this.rbCredito = new System.Windows.Forms.RadioButton();
+            this.rbDebito = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // txtNumero
             // 
-            this.txtNumero.Location = new System.Drawing.Point(12, 28);
+            this.txtNumero.Location = new System.Drawing.Point(12, 88);
             this.txtNumero.Name = "txtNumero";
             this.txtNumero.Size = new System.Drawing.Size(200, 20);
             this.txtNumero.TabIndex = 0;
@@ -54,7 +59,7 @@
             // 
             // dtpFechaVencimiento
             // 
-            this.dtpFechaVencimiento.Location = new System.Drawing.Point(12, 78);
+            this.dtpFechaVencimiento.Location = new System.Drawing.Point(12, 138);
             this.dtpFechaVencimiento.Name = "dtpFechaVencimiento";
             this.dtpFechaVencimiento.Size = new System.Drawing.Size(200, 20);
             this.dtpFechaVencimiento.TabIndex = 1;
@@ -73,7 +78,7 @@
           "Banco ICBC",
           "Banco Macro"
       });
-            this.cmbBanco.Location = new System.Drawing.Point(12, 128);
+            this.cmbBanco.Location = new System.Drawing.Point(12, 188);
             this.cmbBanco.Name = "cmbBanco";
             this.cmbBanco.Size = new System.Drawing.Size(200, 21);
             this.cmbBanco.TabIndex = 2;
@@ -89,14 +94,14 @@
           "Naranja",
           "Cabal",
       });
-            this.cmbEntidadEmisora.Location = new System.Drawing.Point(12, 178);
+            this.cmbEntidadEmisora.Location = new System.Drawing.Point(12, 238);
             this.cmbEntidadEmisora.Name = "cmbEntidadEmisora";
             this.cmbEntidadEmisora.Size = new System.Drawing.Size(200, 21);
             this.cmbEntidadEmisora.TabIndex = 3;
             // 
             // txtAlias
             // 
-            this.txtAlias.Location = new System.Drawing.Point(12, 228);
+            this.txtAlias.Location = new System.Drawing.Point(12, 288);
             this.txtAlias.Name = "txtAlias";
             this.txtAlias.Size = new System.Drawing.Size(200, 20);
             this.txtAlias.TabIndex = 4;
@@ -104,7 +109,7 @@
             // 
             // txtLimite
             // 
-            this.txtLimite.Location = new System.Drawing.Point(12, 278);
+            this.txtLimite.Location = new System.Drawing.Point(12, 338);
             this.txtLimite.Name = "txtLimite";
             this.txtLimite.Size = new System.Drawing.Size(200, 20);
             this.txtLimite.TabIndex = 5;
@@ -112,7 +117,7 @@
             // 
             // txtDisponible
             // 
-            this.txtDisponible.Location = new System.Drawing.Point(12, 328);
+            this.txtDisponible.Location = new System.Drawing.Point(12, 388);
             this.txtDisponible.Name = "txtDisponible";
             this.txtDisponible.Size = new System.Drawing.Size(200, 20);
             this.txtDisponible.TabIndex = 6;
@@ -121,7 +126,7 @@
             // chkIsExtension
             // 
             this.chkIsExtension.AutoSize = true;
-            this.chkIsExtension.Location = new System.Drawing.Point(12, 378);
+            this.chkIsExtension.Location = new System.Drawing.Point(12, 438);
             this.chkIsExtension.Name = "chkIsExtension";
             this.chkIsExtension.Size = new System.Drawing.Size(78, 17);
             this.chkIsExtension.TabIndex = 7;
@@ -132,14 +137,14 @@
             // 
             this.cmbTenedor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTenedor.FormattingEnabled = true;
-            this.cmbTenedor.Location = new System.Drawing.Point(12, 428);
+            this.cmbTenedor.Location = new System.Drawing.Point(12, 488);
             this.cmbTenedor.Name = "cmbTenedor";
             this.cmbTenedor.Size = new System.Drawing.Size(200, 21);
             this.cmbTenedor.TabIndex = 8;
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(12, 478);
+            this.btnGuardar.Location = new System.Drawing.Point(12, 538);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(200, 23);
             this.btnGuardar.TabIndex = 9;
@@ -150,7 +155,7 @@
             // lblNumero
             // 
             this.lblNumero.AutoSize = true;
-            this.lblNumero.Location = new System.Drawing.Point(12, 12);
+            this.lblNumero.Location = new System.Drawing.Point(12, 72);
             this.lblNumero.Name = "lblNumero";
             this.lblNumero.Size = new System.Drawing.Size(47, 13);
             this.lblNumero.TabIndex = 10;
@@ -159,7 +164,7 @@
             // lblFechaVencimiento
             // 
             this.lblFechaVencimiento.AutoSize = true;
-            this.lblFechaVencimiento.Location = new System.Drawing.Point(12, 62);
+            this.lblFechaVencimiento.Location = new System.Drawing.Point(12, 122);
             this.lblFechaVencimiento.Name = "lblFechaVencimiento";
             this.lblFechaVencimiento.Size = new System.Drawing.Size(108, 13);
             this.lblFechaVencimiento.TabIndex = 11;
@@ -168,7 +173,7 @@
             // lblBanco
             // 
             this.lblBanco.AutoSize = true;
-            this.lblBanco.Location = new System.Drawing.Point(12, 112);
+            this.lblBanco.Location = new System.Drawing.Point(12, 172);
             this.lblBanco.Name = "lblBanco";
             this.lblBanco.Size = new System.Drawing.Size(41, 13);
             this.lblBanco.TabIndex = 12;
@@ -177,7 +182,7 @@
             // lblEntidadEmisora
             // 
             this.lblEntidadEmisora.AutoSize = true;
-            this.lblEntidadEmisora.Location = new System.Drawing.Point(12, 162);
+            this.lblEntidadEmisora.Location = new System.Drawing.Point(12, 222);
             this.lblEntidadEmisora.Name = "lblEntidadEmisora";
             this.lblEntidadEmisora.Size = new System.Drawing.Size(85, 13);
             this.lblEntidadEmisora.TabIndex = 13;
@@ -186,7 +191,7 @@
             // lblAlias
             // 
             this.lblAlias.AutoSize = true;
-            this.lblAlias.Location = new System.Drawing.Point(12, 212);
+            this.lblAlias.Location = new System.Drawing.Point(12, 272);
             this.lblAlias.Name = "lblAlias";
             this.lblAlias.Size = new System.Drawing.Size(32, 13);
             this.lblAlias.TabIndex = 14;
@@ -195,7 +200,7 @@
             // lblLimite
             // 
             this.lblLimite.AutoSize = true;
-            this.lblLimite.Location = new System.Drawing.Point(12, 262);
+            this.lblLimite.Location = new System.Drawing.Point(12, 322);
             this.lblLimite.Name = "lblLimite";
             this.lblLimite.Size = new System.Drawing.Size(37, 13);
             this.lblLimite.TabIndex = 15;
@@ -204,7 +209,7 @@
             // lblDisponible
             // 
             this.lblDisponible.AutoSize = true;
-            this.lblDisponible.Location = new System.Drawing.Point(12, 312);
+            this.lblDisponible.Location = new System.Drawing.Point(12, 372);
             this.lblDisponible.Name = "lblDisponible";
             this.lblDisponible.Size = new System.Drawing.Size(59, 13);
             this.lblDisponible.TabIndex = 16;
@@ -213,7 +218,7 @@
             // lblTenedor
             // 
             this.lblTenedor.AutoSize = true;
-            this.lblTenedor.Location = new System.Drawing.Point(12, 412);
+            this.lblTenedor.Location = new System.Drawing.Point(12, 472);
             this.lblTenedor.Name = "lblTenedor";
             this.lblTenedor.Size = new System.Drawing.Size(52, 13);
             this.lblTenedor.TabIndex = 17;
@@ -234,9 +239,45 @@
             this.dgvTarjetas.TabIndex = 18;
             this.dgvTarjetas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTarjetas_CellClick);
             // 
+            // gbTipoTarjeta
+            // 
+            this.gbTipoTarjeta.Location = new System.Drawing.Point(12, 12);
+            this.gbTipoTarjeta.Name = "gbTipoTarjeta";
+            this.gbTipoTarjeta.Size = new System.Drawing.Size(200, 50);
+            this.gbTipoTarjeta.TabIndex = 0;
+            this.gbTipoTarjeta.TabStop = false;
+            this.gbTipoTarjeta.Text = "Tipo de Tarjeta";
+            // 
+            // rbCredito
+            // 
+            this.rbCredito.AutoSize = true;
+            this.rbCredito.Checked = true;
+            this.rbCredito.Location = new System.Drawing.Point(15, 20);
+            this.rbCredito.Name = "rbCredito";
+            this.rbCredito.Size = new System.Drawing.Size(61, 17);
+            this.rbCredito.TabIndex = 0;
+            this.rbCredito.TabStop = true;
+            this.rbCredito.Text = "Crédito";
+            this.rbCredito.UseVisualStyleBackColor = true;
+            this.rbCredito.CheckedChanged += new System.EventHandler(this.rbTipoTarjeta_CheckedChanged);
+            // 
+            // rbDebito
+            // 
+            this.rbDebito.AutoSize = true;
+            this.rbDebito.Location = new System.Drawing.Point(110, 20);
+            this.rbDebito.Name = "rbDebito";
+            this.rbDebito.Size = new System.Drawing.Size(57, 17);
+            this.rbDebito.TabIndex = 1;
+            this.rbDebito.Text = "Débito";
+            this.rbDebito.UseVisualStyleBackColor = true;
+            this.rbDebito.CheckedChanged += new System.EventHandler(this.rbTipoTarjeta_CheckedChanged);
+            // 
             // TarjetaForm
             // 
-            this.ClientSize = new System.Drawing.Size(770, 513);
+            this.ClientSize = new System.Drawing.Size(770, 573);
+            this.Controls.Add(this.gbTipoTarjeta);
+            this.gbTipoTarjeta.Controls.Add(this.rbCredito);
+            this.gbTipoTarjeta.Controls.Add(this.rbDebito);
             this.Controls.Add(this.dgvTarjetas);
             this.Controls.Add(this.lblTenedor);
             this.Controls.Add(this.lblDisponible);

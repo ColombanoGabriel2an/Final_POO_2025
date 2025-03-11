@@ -42,7 +42,6 @@ namespace Controladora
         {
             try
             {
-                // Generar ID si es necesario
                 if (persona.PersonaId <= 0)
                 {
                     persona.PersonaId = personas.Count > 0

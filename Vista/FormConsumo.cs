@@ -201,11 +201,11 @@ namespace Vista
 
                 if (_consumo.Tarjeta is TarjetaCredito tarjetaCredito)
                 {
-                    txtLimiteDisponible.Text = $"Límite: ${tarjetaCredito.Limite:N2} - Disponible: ${tarjetaCredito.Disponible:N2}";
+                    txtLimiteDisponible.Text = $"${tarjetaCredito.Disponible:N2}";
                 }
                 else if (_consumo.Tarjeta is TarjetaDebito tarjetaDebito)
                 {
-                    txtLimiteDisponible.Text = $"Saldo disponible: ${tarjetaDebito.Saldo:N2}";
+                    txtLimiteDisponible.Text = $"${tarjetaDebito.Saldo:N2}";
                 }
             }
             else
@@ -281,7 +281,7 @@ namespace Vista
                     bool aplicable = true;
                     string razonNoAplicable = "";
 
-                    // Verificación de activación
+
                     if (!descuento.Activo)
                     {
                         aplicable = false;
@@ -289,7 +289,7 @@ namespace Vista
                         continue;
                     }
 
-                    // Verificación de fecha
+
                     if (!descuento.EsValido(dtpFecha.Value))
                     {
                         aplicable = false;
@@ -306,7 +306,7 @@ namespace Vista
                         coincideBanco = true;
                     }
 
-                    // Verificación de emisor
+
                     bool coincideEmisor = false;
                     if (string.IsNullOrEmpty(descuento.Emisor) ||
                         descuento.Emisor == "Todas" ||
@@ -322,7 +322,7 @@ namespace Vista
                         continue;
                     }
 
-                    // Verificación de rubro
+
                     if (!string.IsNullOrEmpty(descuento.Rubro) &&
                         descuento.Rubro != "Todos" &&
                         !descuento.Rubro.Equals(rubroSeleccionado, StringComparison.OrdinalIgnoreCase))
@@ -332,7 +332,7 @@ namespace Vista
                         continue;
                     }
 
-                    // Verificación de monto mínimo
+
                     if (numMonto.Value < descuento.MontoMinimo)
                     {
                         aplicable = false;
@@ -340,14 +340,14 @@ namespace Vista
                         continue;
                     }
 
-                    // Si pasó todas las validaciones, el descuento es aplicable
+
                     if (aplicable)
                     {
                         _descuentosDisponibles.Add(descuento);
                     }
                 }
 
-                // Ordenar los descuentos por mayor beneficio
+
                 _descuentosDisponibles = _descuentosDisponibles
                     .OrderByDescending(d => d.Porcentaje > 0 ?
                         Math.Min(numMonto.Value * (d.Porcentaje / 100m), d.TopeReintegro > 0 ? d.TopeReintegro : decimal.MaxValue) :
@@ -502,25 +502,25 @@ namespace Vista
 
         private void ActualizarMontoFinal()
         {
-            // Limpiar el resumen de descuentos
+
             lvResumenDescuentos.Items.Clear();
 
             decimal montoFinal = _consumo.Monto;
             decimal ahorroTotal = 0;
 
-            // Procesar cada descuento aplicado
+
             foreach (var descuento in _consumo.DescuentosAplicados)
             {
                 decimal ahorroDescuento = 0;
                 string tipoDescuento;
 
-                // Calcular el ahorro según tipo de descuento
+
                 if (descuento.Porcentaje > 0)
                 {
-                    // Descuento porcentual
+
                     ahorroDescuento = _consumo.Monto * (descuento.Porcentaje / 100m);
 
-                    // Aplicar tope si existe
+
                     if (descuento.TopeReintegro > 0 && ahorroDescuento > descuento.TopeReintegro)
                         ahorroDescuento = descuento.TopeReintegro;
 
@@ -528,7 +528,7 @@ namespace Vista
                 }
                 else if (descuento.MontoFijo > 0)
                 {
-                    // Descuento de monto fijo
+
                     ahorroDescuento = descuento.MontoFijo;
                     tipoDescuento = "Monto fijo";
                 }
@@ -538,42 +538,42 @@ namespace Vista
                     ahorroDescuento = 0;
                 }
 
-                // Añadir al listview de resumen
+
                 ListViewItem item = new ListViewItem(descuento.Nombre ?? descuento.Descripcion);
                 item.SubItems.Add(tipoDescuento);
                 item.SubItems.Add($"${ahorroDescuento:N2}");
                 item.SubItems.Add(descuento.Banco);
 
-                // Destacar visualmente los descuentos más significativos
+
                 if (ahorroDescuento > 0)
                 {
                     decimal porcentajeAhorro = ahorroDescuento / _consumo.Monto;
 
-                    if (porcentajeAhorro >= 0.3m)      // 30% o más
+                    if (porcentajeAhorro >= 0.3m)
                         item.BackColor = Color.LightGreen;
-                    else if (porcentajeAhorro >= 0.15m) // 15% o más
+                    else if (porcentajeAhorro >= 0.15m)
                         item.BackColor = Color.PaleGreen;
-                    else if (porcentajeAhorro >= 0.05m) // 5% o más
+                    else if (porcentajeAhorro >= 0.05m)
                         item.BackColor = Color.LightCyan;
                 }
 
                 lvResumenDescuentos.Items.Add(item);
 
-                // Acumular el ahorro
+
                 ahorroTotal += ahorroDescuento;
             }
 
-            // Aplicar el ahorro total
+
             montoFinal -= ahorroTotal;
             if (montoFinal < 0) montoFinal = 0;
 
-            // Actualizar etiqueta de ahorro total
+
             lblAhorroTotal.Text = $"Ahorro Total: ${ahorroTotal:N2}";
 
-            // Actualizar monto final
+
             txtMontoFinal.Text = $"{_consumo.Moneda} {montoFinal:N2}";
 
-            // Destacar el ahorro con color
+
             if (montoFinal < _consumo.Monto)
             {
                 txtMontoFinal.ForeColor = Color.Green;
@@ -585,7 +585,7 @@ namespace Vista
                 lblAhorroTotal.ForeColor = SystemColors.WindowText;
             }
 
-            // Si no hay descuentos aplicados, mostrar mensaje informativo
+
             if (_consumo.DescuentosAplicados.Count == 0)
             {
                 ListViewItem noItem = new ListViewItem("No hay descuentos aplicados");
@@ -606,11 +606,30 @@ namespace Vista
                     _consumo.Fecha = dtpFecha.Value.Date;
                     _consumo.Hora = dtpHora.Value.ToString("HH:mm");
                     _consumo.Descripcion = txtDescripcion.Text;
+                    _consumo.Comercio = txtComercio.Text;
                     _consumo.Monto = numMonto.Value;
                     _consumo.Moneda = cmbMoneda.SelectedItem.ToString();
+                    _consumo.Rubro = cmbRubro.SelectedItem.ToString();
+                    _consumo.EsRecurrente = chkEsRecurrente.Checked;
 
-                    MessageBox.Show("Consumo guardado correctamente.", "Información",
+                    string resultado = ControladoraConsumo.Instancia.CrearConsumo(_consumo, _consumo.Tarjeta);
+
+                    if (_consumo.Tarjeta is TarjetaCredito tarjetaCredito)
+                    {
+                        tarjetaCredito.Disponible -= _consumo.CalcularMontoFinal();
+                        ControladoraTarjeta.Instancia.ActualizarTarjeta(tarjetaCredito);
+                    }
+                    else if (_consumo.Tarjeta is TarjetaDebito tarjetaDebito)
+                    {
+                        tarjetaDebito.Saldo -= _consumo.CalcularMontoFinal();
+                        ControladoraTarjeta.Instancia.ActualizarTarjeta(tarjetaDebito);
+                    }
+
+                    MessageBox.Show($"{resultado}", "Información",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    MostrarConsumosDeTarjeta();
+
                     DialogResult = DialogResult.OK;
                 }
             }

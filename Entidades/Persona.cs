@@ -13,7 +13,6 @@ namespace Entidades
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string DNI { get; set; }
-        // Considera agregar mas propiedades segun los requisitos del sistema
         public Persona() 
         {
             Nombre = "";
@@ -27,7 +26,6 @@ namespace Entidades
             DNI = dni;
         }
 
-        // Relaciones (si aplicable)
         public virtual List<Tarjeta> Tarjetas { get; set; } = new List<Tarjeta>();
     }
 

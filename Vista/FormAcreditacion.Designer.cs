@@ -28,120 +28,145 @@
 
         private void InitializeComponent()
         {
-            this.txtDescripcion = new System.Windows.Forms.TextBox();
-            this.nudMonto = new System.Windows.Forms.NumericUpDown();
-            this.dtpFecha = new System.Windows.Forms.DateTimePicker();
-            this.cmbTarjetas = new System.Windows.Forms.ComboBox();
-            this.btnGuardar = new System.Windows.Forms.Button();
-            this.btnCancelar = new System.Windows.Forms.Button();
-            this.btnSalir = new System.Windows.Forms.Button();
-            this.btnBorrar = new System.Windows.Forms.Button();
-            this.lblDescripcion = new System.Windows.Forms.Label();
-            this.lblMonto = new System.Windows.Forms.Label();
-            this.lblFecha = new System.Windows.Forms.Label();
-            this.lblTarjeta = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMonto)).BeginInit();
-            this.SuspendLayout();
-
+            txtDescripcion = new TextBox();
+            nudMonto = new NumericUpDown();
+            dtpFecha = new DateTimePicker();
+            cmbTarjetas = new ComboBox();
+            btnGuardar = new Button();
+            btnCancelar = new Button();
+            btnSalir = new Button();
+            btnBorrar = new Button();
+            lblDescripcion = new Label();
+            lblMonto = new Label();
+            lblFecha = new Label();
+            lblTarjeta = new Label();
+            ((System.ComponentModel.ISupportInitialize)nudMonto).BeginInit();
+            SuspendLayout();
+            // 
             // txtDescripcion
-            this.txtDescripcion.Location = new System.Drawing.Point(130, 30);
-            this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(200, 20);
-            this.txtDescripcion.TabIndex = 1;
-
+            // 
+            txtDescripcion.Location = new Point(130, 30);
+            txtDescripcion.Name = "txtDescripcion";
+            txtDescripcion.Size = new Size(200, 23);
+            txtDescripcion.TabIndex = 1;
+            // 
             // nudMonto
-            this.nudMonto.Location = new System.Drawing.Point(130, 70);
-            this.nudMonto.Name = "nudMonto";
-            this.nudMonto.Size = new System.Drawing.Size(200, 20);
-            this.nudMonto.TabIndex = 3;
-
+            // 
+            nudMonto.Location = new Point(130, 70);
+            nudMonto.Name = "nudMonto";
+            nudMonto.Size = new Size(200, 23);
+            nudMonto.TabIndex = 3;
+            // 
             // dtpFecha
-            this.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFecha.Location = new System.Drawing.Point(130, 110);
-            this.dtpFecha.Name = "dtpFecha";
-            this.dtpFecha.Size = new System.Drawing.Size(200, 20);
-            this.dtpFecha.TabIndex = 5;
-
+            // 
+            dtpFecha.Format = DateTimePickerFormat.Short;
+            dtpFecha.Location = new Point(130, 110);
+            dtpFecha.Name = "dtpFecha";
+            dtpFecha.Size = new Size(200, 23);
+            dtpFecha.TabIndex = 5;
+            // 
             // cmbTarjetas
-            this.cmbTarjetas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTarjetas.FormattingEnabled = true;
-            this.cmbTarjetas.Location = new System.Drawing.Point(130, 150);
-            this.cmbTarjetas.Name = "cmbTarjetas";
-            this.cmbTarjetas.Size = new System.Drawing.Size(200, 21);
-            this.cmbTarjetas.TabIndex = 7;
-
+            // 
+            cmbTarjetas.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTarjetas.FormattingEnabled = true;
+            cmbTarjetas.Location = new Point(130, 150);
+            cmbTarjetas.Name = "cmbTarjetas";
+            cmbTarjetas.Size = new Size(200, 23);
+            cmbTarjetas.TabIndex = 7;
+            // 
             // btnGuardar
-            this.btnGuardar.Location = new System.Drawing.Point(130, 190);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(95, 30);
-            this.btnGuardar.TabIndex = 9;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = true;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
-
+            // 
+            btnGuardar.Location = new Point(130, 190);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(95, 30);
+            btnGuardar.TabIndex = 9;
+            btnGuardar.Text = "Guardar";
+            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click;
+            // 
             // btnCancelar
-            this.btnCancelar.Location = new System.Drawing.Point(235, 190);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(95, 30);
-            this.btnCancelar.TabIndex = 10;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-
+            // 
+            btnCancelar.Location = new Point(235, 190);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(95, 30);
+            btnCancelar.TabIndex = 10;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
+            // 
             // btnSalir
-            this.btnSalir.Location = new System.Drawing.Point(235, 230);
-            this.btnSalir.Name = "btnSalir";
-            this.btnSalir.Size = new System.Drawing.Size(95, 30);
-            this.btnSalir.TabIndex = 11;
-            this.btnSalir.Text = "Salir";
-            this.btnSalir.UseVisualStyleBackColor = true;
-            this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
-
+            // 
+            btnSalir.Location = new Point(235, 230);
+            btnSalir.Name = "btnSalir";
+            btnSalir.Size = new Size(95, 30);
+            btnSalir.TabIndex = 11;
+            btnSalir.Text = "Salir";
+            btnSalir.UseVisualStyleBackColor = true;
+            btnSalir.Click += btnSalir_Click;
+            // 
             // btnBorrar
-            this.btnBorrar.Location = new System.Drawing.Point(130, 230);
-            this.btnBorrar.Name = "btnBorrar";
-            this.btnBorrar.Size = new System.Drawing.Size(95, 30);
-            this.btnBorrar.TabIndex = 12;
-            this.btnBorrar.Text = "Borrar";
-            this.btnBorrar.UseVisualStyleBackColor = true;
-            this.btnBorrar.Click += new System.EventHandler(this.btnBorrar_Click);
-
+            // 
+            btnBorrar.Location = new Point(130, 230);
+            btnBorrar.Name = "btnBorrar";
+            btnBorrar.Size = new Size(95, 30);
+            btnBorrar.TabIndex = 12;
+            btnBorrar.Text = "Borrar";
+            btnBorrar.UseVisualStyleBackColor = true;
+            btnBorrar.Click += btnBorrar_Click;
+            // 
             // lblDescripcion
-            this.lblDescripcion.Location = new System.Drawing.Point(20, 30);
-            this.lblDescripcion.Text = "Descripción:";
-
+            // 
+            lblDescripcion.Location = new Point(20, 30);
+            lblDescripcion.Name = "lblDescripcion";
+            lblDescripcion.Size = new Size(100, 23);
+            lblDescripcion.TabIndex = 0;
+            lblDescripcion.Text = "Descripción:";
+            // 
             // lblMonto
-            this.lblMonto.Location = new System.Drawing.Point(20, 70);
-            this.lblMonto.Text = "Monto:";
-
+            // 
+            lblMonto.Location = new Point(20, 70);
+            lblMonto.Name = "lblMonto";
+            lblMonto.Size = new Size(100, 23);
+            lblMonto.TabIndex = 1;
+            lblMonto.Text = "Monto:";
+            // 
             // lblFecha
-            this.lblFecha.Location = new System.Drawing.Point(20, 110);
-            this.lblFecha.Text = "Fecha de Acreditación:";
-
+            // 
+            lblFecha.Location = new Point(20, 110);
+            lblFecha.Name = "lblFecha";
+            lblFecha.Size = new Size(100, 40);
+            lblFecha.TabIndex = 2;
+            lblFecha.Text = "Fecha de Acreditación:";
+            // 
             // lblTarjeta
-            this.lblTarjeta.Location = new System.Drawing.Point(20, 150);
-            this.lblTarjeta.Text = "Tarjeta:";
-
+            // 
+            lblTarjeta.Location = new Point(20, 150);
+            lblTarjeta.Name = "lblTarjeta";
+            lblTarjeta.Size = new Size(100, 23);
+            lblTarjeta.TabIndex = 3;
+            lblTarjeta.Text = "Tarjeta:";
+            // 
             // FormAcreditacion
-            this.ClientSize = new System.Drawing.Size(380, 280);
-            this.Controls.Add(this.lblDescripcion);
-            this.Controls.Add(this.lblMonto);
-            this.Controls.Add(this.lblFecha);
-            this.Controls.Add(this.lblTarjeta);
-            this.Controls.Add(this.cmbTarjetas);
-            this.Controls.Add(this.dtpFecha);
-            this.Controls.Add(this.nudMonto);
-            this.Controls.Add(this.txtDescripcion);
-            this.Controls.Add(this.btnGuardar);
-            this.Controls.Add(this.btnCancelar);
-            this.Controls.Add(this.btnSalir);
-            this.Controls.Add(this.btnBorrar);
-            this.Name = "FormAcreditacion";
-            this.Text = "Gestión de Acreditaciones";
-            this.Load += new System.EventHandler(this.FormAcreditacion_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.nudMonto)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            // 
+            ClientSize = new Size(380, 280);
+            Controls.Add(lblDescripcion);
+            Controls.Add(lblMonto);
+            Controls.Add(lblFecha);
+            Controls.Add(lblTarjeta);
+            Controls.Add(cmbTarjetas);
+            Controls.Add(dtpFecha);
+            Controls.Add(nudMonto);
+            Controls.Add(txtDescripcion);
+            Controls.Add(btnGuardar);
+            Controls.Add(btnCancelar);
+            Controls.Add(btnSalir);
+            Controls.Add(btnBorrar);
+            Name = "FormAcreditacion";
+            Text = "Gestión de Acreditaciones";
+            Load += FormAcreditacion_Load;
+            ((System.ComponentModel.ISupportInitialize)nudMonto).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
     }
 }

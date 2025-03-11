@@ -14,7 +14,6 @@ namespace Modelo
 {
     public class Context : DbContext
     {
-        // DbSet para las clases que subiste
         public DbSet<Persona> Personas { get; set; }
         public DbSet<Tarjeta> Tarjetas { get; set; }
         public DbSet<TarjetaDebito> TarjetasDebito { get; set; }
@@ -51,14 +50,12 @@ namespace Modelo
             modelBuilder.Entity<Consumo>()
                 .HasOne(c => c.Tarjeta)
                 .WithMany()
-                // Si quieres que TarjetaCredito tenga ICollection<Consumo> en su definicion, cambia a .WithMany(tc => tc.Consumos)
                 .HasForeignKey(c => c.TarjetaId);
 
             // 4. Acreditacion -> Tarjeta
             modelBuilder.Entity<Acreditacion>()
                 .HasOne(a => a.Tarjeta)
                 .WithMany()
-                // Igual que arriba, si TarjetaCredito tiene ICollection<Acreditacion>, usa .WithMany(tc => tc.Acreditaciones)
                 .HasForeignKey(a => a.TarjetaId);
 
             // 5. Many-to-Many: Consumo <-> Descuento
@@ -67,7 +64,6 @@ namespace Modelo
                 .HasMany(c => c.DescuentosAplicados)
                 .WithMany();
 
-            // Agrega mas configuraciones si lo necesitas
         }
     }
 }

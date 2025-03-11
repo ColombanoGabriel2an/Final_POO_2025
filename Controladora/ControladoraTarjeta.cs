@@ -74,6 +74,18 @@ namespace Controladora
                 return "Ocurrió un error al eliminar la tarjeta";
             }
         }
+
+        public void ActualizarTarjeta(Tarjeta tarjeta)
+        {
+            var tarjetaExistente = tarjetas.FirstOrDefault(t => t.TarjetaId == tarjeta.TarjetaId);
+            if (tarjetaExistente != null)
+            {
+                int indice = tarjetas.IndexOf(tarjetaExistente);
+                tarjetas[indice] = tarjeta;
+            }
+        }
+
+
         public void PrecargarTarjetas()
         {
             var persona1 = ControladoraPersona.Instancia.ListarPersonas().First(p => p.PersonaId == 1);

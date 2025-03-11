@@ -40,7 +40,6 @@ namespace Controladora
                 if (tarjetaEncontrada == null)
                     return "La tarjeta no existe";
 
-                // Generar ID si es necesario
                 if (consumo.ConsumoId <= 0)
                 {
                     consumo.ConsumoId = consumos.Count > 0
@@ -81,8 +80,8 @@ namespace Controladora
         {
             var tarjeta1 = ControladoraTarjeta.Instancia.ListarTarjetas().First(t => t.TarjetaId == 1);
             var tarjeta2 = ControladoraTarjeta.Instancia.ListarTarjetas().First(t => t.TarjetaId == 2);
-            ControladoraConsumo.Instancia.CrearConsumo(new Consumo(tarjeta1, new DateTime(2025, 01, 15), "12:30", "Compra en tienda de tecnología", 300, "USD"), tarjeta1);
-            ControladoraConsumo.Instancia.CrearConsumo(new Consumo(tarjeta2, new DateTime(2025, 01, 15), "14:00", "Compra en tienda de ropa", 500, "USD"), tarjeta2);
+            ControladoraConsumo.Instancia.CrearConsumo(new Consumo(tarjeta1, new DateTime(2025, 01, 15), "12:30", "Compra en tienda de tecnología", 300, "ARG"), tarjeta1);
+            ControladoraConsumo.Instancia.CrearConsumo(new Consumo(tarjeta2, new DateTime(2025, 01, 15), "14:00", "Compra en tienda de ropa", 500, "ARG"), tarjeta2);
         }
 
     }

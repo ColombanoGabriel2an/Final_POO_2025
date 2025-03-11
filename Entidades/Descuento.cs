@@ -23,7 +23,7 @@ namespace Entidades
 
         // Campos originales para mantener compatibilidad
         public decimal MontoFijo { get; set; }
-        public decimal TopeMonto { get; set; }
+        public decimal TopeReintegro { get; set; }
         public string Banco { get; set; }
         public string Emisor { get; set; }
         public string Rubro { get; set; }
@@ -36,14 +36,14 @@ namespace Entidades
         }
 
         public Descuento(string descripcion, DateTime fechaInicio, DateTime fechaFin, decimal porcentaje,
-            decimal montoFijo, decimal topeMonto, string banco, string emisor, string rubro)
+            decimal montoFijo, decimal topeReintegro, string banco, string emisor, string rubro)
         {
             Descripcion = descripcion;
             FechaInicio = fechaInicio;
             FechaFin = fechaFin;
             Porcentaje = porcentaje;
             MontoFijo = montoFijo;
-            TopeMonto = topeMonto;
+            TopeReintegro = topeReintegro;
             Banco = banco;
             EntidadBancaria = banco; // Sincronizar con el nuevo campo
             Emisor = emisor;

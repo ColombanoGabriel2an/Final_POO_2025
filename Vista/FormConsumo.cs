@@ -48,6 +48,12 @@ namespace Vista
         {
             try
             {
+
+                if (ControladoraDescuento.Instancia.ListarDescuentos().Count == 0)
+                {
+                    ControladoraDescuento.Instancia.PrecargarDescuentos();
+                }
+
                 CargarTarjetas();
                 CargarRubros();
 
@@ -259,49 +265,124 @@ namespace Vista
 
             try
             {
-
                 var todosLosDescuentos = ControladoraDescuento.Instancia.ListarDescuentos();
-                _descuentosDisponibles = new List<Descuento>();
 
+                if (todosLosDescuentos.Count == 0)
+                {
+                    ControladoraDescuento.Instancia.PrecargarDescuentos();
+                    todosLosDescuentos = ControladoraDescuento.Instancia.ListarDescuentos();
+                }
+
+                _descuentosDisponibles = new List<Descuento>();
+                string rubroSeleccionado = cmbRubro.SelectedItem?.ToString() ?? "";
 
                 foreach (var descuento in todosLosDescuentos)
                 {
                     bool aplicable = true;
+                    string razonNoAplicable = "";
+
+
+                    if (!descuento.Activo)
+                    {
+                        aplicable = false;
+                        razonNoAplicable = "Descuento inactivo";
+                        continue;
+                    }
 
 
                     if (!descuento.EsValido(dtpFecha.Value))
+                    {
                         aplicable = false;
+                        razonNoAplicable = "Fecha fuera de vigencia";
+                        continue;
+                    }
 
 
-                    if (!string.IsNullOrEmpty(descuento.EntidadBancaria) &&
-                        descuento.EntidadBancaria != "Todas" &&
-                        descuento.EntidadBancaria != _consumo.Tarjeta.Banco &&
-                        descuento.EntidadBancaria != _consumo.Tarjeta.EntidadEmisora)
+                    bool coincideEntidad = false;
+                    if (string.IsNullOrEmpty(descuento.EntidadBancaria) ||
+                        descuento.EntidadBancaria == "Todas" ||
+                        descuento.EntidadBancaria.Equals(_consumo.Tarjeta.Banco, StringComparison.OrdinalIgnoreCase) ||
+                        descuento.EntidadBancaria.Equals(_consumo.Tarjeta.EntidadEmisora, StringComparison.OrdinalIgnoreCase))
+                    {
+                        coincideEntidad = true;
+                    }
+
+                    bool coincideEmisor = false;
+                    if (string.IsNullOrEmpty(descuento.Emisor) ||
+                        descuento.Emisor == "Todas" ||
+                        descuento.Emisor.Equals(_consumo.Tarjeta.EntidadEmisora, StringComparison.OrdinalIgnoreCase))
+                    {
+                        coincideEmisor = true;
+                    }
+
+                    if (!coincideEntidad || !coincideEmisor)
+                    {
                         aplicable = false;
+                        razonNoAplicable = "No coincide entidad bancaria o emisor";
+                        continue;
+                    }
+
+
+                    if (!string.IsNullOrEmpty(descuento.Rubro) &&
+                        descuento.Rubro != "Todos" &&
+                        !descuento.Rubro.Equals(rubroSeleccionado, StringComparison.OrdinalIgnoreCase))
+                    {
+                        aplicable = false;
+                        razonNoAplicable = $"No coincide rubro (Descuento: {descuento.Rubro}, Seleccionado: {rubroSeleccionado})";
+                        continue;
+                    }
 
 
                     if (numMonto.Value < descuento.MontoMinimo)
+                    {
                         aplicable = false;
+                        razonNoAplicable = $"Monto menor al mínimo requerido (${descuento.MontoMinimo})";
+                        continue;
+                    }
 
 
                     if (aplicable)
+                    {
+
+                        decimal ahorroEstimado = 0;
+
+                        if (descuento.Porcentaje > 0)
+                        {
+                            ahorroEstimado = numMonto.Value * (descuento.Porcentaje / 100m);
+                            if (descuento.TopeReintegro > 0 && ahorroEstimado > descuento.TopeReintegro)
+                                ahorroEstimado = descuento.TopeReintegro;
+                        }
+                        else if (descuento.MontoFijo > 0)
+                        {
+                            ahorroEstimado = descuento.MontoFijo;
+                        }
+
+
+
+
                         _descuentosDisponibles.Add(descuento);
+                    }
                 }
 
+                _descuentosDisponibles = _descuentosDisponibles
+                    .OrderByDescending(d => d.Porcentaje > 0 ?
+                        Math.Min(numMonto.Value * (d.Porcentaje / 100m), d.TopeReintegro > 0 ? d.TopeReintegro : decimal.MaxValue) :
+                        d.MontoFijo)
+                    .ToList();
+
+                MostrarDescuentosEnListView();
 
                 if (_descuentosDisponibles.Count == 0)
                 {
-                    MessageBox.Show("No se encontraron descuentos aplicables para esta tarjeta y monto.",
+                    MessageBox.Show("No se encontraron descuentos aplicables para esta tarjeta y monto.\n" +
+                                   "Verifique que la fecha, entidad bancaria, rubro y monto cumplan con los requisitos.",
                         "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-
-
-                MostrarDescuentosEnListView();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al buscar descuentos: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al buscar descuentos: {ex.Message}\n{ex.StackTrace}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -348,7 +429,7 @@ namespace Vista
         {
             lvDescuentos.Items.Clear();
 
-            if (_descuentosDisponibles.Count == 0)
+            if (_descuentosDisponibles == null || _descuentosDisponibles.Count == 0)
             {
                 ListViewItem noItem = new ListViewItem("No hay descuentos disponibles");
                 noItem.SubItems.Add("-");
@@ -360,27 +441,83 @@ namespace Vista
 
             foreach (var descuento in _descuentosDisponibles)
             {
-                ListViewItem item = new ListViewItem(descuento.Descripcion);
-                item.SubItems.Add(descuento.EntidadBancaria ?? descuento.Banco ?? "Todas");
+
+                string descripcionCompleta = !string.IsNullOrEmpty(descuento.Nombre) ?
+                    $"{descuento.Nombre} - {descuento.Descripcion}" :
+                    descuento.Descripcion;
+
+                ListViewItem item = new ListViewItem(descripcionCompleta);
+
+
+                string entidadInfo = !string.IsNullOrEmpty(descuento.EntidadBancaria) ?
+                    descuento.EntidadBancaria : descuento.Banco ?? "Todas";
+
+                if (!string.IsNullOrEmpty(descuento.Emisor) && descuento.Emisor != "Todas")
+                    entidadInfo += $" / {descuento.Emisor}";
+
+                item.SubItems.Add(entidadInfo);
+
+
+                string valorDescuento;
+                decimal ahorroEstimado = 0;
 
                 if (descuento.Porcentaje > 0)
                 {
-                    item.SubItems.Add($"{descuento.Porcentaje}%");
+                    ahorroEstimado = numMonto.Value * (descuento.Porcentaje / 100m);
+                    if (descuento.TopeReintegro > 0 && ahorroEstimado > descuento.TopeReintegro)
+                        ahorroEstimado = descuento.TopeReintegro;
+
+                    valorDescuento = $"{descuento.Porcentaje}%";
+                    if (descuento.TopeReintegro > 0)
+                        valorDescuento += $" (tope ${descuento.TopeReintegro:N2})";
+
+                    valorDescuento += $"\nAhorro: ${ahorroEstimado:N2}";
+                }
+                else if (descuento.MontoFijo > 0)
+                {
+                    ahorroEstimado = descuento.MontoFijo;
+                    valorDescuento = $"${descuento.MontoFijo:N2} fijo";
                 }
                 else
                 {
-                    item.SubItems.Add($"${descuento.MontoFijo:N2}");
+                    valorDescuento = "Sin descuento directo";
+                    if (descuento.Descripcion.Contains("cuota"))
+                        valorDescuento = "Cuotas sin interés";
                 }
 
-                item.SubItems.Add($"{descuento.FechaInicio:d} al {descuento.FechaFin:d}");
+                item.SubItems.Add(valorDescuento);
+
+
+                string vigenciaInfo = $"{descuento.FechaInicio:d} al {descuento.FechaFin:d}";
+                if (descuento.MontoMinimo > 0)
+                    vigenciaInfo += $"\nMín: ${descuento.MontoMinimo:N2}";
+                if (!string.IsNullOrEmpty(descuento.Rubro) && descuento.Rubro != "Todos")
+                    vigenciaInfo += $"\nRubro: {descuento.Rubro}";
+
+                item.SubItems.Add(vigenciaInfo);
 
                 item.Tag = descuento;
+
 
                 bool yaAplicado = _consumo.DescuentosAplicados.Any(d =>
                     d.DescuentoId == descuento.DescuentoId ||
                     (d.Codigo == descuento.Codigo && !string.IsNullOrEmpty(d.Codigo)));
 
                 item.Checked = yaAplicado;
+
+
+                if (ahorroEstimado > 0)
+                {
+
+                    decimal porcentajeAhorro = ahorroEstimado / numMonto.Value;
+
+                    if (porcentajeAhorro >= 0.3m)
+                        item.BackColor = Color.LightGreen;
+                    else if (porcentajeAhorro >= 0.15m)
+                        item.BackColor = Color.PaleGreen;
+                    else if (porcentajeAhorro >= 0.05m)
+                        item.BackColor = Color.LightCyan;
+                }
 
                 lvDescuentos.Items.Add(item);
             }

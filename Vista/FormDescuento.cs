@@ -42,27 +42,32 @@ namespace Vista
 
             dgvDescuentos.DataSource = null;
 
-            // Crear una lista de objetos anónimos para mostrar solo las propiedades relevantes
+            // Crear una lista de objetos anónimos para mostrar solo las propiedades relevantes de los descuentos
             var descuentosVista = descuentos.Select(d => new
             {
                 ID = d.DescuentoId,
                 Código = d.Codigo,
                 Nombre = d.Nombre,
                 Porcentaje = d.Porcentaje,
-                MontoMinimo = d.MontoMinimo,
+                TopeReintegro = d.TopeReintegro, // Monto máximo a reintegrar
                 Activo = d.Activo ? "Sí" : "No",
                 FechaInicio = d.FechaInicio.ToShortDateString(),
-                FechaFin = d.FechaFin.ToShortDateString(),
+                FechaFin = d.FechaFin.ToShortDateString()
             }).ToList();
 
             dgvDescuentos.DataSource = descuentosVista;
 
-            // Ajustar columnas
+            // Ajustar el ancho de las columnas del DataGridView
             if (dgvDescuentos.Columns.Count > 0)
             {
                 dgvDescuentos.Columns["ID"].Width = 40;
                 dgvDescuentos.Columns["Código"].Width = 80;
                 dgvDescuentos.Columns["Nombre"].Width = 150;
+                dgvDescuentos.Columns["Porcentaje"].Width = 60;
+                dgvDescuentos.Columns["TopeReintegro"].Width = 100;
+                dgvDescuentos.Columns["Activo"].Width = 50;
+                dgvDescuentos.Columns["FechaInicio"].Width = 100;
+                dgvDescuentos.Columns["FechaFin"].Width = 100;
             }
         }
 
@@ -88,7 +93,7 @@ namespace Vista
                     FechaFin = dtpFechaFin.Value,
                     Tipo = cmbTipo.SelectedItem.ToString(),
                     EntidadBancaria = cmbEntidadBancaria.SelectedItem.ToString(),
-                    MontoMinimo = nudMontoMinimo.Value,
+                    TopeReintegro = nudTopeReintegro.Value,
                     Activo = chkActivo.Checked,
                     Acumulable = chkAcumulable.Checked
                 };
@@ -136,7 +141,7 @@ namespace Vista
                 dtpFechaFin.Value = descuento.FechaFin;
                 cmbTipo.SelectedItem = descuento.Tipo;
                 cmbEntidadBancaria.SelectedItem = descuento.EntidadBancaria;
-                nudMontoMinimo.Value = descuento.MontoMinimo;
+                nudTopeReintegro.Value = descuento.TopeReintegro;
                 chkActivo.Checked = descuento.Activo;
                 chkAcumulable.Checked = descuento.Acumulable;
             }
@@ -157,7 +162,7 @@ namespace Vista
             dtpFechaFin.Value = DateTime.Today.AddDays(30);
             cmbTipo.SelectedIndex = 0;
             cmbEntidadBancaria.SelectedIndex = 0;
-            nudMontoMinimo.Value = 0;
+            nudTopeReintegro.Value = 5000;  // Valor predeterminado para el Tope de Reintegro
             chkActivo.Checked = true;
             chkAcumulable.Checked = false;
         }
@@ -166,5 +171,24 @@ namespace Vista
         {
             this.Close();
         }
+
+        private void btnBorrar_Click(object sender, EventArgs e)
+        {
+            if (descuentoSeleccionado != null)
+            {
+                var result = MessageBox.Show("¿Está seguro de que desea borrar este descuento?",
+                    "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    string resultado = ControladoraDescuento.Instancia.BorrarDescuento(descuentoSeleccionado);
+                    MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ActualizarDataGridView();
+                    LimpiarFormulario();
+                }
+            }
+        }
+
+       
     }
 }

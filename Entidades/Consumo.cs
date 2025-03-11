@@ -39,24 +39,48 @@ namespace Entidades
         public decimal CalcularMontoFinal()
         {
             decimal montoFinal = Monto;
+            decimal ahorroTotal = 0;
+
             foreach (var descuento in DescuentosAplicados)
             {
+                decimal ahorroDescuento = 0;
+
+                if (!descuento.EsValido(Fecha))
+                    continue;
+
+                if (Monto < descuento.MontoMinimo)
+                    continue;
+
                 if (descuento.Porcentaje > 0)
                 {
-                    montoFinal -= Monto * (descuento.Porcentaje / 100);
+                    ahorroDescuento = Monto * (descuento.Porcentaje / 100m);
+
+                    if (descuento.TopeReintegro > 0 && ahorroDescuento > descuento.TopeReintegro)
+                        ahorroDescuento = descuento.TopeReintegro;
                 }
-                else
+                else if (descuento.MontoFijo > 0)
                 {
-                    montoFinal -= descuento.MontoFijo;
+                    ahorroDescuento = descuento.MontoFijo;
+
+
+                    if (descuento.TopeReintegro > 0 && ahorroDescuento > descuento.TopeReintegro)
+                        ahorroDescuento = descuento.TopeReintegro;
                 }
+
+                ahorroTotal += ahorroDescuento;
             }
+
+
+            montoFinal -= ahorroTotal;
+
+
+            if (montoFinal < 0)
+                montoFinal = 0;
+
             return montoFinal;
         }
 
-        // ---------------------------------------------------
-        public int TarjetaId { get; set; }
 
-        // Lista de descuentos aplicados (modelo simple; si fuera many-to-many, se necesitaria una tabla intermedia)
+        public int TarjetaId { get; set; }
     }
 }
-

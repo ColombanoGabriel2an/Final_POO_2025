@@ -69,10 +69,174 @@ namespace Controladora
 
         public void PrecargarDescuentos()
         {
-            ControladoraDescuento.Instancia.CrearDescuento(new Descuento("Descuento del 10%", new DateTime(2025, 01, 01), new DateTime(2025, 12, 31), 10, 0, 0, "Banco Nación", "Emisor", "Electrónica"));
-            ControladoraDescuento.Instancia.CrearDescuento(new Descuento("Descuento del 20%", new DateTime(2025, 01, 01), new DateTime(2025, 12, 31), 20, 0, 0, "BBVA", "Emisor", "Ropa"));
-            ControladoraDescuento.Instancia.CrearDescuento(new Descuento("12 Cuotas sin interés", new DateTime(2025, 01, 01), new DateTime(2025, 12, 31), 0, 0, 0, "Cabal", "Emisor", "Muebles"));
-            ControladoraDescuento.Instancia.CrearDescuento(new Descuento("Promo 15%", new DateTime(2025, 01, 01), new DateTime(2025, 12, 31), 15, 0, 0, "Macro", "Emisor", "Automóvil"));
+            Descuento descuento1 = new Descuento
+            {
+                Codigo = "SUPER30",
+                Nombre = "Miércoles de descuentos",
+                Descripcion = "30% los miércoles en supermercados",
+                FechaInicio = new DateTime(2025, 01, 01),
+                FechaFin = new DateTime(2025, 06, 30),
+                Porcentaje = 30,
+                MontoFijo = 0,
+                TopeReintegro = 3000,
+                Banco = "Santander",
+                EntidadBancaria = "Santander",
+                Emisor = "Visa",
+                Rubro = "Supermercados",
+                Tipo = "Porcentual",
+                Activo = true,
+                Acumulable = false
+            };
+            ControladoraDescuento.Instancia.CrearDescuento(descuento1);
+
+            // Restaurantes
+            Descuento descuento2 = new Descuento
+            {
+                Codigo = "REST2X1",
+                Nombre = "2x1 en Restaurantes",
+                Descripcion = "2x1 en restaurantes adheridos",
+                FechaInicio = new DateTime(2025, 03, 01),
+                FechaFin = new DateTime(2025, 04, 30),
+                Porcentaje = 50,
+                MontoFijo = 0,
+                TopeReintegro = 1500,
+                Banco = "BBVA",
+                EntidadBancaria = "BBVA",
+                Emisor = "American Express",
+                Rubro = "Restaurantes",
+                Tipo = "Porcentual",
+                Activo = true,
+                Acumulable = false
+            };
+            ControladoraDescuento.Instancia.CrearDescuento(descuento2);
+
+            // Farmacias
+            Descuento descuento3 = new Descuento
+            {
+                Codigo = "FARM15",
+                Nombre = "Descuento en Farmacias",
+                Descripcion = "15% todos los días en farmacias",
+                FechaInicio = new DateTime(2025, 01, 01),
+                FechaFin = new DateTime(2025, 12, 31),
+                Porcentaje = 15,
+                MontoFijo = 0,
+                TopeReintegro = 1000,
+                Banco = "Banco Nación",
+                EntidadBancaria = "Banco Nación",
+                Emisor = "Mastercard",
+                Rubro = "Farmacias",
+                Tipo = "Porcentual",
+                Activo = true,
+                Acumulable = true
+            };
+            ControladoraDescuento.Instancia.CrearDescuento(descuento3);
+
+            // Farmacias - Monto fijo
+            Descuento descuento4 = new Descuento
+            {
+                Codigo = "FARM500",
+                Nombre = "Reintegro en Farmacias",
+                Descripcion = "$500 de descuento en compras superiores a $3000",
+                FechaInicio = new DateTime(2025, 03, 15),
+                FechaFin = new DateTime(2025, 04, 15),
+                Porcentaje = 0,
+                MontoFijo = 500,
+                TopeReintegro = 3000,
+                Banco = "BBVA",
+                EntidadBancaria = "BBVA",
+                Emisor = "Visa",
+                Rubro = "Farmacias",
+                Tipo = "Monto Fijo",
+                Activo = true,
+                Acumulable = false
+            };
+            ControladoraDescuento.Instancia.CrearDescuento(descuento4);
+
+            // Electrónica - Cuotas
+            Descuento descuento5 = new Descuento
+            {
+                Codigo = "TECH12C",
+                Nombre = "12 Cuotas Tecnología",
+                Descripcion = "12 cuotas sin interés en tecnología",
+                FechaInicio = new DateTime(2025, 01, 01),
+                FechaFin = new DateTime(2025, 12, 31),
+                Porcentaje = 0,
+                MontoFijo = 0,
+                MontoMinimo = 0,
+                TopeReintegro = 10000,
+                Banco = "Santander",
+                EntidadBancaria = "Santander",
+                Emisor = "Visa",
+                Rubro = "Electrónica",
+                Tipo = "Financiación",
+                Activo = true,
+                Acumulable = true
+            };
+            ControladoraDescuento.Instancia.CrearDescuento(descuento5);
+
+            // Electrónica - Porcentual
+            Descuento descuento6 = new Descuento
+            {
+                Codigo = "TECH20",
+                Nombre = "Descuento en Tecnología",
+                Descripcion = "20% en artículos seleccionados de tecnología",
+                FechaInicio = new DateTime(2025, 03, 01),
+                FechaFin = new DateTime(2025, 03, 31),
+                Porcentaje = 20,
+                MontoFijo = 0,
+                TopeReintegro = 5000,
+                Banco = "BBVA",
+                EntidadBancaria = "BBVA",
+                Emisor = "Mastercard",
+                Rubro = "Electrónica",
+                Tipo = "Porcentual",
+                Activo = true,
+                Acumulable = false
+            };
+            ControladoraDescuento.Instancia.CrearDescuento(descuento6);
+
+            // Indumentaria - Fines de semana
+            Descuento descuento7 = new Descuento
+            {
+                Codigo = "ROPA30FDS",
+                Nombre = "Fines de Semana de Moda",
+                Descripcion = "30% en ropa los fines de semana",
+                FechaInicio = new DateTime(2025, 02, 01),
+                FechaFin = new DateTime(2025, 08, 31),
+                Porcentaje = 30,
+                MontoFijo = 0,
+                TopeReintegro = 4000,
+                Banco = "Macro",
+                EntidadBancaria = "Macro",
+                Emisor = "Visa",
+                Rubro = "Ropa",
+                Tipo = "Porcentual",
+                Activo = true,
+                Acumulable = false
+            };
+            ControladoraDescuento.Instancia.CrearDescuento(descuento7);
+
+            // Indumentaria - Cuotas + Descuento
+            Descuento descuento8 = new Descuento
+            {
+                Codigo = "ROPA3C10",
+                Nombre = "Cuotas + Descuento",
+                Descripcion = "3 cuotas sin interés + 10% off",
+                FechaInicio = new DateTime(2025, 01, 01),
+                FechaFin = new DateTime(2025, 12, 31),
+                Porcentaje = 10,
+                MontoFijo = 0,
+                MontoMinimo = 2000,
+                TopeReintegro = 5000,
+                Banco = "Macro",
+                EntidadBancaria = "Macro",
+                Emisor = "Mastercard",
+                Rubro = "Ropa",
+                Tipo = "Mixto",
+                Activo = true,
+                Acumulable = true
+            };
+            ControladoraDescuento.Instancia.CrearDescuento(descuento8);
         }
 
     }

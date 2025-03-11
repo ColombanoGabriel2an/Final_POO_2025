@@ -4,7 +4,6 @@
     {
         private System.ComponentModel.IContainer components = null;
 
-
         private System.Windows.Forms.TextBox txtCodigo;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.TextBox txtDescripcion;
@@ -18,6 +17,7 @@
         private System.Windows.Forms.CheckBox chkAcumulable;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.Button btnSalir;
         private System.Windows.Forms.Label lblCodigo;
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.Label lblDescripcion;
@@ -27,6 +27,7 @@
         private System.Windows.Forms.Label lblTipo;
         private System.Windows.Forms.Label lblEntidadBancaria;
         private System.Windows.Forms.Label lblMontoMinimo;
+        private System.Windows.Forms.DataGridView dgvDescuentos;
 
         protected override void Dispose(bool disposing)
         {
@@ -52,26 +53,12 @@
             this.chkAcumulable = new System.Windows.Forms.CheckBox();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
-            this.lblCodigo = new System.Windows.Forms.Label();
-            this.lblNombre = new System.Windows.Forms.Label();
-            this.lblDescripcion = new System.Windows.Forms.Label();
-            this.lblPorcentaje = new System.Windows.Forms.Label();
-            this.lblFechaInicio = new System.Windows.Forms.Label();
-            this.lblFechaFin = new System.Windows.Forms.Label();
-            this.lblTipo = new System.Windows.Forms.Label();
-            this.lblEntidadBancaria = new System.Windows.Forms.Label();
-            this.lblMontoMinimo = new System.Windows.Forms.Label();
+            this.btnSalir = new System.Windows.Forms.Button();
+            this.dgvDescuentos = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.nudPorcentaje)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMontoMinimo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDescuentos)).BeginInit();
             this.SuspendLayout();
-
-            // lblCodigo
-            this.lblCodigo.AutoSize = true;
-            this.lblCodigo.Location = new System.Drawing.Point(12, 15);
-            this.lblCodigo.Name = "lblCodigo";
-            this.lblCodigo.Size = new System.Drawing.Size(45, 13);
-            this.lblCodigo.TabIndex = 0;
-            this.lblCodigo.Text = "Código:";
 
             // txtCodigo
             this.txtCodigo.Location = new System.Drawing.Point(130, 12);
@@ -79,27 +66,11 @@
             this.txtCodigo.Size = new System.Drawing.Size(200, 20);
             this.txtCodigo.TabIndex = 1;
 
-            // lblNombre
-            this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(12, 45);
-            this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(47, 13);
-            this.lblNombre.TabIndex = 2;
-            this.lblNombre.Text = "Nombre:";
-
             // txtNombre
             this.txtNombre.Location = new System.Drawing.Point(130, 42);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(200, 20);
             this.txtNombre.TabIndex = 3;
-
-            // lblDescripcion
-            this.lblDescripcion.AutoSize = true;
-            this.lblDescripcion.Location = new System.Drawing.Point(12, 75);
-            this.lblDescripcion.Name = "lblDescripcion";
-            this.lblDescripcion.Size = new System.Drawing.Size(66, 13);
-            this.lblDescripcion.TabIndex = 4;
-            this.lblDescripcion.Text = "Descripción:";
 
             // txtDescripcion
             this.txtDescripcion.Location = new System.Drawing.Point(130, 72);
@@ -108,29 +79,12 @@
             this.txtDescripcion.Size = new System.Drawing.Size(200, 60);
             this.txtDescripcion.TabIndex = 5;
 
-            // lblPorcentaje
-            this.lblPorcentaje.AutoSize = true;
-            this.lblPorcentaje.Location = new System.Drawing.Point(12, 145);
-            this.lblPorcentaje.Name = "lblPorcentaje";
-            this.lblPorcentaje.Size = new System.Drawing.Size(61, 13);
-            this.lblPorcentaje.TabIndex = 6;
-            this.lblPorcentaje.Text = "Porcentaje:";
-
             // nudPorcentaje
             this.nudPorcentaje.Location = new System.Drawing.Point(130, 142);
             this.nudPorcentaje.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
             this.nudPorcentaje.Name = "nudPorcentaje";
             this.nudPorcentaje.Size = new System.Drawing.Size(200, 20);
             this.nudPorcentaje.TabIndex = 7;
-            this.nudPorcentaje.Value = new decimal(new int[] { 10, 0, 0, 0 });
-
-            // lblFechaInicio
-            this.lblFechaInicio.AutoSize = true;
-            this.lblFechaInicio.Location = new System.Drawing.Point(12, 175);
-            this.lblFechaInicio.Name = "lblFechaInicio";
-            this.lblFechaInicio.Size = new System.Drawing.Size(83, 13);
-            this.lblFechaInicio.TabIndex = 8;
-            this.lblFechaInicio.Text = "Fecha de Inicio:";
 
             // dtpFechaInicio
             this.dtpFechaInicio.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -139,28 +93,12 @@
             this.dtpFechaInicio.Size = new System.Drawing.Size(200, 20);
             this.dtpFechaInicio.TabIndex = 9;
 
-            // lblFechaFin
-            this.lblFechaFin.AutoSize = true;
-            this.lblFechaFin.Location = new System.Drawing.Point(12, 205);
-            this.lblFechaFin.Name = "lblFechaFin";
-            this.lblFechaFin.Size = new System.Drawing.Size(60, 13);
-            this.lblFechaFin.TabIndex = 10;
-            this.lblFechaFin.Text = "Fecha Fin:";
-
             // dtpFechaFin
             this.dtpFechaFin.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpFechaFin.Location = new System.Drawing.Point(130, 202);
             this.dtpFechaFin.Name = "dtpFechaFin";
             this.dtpFechaFin.Size = new System.Drawing.Size(200, 20);
             this.dtpFechaFin.TabIndex = 11;
-
-            // lblTipo
-            this.lblTipo.AutoSize = true;
-            this.lblTipo.Location = new System.Drawing.Point(12, 235);
-            this.lblTipo.Name = "lblTipo";
-            this.lblTipo.Size = new System.Drawing.Size(95, 13);
-            this.lblTipo.TabIndex = 12;
-            this.lblTipo.Text = "Tipo de Descuento:";
 
             // cmbTipo
             this.cmbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -177,14 +115,6 @@
             this.cmbTipo.Name = "cmbTipo";
             this.cmbTipo.Size = new System.Drawing.Size(200, 21);
             this.cmbTipo.TabIndex = 13;
-
-            // lblEntidadBancaria
-            this.lblEntidadBancaria.AutoSize = true;
-            this.lblEntidadBancaria.Location = new System.Drawing.Point(12, 265);
-            this.lblEntidadBancaria.Name = "lblEntidadBancaria";
-            this.lblEntidadBancaria.Size = new System.Drawing.Size(94, 13);
-            this.lblEntidadBancaria.TabIndex = 14;
-            this.lblEntidadBancaria.Text = "Entidad Bancaria:";
 
             // cmbEntidadBancaria
             this.cmbEntidadBancaria.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -204,14 +134,6 @@
             this.cmbEntidadBancaria.Name = "cmbEntidadBancaria";
             this.cmbEntidadBancaria.Size = new System.Drawing.Size(200, 21);
             this.cmbEntidadBancaria.TabIndex = 15;
-
-            // lblMontoMinimo
-            this.lblMontoMinimo.AutoSize = true;
-            this.lblMontoMinimo.Location = new System.Drawing.Point(12, 295);
-            this.lblMontoMinimo.Name = "lblMontoMinimo";
-            this.lblMontoMinimo.Size = new System.Drawing.Size(80, 13);
-            this.lblMontoMinimo.TabIndex = 16;
-            this.lblMontoMinimo.Text = "Monto Mínimo:";
 
             // nudMontoMinimo
             this.nudMontoMinimo.DecimalPlaces = 2;
@@ -260,10 +182,35 @@
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
 
+            // btnSalir
+            this.btnSalir.Location = new System.Drawing.Point(235, 388);
+            this.btnSalir.Name = "btnSalir";
+            this.btnSalir.Size = new System.Drawing.Size(95, 30);
+            this.btnSalir.TabIndex = 22;
+            this.btnSalir.Text = "Salir";
+            this.btnSalir.UseVisualStyleBackColor = true;
+            this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
+
+            // dgvDescuentos
+            this.dgvDescuentos.AllowUserToAddRows = false;
+            this.dgvDescuentos.AllowUserToDeleteRows = false;
+            this.dgvDescuentos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvDescuentos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDescuentos.Location = new System.Drawing.Point(350, 12);
+            this.dgvDescuentos.MultiSelect = false;
+            this.dgvDescuentos.Name = "dgvDescuentos";
+            this.dgvDescuentos.ReadOnly = true;
+            this.dgvDescuentos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvDescuentos.Size = new System.Drawing.Size(500, 380);
+            this.dgvDescuentos.TabIndex = 23;
+            this.dgvDescuentos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDescuentos_CellClick);
+
             // FormDescuento
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(350, 400);
+            this.ClientSize = new System.Drawing.Size(880, 450);
+            this.Controls.Add(this.dgvDescuentos);
+            this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.chkAcumulable);
@@ -287,9 +234,11 @@
             this.Controls.Add(this.txtCodigo);
             this.Controls.Add(this.lblCodigo);
             this.Name = "FormDescuento";
-            this.Text = "Descuentos";
+            this.Text = "Gestión de Descuentos";
+            this.Load += new System.EventHandler(this.FormDescuento_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nudPorcentaje)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMontoMinimo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDescuentos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }

@@ -17,7 +17,7 @@ namespace Vista
         private decimal _montoOriginal;
         private bool _esNuevoConsumo = true;
 
-        // Constructor para un nuevo consumo
+
         public FormConsumo()
         {
             InitializeComponent();
@@ -25,7 +25,7 @@ namespace Vista
             ConfigurarFormulario();
         }
 
-        // Constructor para editar un consumo existente
+
         public FormConsumo(Consumo consumo)
         {
             InitializeComponent();
@@ -36,12 +36,12 @@ namespace Vista
 
         private void ConfigurarFormulario()
         {
-            // Configurar formato de moneda en el NumericUpDown
+
             numMonto.DecimalPlaces = 2;
             numMonto.ThousandsSeparator = true;
 
-            // Establecer moneda predeterminada
-            cmbMoneda.SelectedIndex = 0; // ARS
+
+            cmbMoneda.SelectedIndex = 0;
         }
 
         private void FormConsumo_Load(object sender, EventArgs e)
@@ -50,6 +50,20 @@ namespace Vista
             {
                 CargarTarjetas();
                 CargarRubros();
+
+                lvDescuentos.View = View.Details;
+                lvDescuentos.FullRowSelect = true;
+                lvDescuentos.CheckBoxes = true;
+                lvDescuentos.GridLines = true;
+
+
+                if (lvDescuentos.Columns.Count == 0)
+                {
+                    lvDescuentos.Columns.Add("Descripción", 200);
+                    lvDescuentos.Columns.Add("Banco/Entidad", 100);
+                    lvDescuentos.Columns.Add("Valor", 100);
+                    lvDescuentos.Columns.Add("Vigencia", 150);
+                }
 
                 if (!_esNuevoConsumo)
                 {
@@ -67,10 +81,10 @@ namespace Vista
         {
             try
             {
-                // Obtener tarjetas desde la controladora
+
                 _tarjetas = ControladoraTarjeta.Instancia.ListarTarjetas();
 
-                // Verificar si hay tarjetas
+
                 if (_tarjetas.Count == 0)
                 {
                     MessageBox.Show("No hay tarjetas registradas. Por favor, registre tarjetas primero.",
@@ -78,11 +92,11 @@ namespace Vista
                     return;
                 }
 
-                // Cargar las tarjetas en el ComboBox
+
                 cmbTarjeta.Items.Clear();
                 foreach (var tarjeta in _tarjetas)
                 {
-                    // Asegurar que el número tiene al menos 4 caracteres para evitar errores
+
                     string ultimosDigitos = tarjeta.Numero.Length >= 4 ?
                         tarjeta.Numero.Substring(tarjeta.Numero.Length - 4) : tarjeta.Numero;
 
@@ -104,7 +118,7 @@ namespace Vista
 
         private void CargarRubros()
         {
-            // En un caso real, los rubros vendrían de un catálogo en la base de datos
+
             _rubros = new List<string>
             {
                 "Supermercados",
@@ -125,7 +139,7 @@ namespace Vista
 
         private void CargarDatosConsumoPrevio()
         {
-            // Seleccionar la tarjeta correspondiente
+
             for (int i = 0; i < _tarjetas.Count; i++)
             {
                 if (_tarjetas[i].TarjetaId == _consumo.TarjetaId)
@@ -135,18 +149,18 @@ namespace Vista
                 }
             }
 
-            // Establecer fecha y hora
+
             dtpFecha.Value = _consumo.Fecha;
             if (TimeSpan.TryParse(_consumo.Hora, out TimeSpan hora))
             {
                 dtpHora.Value = DateTime.Today.Add(hora);
             }
 
-            // Establecer descripción y otros campos
+
             txtDescripcion.Text = _consumo.Descripcion;
             numMonto.Value = _consumo.Monto;
 
-            // Seleccionar moneda
+
             for (int i = 0; i < cmbMoneda.Items.Count; i++)
             {
                 if (cmbMoneda.Items[i].ToString() == _consumo.Moneda)
@@ -156,7 +170,7 @@ namespace Vista
                 }
             }
 
-            // Cargar descuentos aplicados
+
             BuscarDescuentosAplicables();
             ActualizarMontos();
         }
@@ -169,7 +183,7 @@ namespace Vista
                 _consumo.TarjetaId = _consumo.Tarjeta.TarjetaId;
                 ActualizarInformacionTarjeta();
 
-                // Actualizar lista de consumos
+
                 MostrarConsumosDeTarjeta();
             }
         }
@@ -178,7 +192,7 @@ namespace Vista
         {
             if (_consumo.Tarjeta != null)
             {
-                // Mostrar límite/disponible según sea tarjeta de crédito o débito
+
                 if (_consumo.Tarjeta is TarjetaCredito tarjetaCredito)
                 {
                     txtLimiteDisponible.Text = $"Límite: ${tarjetaCredito.Limite:N2} - Disponible: ${tarjetaCredito.Disponible:N2}";
@@ -193,7 +207,7 @@ namespace Vista
                 txtLimiteDisponible.Text = "";
             }
 
-            // Si cambia la tarjeta, buscar nuevamente los descuentos aplicables
+
             if (numMonto.Value > 0)
             {
                 BuscarDescuentosAplicables();
@@ -202,11 +216,11 @@ namespace Vista
 
         private void dtpFecha_ValueChanged(object sender, EventArgs e)
         {
-            // Actualizar la fecha del consumo
+
             _consumo.Fecha = dtpFecha.Value.Date;
 
-            // Si ya hay monto y tarjeta seleccionada, buscar nuevamente los descuentos
-            // ya que los descuentos pueden depender de la fecha
+
+
             if (numMonto.Value > 0 && cmbTarjeta.SelectedIndex >= 0)
             {
                 BuscarDescuentosAplicables();
@@ -219,10 +233,10 @@ namespace Vista
             _consumo.Monto = _montoOriginal;
             txtMontoOriginal.Text = $"{_consumo.Moneda} {_montoOriginal:N2}";
 
-            // Actualizar monto final (inicialmente igual al original)
+
             ActualizarMontoFinal();
 
-            // Si hay tarjeta seleccionada, buscar descuentos aplicables
+
             if (cmbTarjeta.SelectedIndex >= 0)
             {
                 BuscarDescuentosAplicables();
@@ -245,15 +259,43 @@ namespace Vista
 
             try
             {
-                // En un caso real, esto se obtendría de un servicio o repositorio
+
+                var todosLosDescuentos = ControladoraDescuento.Instancia.ListarDescuentos();
                 _descuentosDisponibles = new List<Descuento>();
-                // TODO: Implementar llamada al servicio de descuentos
-                // _descuentosDisponibles = _descuentoService.ObtenerDescuentosAplicables(_consumo.Tarjeta, dtpFecha.Value, cmbRubro.Text);
 
-                // Simular algunos descuentos para pruebas
-                SimularDescuentosDisponibles();
 
-                // Mostrar descuentos en el ListView
+                foreach (var descuento in todosLosDescuentos)
+                {
+                    bool aplicable = true;
+
+
+                    if (!descuento.EsValido(dtpFecha.Value))
+                        aplicable = false;
+
+
+                    if (!string.IsNullOrEmpty(descuento.EntidadBancaria) &&
+                        descuento.EntidadBancaria != "Todas" &&
+                        descuento.EntidadBancaria != _consumo.Tarjeta.Banco &&
+                        descuento.EntidadBancaria != _consumo.Tarjeta.EntidadEmisora)
+                        aplicable = false;
+
+
+                    if (numMonto.Value < descuento.MontoMinimo)
+                        aplicable = false;
+
+
+                    if (aplicable)
+                        _descuentosDisponibles.Add(descuento);
+                }
+
+
+                if (_descuentosDisponibles.Count == 0)
+                {
+                    MessageBox.Show("No se encontraron descuentos aplicables para esta tarjeta y monto.",
+                        "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+
                 MostrarDescuentosEnListView();
             }
             catch (Exception ex)
@@ -285,7 +327,7 @@ namespace Vista
                 }
             };
 
-            // Si estamos editando, marcar los descuentos ya aplicados
+
             if (!_esNuevoConsumo)
             {
                 foreach (var descuentoAplicado in _consumo.DescuentosAplicados)
@@ -306,12 +348,21 @@ namespace Vista
         {
             lvDescuentos.Items.Clear();
 
+            if (_descuentosDisponibles.Count == 0)
+            {
+                ListViewItem noItem = new ListViewItem("No hay descuentos disponibles");
+                noItem.SubItems.Add("-");
+                noItem.SubItems.Add("-");
+                noItem.SubItems.Add("-");
+                lvDescuentos.Items.Add(noItem);
+                return;
+            }
+
             foreach (var descuento in _descuentosDisponibles)
             {
                 ListViewItem item = new ListViewItem(descuento.Descripcion);
-                item.SubItems.Add(descuento.EntidadBancaria);
+                item.SubItems.Add(descuento.EntidadBancaria ?? descuento.Banco ?? "Todas");
 
-                // Mostrar valor del descuento (porcentaje o monto fijo)
                 if (descuento.Porcentaje > 0)
                 {
                     item.SubItems.Add($"{descuento.Porcentaje}%");
@@ -321,19 +372,15 @@ namespace Vista
                     item.SubItems.Add($"${descuento.MontoFijo:N2}");
                 }
 
-                // Mostrar vigencia
                 item.SubItems.Add($"{descuento.FechaInicio:d} al {descuento.FechaFin:d}");
 
-                // Guardar referencia al objeto descuento
                 item.Tag = descuento;
 
-                // Marcar como seleccionado si ya fue aplicado
-                if (_consumo.DescuentosAplicados.Any(d =>
-                    d.Descripcion == descuento.Descripcion &&
-                    d.EntidadBancaria == descuento.EntidadBancaria))
-                {
-                    item.Checked = true;
-                }
+                bool yaAplicado = _consumo.DescuentosAplicados.Any(d =>
+                    d.DescuentoId == descuento.DescuentoId ||
+                    (d.Codigo == descuento.Codigo && !string.IsNullOrEmpty(d.Codigo)));
+
+                item.Checked = yaAplicado;
 
                 lvDescuentos.Items.Add(item);
             }
@@ -345,7 +392,7 @@ namespace Vista
             {
                 if (e.Item.Checked)
                 {
-                    // Agregar descuento a la lista si no existe ya
+
                     if (!_consumo.DescuentosAplicados.Contains(descuento))
                     {
                         _consumo.DescuentosAplicados.Add(descuento);
@@ -353,13 +400,13 @@ namespace Vista
                 }
                 else
                 {
-                    // Remover descuento de la lista
+
                     _consumo.DescuentosAplicados.RemoveAll(d =>
                         d.Descripcion == descuento.Descripcion &&
                         d.EntidadBancaria == descuento.EntidadBancaria);
                 }
 
-                // Actualizar monto final con descuentos aplicados
+
                 ActualizarMontoFinal();
             }
         }
@@ -375,7 +422,7 @@ namespace Vista
             decimal montoFinal = _consumo.CalcularMontoFinal();
             txtMontoFinal.Text = $"{_consumo.Moneda} {montoFinal:N2}";
 
-            // Colorear para destacar el ahorro
+
             if (montoFinal < _consumo.Monto)
             {
                 txtMontoFinal.ForeColor = Color.Green;
@@ -392,7 +439,7 @@ namespace Vista
             {
                 if (ValidarDatos())
                 {
-                    // Actualizar datos del consumo
+
                     _consumo.Fecha = dtpFecha.Value.Date;
                     _consumo.Hora = dtpHora.Value.ToString("HH:mm");
                     _consumo.Descripcion = txtDescripcion.Text;
@@ -414,7 +461,7 @@ namespace Vista
 
         private bool ValidarDatos()
         {
-            // Validar que se haya seleccionado una tarjeta
+
             if (cmbTarjeta.SelectedIndex < 0)
             {
                 MessageBox.Show("Debe seleccionar una tarjeta.", "Validación",
@@ -423,7 +470,7 @@ namespace Vista
                 return false;
             }
 
-            // Validar monto
+
             if (numMonto.Value <= 0)
             {
                 MessageBox.Show("El monto debe ser mayor que cero.", "Validación",
@@ -432,7 +479,7 @@ namespace Vista
                 return false;
             }
 
-            // Validar descripción
+
             if (string.IsNullOrWhiteSpace(txtDescripcion.Text))
             {
                 MessageBox.Show("Ingrese una descripción para el consumo.", "Validación",
@@ -441,7 +488,7 @@ namespace Vista
                 return false;
             }
 
-            // Validar que el comercio no esté vacío
+
             if (string.IsNullOrWhiteSpace(txtComercio.Text))
             {
                 MessageBox.Show("Ingrese el nombre del comercio.", "Validación",
@@ -450,8 +497,8 @@ namespace Vista
                 return false;
             }
 
-            // Validar que el monto no supere el límite disponible para tarjeta de crédito
-            // o el saldo para tarjeta de débito
+
+
             decimal montoFinal = _consumo.CalcularMontoFinal();
             if (_consumo.Tarjeta is TarjetaCredito tarjetaCredito)
             {
@@ -483,16 +530,16 @@ namespace Vista
             Close();
         }
 
-        // Método para mostrar los consumos de la tarjeta seleccionada
+
         private void MostrarConsumosDeTarjeta()
         {
             if (_consumo.Tarjeta == null) return;
 
-            // Obtener consumos para la tarjeta seleccionada
+
             var todosLosConsumos = ControladoraConsumo.Instancia.ListarConsumos();
             List<Consumo> consumosTarjeta = new List<Consumo>();
 
-            // Filtrar manualmente
+
             foreach (var consumo in todosLosConsumos)
             {
                 if (consumo.TarjetaId == _consumo.TarjetaId)
@@ -501,10 +548,10 @@ namespace Vista
                 }
             }
 
-            // Verificar si hay datos para mostrar
+
             if (dgvConsumosActuales.Columns.Count == 0)
             {
-                // Configurar columnas si es la primera vez
+
                 dgvConsumosActuales.Columns.Add("Fecha", "Fecha");
                 dgvConsumosActuales.Columns.Add("Descripcion", "Descripción");
                 dgvConsumosActuales.Columns.Add("Comercio", "Comercio");
@@ -520,10 +567,10 @@ namespace Vista
 
                 row.Cells["Fecha"].Value = consumo.Fecha.ToShortDateString();
                 row.Cells["Descripcion"].Value = consumo.Descripcion;
-                row.Cells["Comercio"].Value = "Comercio"; // Suponiendo que tienes esta propiedad
+                row.Cells["Comercio"].Value = "Comercio";
                 row.Cells["Monto"].Value = $"{consumo.Moneda} {consumo.Monto:N2}";
 
-                // Destacar montos altos
+
                 if (consumo.Monto > 5000)
                 {
                     row.DefaultCellStyle.BackColor = Color.LightPink;

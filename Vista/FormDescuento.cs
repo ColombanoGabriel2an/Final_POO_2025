@@ -92,6 +92,7 @@ namespace Vista
                     return;
                 }
 
+                // Crear el objeto descuento con los valores del formulario
                 var descuento = new Descuento
                 {
                     Codigo = txtCodigo.Text,
@@ -101,21 +102,15 @@ namespace Vista
                     FechaInicio = dtpFechaInicio.Value,
                     FechaFin = dtpFechaFin.Value,
                     Tipo = cmbTipo.SelectedItem.ToString(),
-                    Banco = cmbBanco.SelectedItem.ToString(),  // Ahora añadimos el banco
-                    Emisor = cmbEmisor.SelectedItem.ToString(), // Añadimos el emisor
-                    Rubro = cmbRubro.SelectedItem.ToString(),  // Añadimos el rubro
+                    Banco = cmbBanco.SelectedItem.ToString(),
+                    Emisor = cmbEmisor.SelectedItem.ToString(),
+                    Rubro = cmbRubro.SelectedItem.ToString(),
                     TopeReintegro = nudTopeReintegro.Value,
                     Activo = chkActivo.Checked,
                     Acumulable = chkAcumulable.Checked
                 };
 
-                // Si se está editando un descuento existente, mantener su ID
-                if (descuentoSeleccionado != null)
-                {
-                    descuento.DescuentoId = descuentoSeleccionado.DescuentoId;
-                }
-
-                // Guardar el descuento
+                // Guardar o actualizar el descuento (la controladora determina si es nuevo o existente por código)
                 string resultado = ControladoraDescuento.Instancia.CrearDescuento(descuento);
                 MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

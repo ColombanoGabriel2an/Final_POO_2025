@@ -235,7 +235,7 @@
             this.dgvTarjetas.Name = "dgvTarjetas";
             this.dgvTarjetas.ReadOnly = true;
             this.dgvTarjetas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTarjetas.Size = new System.Drawing.Size(500, 473);
+            this.dgvTarjetas.Size = new System.Drawing.Size(500, 500);
             this.dgvTarjetas.TabIndex = 18;
             this.dgvTarjetas.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTarjetas_CellClick);
             // 
@@ -274,7 +274,7 @@
             // 
             // TarjetaForm
             // 
-            this.ClientSize = new System.Drawing.Size(770, 573);
+            this.ClientSize = new System.Drawing.Size(780, 700);
             this.Controls.Add(this.gbTipoTarjeta);
             this.gbTipoTarjeta.Controls.Add(this.rbCredito);
             this.gbTipoTarjeta.Controls.Add(this.rbDebito);

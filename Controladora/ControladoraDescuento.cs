@@ -33,18 +33,29 @@ namespace Controladora
         {
             try
             {
-                if (descuento.DescuentoId <= 0)
+                // Verificar si ya existe un descuento con el mismo código
+                var descuentoExistente = descuentos.FirstOrDefault(d => d.Codigo == descuento.Codigo);
+
+                if (descuentoExistente != null)
                 {
+                    // Actualizar el descuento existente manteniendo su ID
+                    int indice = descuentos.IndexOf(descuentoExistente);
+                    descuento.DescuentoId = descuentoExistente.DescuentoId;
+                    descuentos[indice] = descuento;
+                    return $"Descuento '{descuento.Nombre}' actualizado correctamente";
+                }
+                else
+                {
+                    // Crear un nuevo descuento con un nuevo ID
                     descuento.DescuentoId = descuentos.Count > 0
                         ? descuentos.Max(d => d.DescuentoId) + 1 : 1;
+                    descuentos.Add(descuento);
+                    return $"Descuento '{descuento.Nombre}' creado correctamente";
                 }
-
-                descuentos.Add(descuento);
-                return $"Descuento '{descuento.Descripcion}' creado correctamente";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return "Ocurrió un error al crear el descuento";
+                return $"Ocurrió un error al procesar el descuento: {ex.Message}";
             }
         }
 

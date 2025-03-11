@@ -23,7 +23,7 @@ namespace Vista
         {
             var tarjetas = ControladoraTarjeta.Instancia.ListarTarjetas();
             cmbTarjetas.DataSource = tarjetas;
-            cmbTarjetas.DisplayMember = "Numero";
+            cmbTarjetas.DisplayMember = "Alias";
             cmbTarjetas.ValueMember = "TarjetaId";
         }
 

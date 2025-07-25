@@ -52,13 +52,19 @@ namespace Controladora
                     {
                         // Actualizar el descuento existente
                         descuentoExistente.Nombre = descuento.Nombre;
+                        descuentoExistente.Descripcion = descuento.Descripcion;
                         descuentoExistente.Porcentaje = descuento.Porcentaje;
                         descuentoExistente.MontoMinimo = descuento.MontoMinimo;
+                        descuentoExistente.MontoFijo = descuento.MontoFijo;
+                        descuentoExistente.TopeReintegro = descuento.TopeReintegro;
                         descuentoExistente.FechaInicio = descuento.FechaInicio;
                         descuentoExistente.FechaFin = descuento.FechaFin;
                         descuentoExistente.Tipo = descuento.Tipo;
                         descuentoExistente.Activo = descuento.Activo;
                         descuentoExistente.Acumulable = descuento.Acumulable;
+                        descuentoExistente.Banco = descuento.Banco;
+                        descuentoExistente.Emisor = descuento.Emisor;
+                        descuentoExistente.Rubro = descuento.Rubro;
 
                         context.SaveChanges();
                         return $"Descuento '{descuento.Nombre}' actualizado correctamente";
@@ -112,13 +118,19 @@ namespace Controladora
                     {
                         descuentoExistente.Nombre = descuento.Nombre;
                         descuentoExistente.Codigo = descuento.Codigo;
+                        descuentoExistente.Descripcion = descuento.Descripcion;
                         descuentoExistente.Porcentaje = descuento.Porcentaje;
                         descuentoExistente.MontoMinimo = descuento.MontoMinimo;
+                        descuentoExistente.MontoFijo = descuento.MontoFijo;
+                        descuentoExistente.TopeReintegro = descuento.TopeReintegro;
                         descuentoExistente.FechaInicio = descuento.FechaInicio;
                         descuentoExistente.FechaFin = descuento.FechaFin;
                         descuentoExistente.Tipo = descuento.Tipo;
                         descuentoExistente.Activo = descuento.Activo;
                         descuentoExistente.Acumulable = descuento.Acumulable;
+                        descuentoExistente.Banco = descuento.Banco;
+                        descuentoExistente.Emisor = descuento.Emisor;
+                        descuentoExistente.Rubro = descuento.Rubro;
 
                         context.SaveChanges();
                         return "Descuento actualizado correctamente";
@@ -219,7 +231,17 @@ namespace Controladora
                     consumoDb.DescuentosAplicados.Add(descuento);
 
                     // Calcular nuevo monto
-                    decimal montoDescuento = (consumoDb.Monto * descuento.Porcentaje) / 100;
+                    decimal montoDescuento = 0;
+                    if (descuento.MontoFijo > 0)
+                    {
+                        montoDescuento = descuento.MontoFijo;
+                    }
+                    else
+                    {
+                        montoDescuento = (consumoDb.Monto * descuento.Porcentaje) / 100;
+                    }
+
+                    // Aplicar tope de reintegro si existe
                     if (descuento.TopeReintegro > 0 && montoDescuento > descuento.TopeReintegro)
                         montoDescuento = descuento.TopeReintegro;
 
@@ -245,23 +267,59 @@ namespace Controladora
                     {
                         var descuentos = new List<Descuento>
                         {
-                            new Descuento("Descuento 10%", DateTime.Now.AddDays(-1), DateTime.Now.AddMonths(1), 10, 0, 1000, "Banco Nación", "Visa", "Supermercados")
+                            new Descuento
                             {
                                 Codigo = "DESC10",
                                 Nombre = "Descuento 10%",
-                                Tipo = "Porcentual"
+                                Descripcion = "Descuento del 10% en compras",
+                                Porcentaje = 10,
+                                MontoMinimo = 100,
+                                MontoFijo = 0,
+                                TopeReintegro = 1000,
+                                FechaInicio = DateTime.Now.AddDays(-1),
+                                FechaFin = DateTime.Now.AddMonths(1),
+                                Tipo = "Porcentual",
+                                Activo = true,
+                                Acumulable = true,
+                                Banco = "Todos",
+                                Emisor = "Sistema",
+                                Rubro = "Todos"
                             },
-                            new Descuento("Descuento 20%", DateTime.Now.AddDays(-1), DateTime.Now.AddMonths(2), 20, 0, 2000, "Banco Galicia", "MasterCard", "Restaurantes")
+                            new Descuento
                             {
                                 Codigo = "DESC20",
                                 Nombre = "Descuento 20%",
-                                Tipo = "Porcentual"
+                                Descripcion = "Descuento del 20% en compras",
+                                Porcentaje = 20,
+                                MontoMinimo = 500,
+                                MontoFijo = 0,
+                                TopeReintegro = 2000,
+                                FechaInicio = DateTime.Now.AddDays(-1),
+                                FechaFin = DateTime.Now.AddMonths(2),
+                                Tipo = "Porcentual",
+                                Activo = true,
+                                Acumulable = false,
+                                Banco = "Banco Nación",
+                                Emisor = "Sistema",
+                                Rubro = "Alimentación"
                             },
-                            new Descuento("Descuento 5%", DateTime.Now.AddDays(-1), DateTime.Now.AddMonths(3), 5, 0, 500, "Banco Santander", "Visa", "Combustible")
+                            new Descuento
                             {
                                 Codigo = "DESC5",
                                 Nombre = "Descuento 5%",
-                                Tipo = "Porcentual"
+                                Descripcion = "Descuento del 5% en compras",
+                                Porcentaje = 5,
+                                MontoMinimo = 50,
+                                MontoFijo = 0,
+                                TopeReintegro = 500,
+                                FechaInicio = DateTime.Now.AddDays(-1),
+                                FechaFin = DateTime.Now.AddMonths(3),
+                                Tipo = "Porcentual",
+                                Activo = true,
+                                Acumulable = true,
+                                Banco = "Todos",
+                                Emisor = "Sistema",
+                                Rubro = "Todos"
                             }
                         };
 

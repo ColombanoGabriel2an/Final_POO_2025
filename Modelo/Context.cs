@@ -79,6 +79,7 @@ namespace Modelo
 
             // Seed Descuentos
             modelBuilder.Entity<Descuento>().HasData(
+                
                 new Descuento
                 {
                     DescuentoId = 1,

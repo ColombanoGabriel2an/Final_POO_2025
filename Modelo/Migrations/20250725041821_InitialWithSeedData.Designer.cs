@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Modelo;
@@ -12,26 +11,22 @@ using Modelo;
 namespace Modelo.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250310053512_Initial")]
-    partial class Initial
+    [Migration("20250725041821_InitialWithSeedData")]
+    partial class InitialWithSeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
 
             modelBuilder.Entity("ConsumoDescuento", b =>
                 {
                     b.Property<int>("ConsumoId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("DescuentosAplicadosDescuentoId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ConsumoId", "DescuentosAplicadosDescuentoId");
 
@@ -44,29 +39,27 @@ namespace Modelo.Migrations
                 {
                     b.Property<int>("AcreditacionId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AcreditacionId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("MedioDePago")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Monto")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("TarjetaCreditoTarjetaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TarjetaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("AcreditacionId");
 
@@ -81,33 +74,42 @@ namespace Modelo.Migrations
                 {
                     b.Property<int>("ConsumoId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConsumoId"));
+                    b.Property<string>("Comercio")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EsRecurrente")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Hora")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Moneda")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Monto")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Rubro")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("TarjetaCreditoTarjetaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TarjetaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ConsumoId");
 
@@ -122,104 +124,208 @@ namespace Modelo.Migrations
                 {
                     b.Property<int>("DescuentoId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DescuentoId"));
+                    b.Property<bool>("Activo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Acumulable")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Banco")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Emisor")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaFin")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaInicio")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("MontoFijo")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("MontoMinimo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Porcentaje")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Rubro")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
-                    b.Property<decimal>("TopeMonto")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TopeReintegro")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("DescuentoId");
 
                     b.ToTable("Descuentos");
+
+                    b.HasData(
+                        new
+                        {
+                            DescuentoId = 1,
+                            Activo = true,
+                            Acumulable = true,
+                            Banco = "Todos",
+                            Codigo = "DESC10",
+                            Descripcion = "Descuento del 10% en compras",
+                            Emisor = "Sistema",
+                            FechaFin = new DateTime(2025, 8, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontoFijo = 0m,
+                            MontoMinimo = 100m,
+                            Nombre = "Descuento 10%",
+                            Porcentaje = 10m,
+                            Rubro = "Todos",
+                            Tipo = "Porcentual",
+                            TopeReintegro = 1000m
+                        },
+                        new
+                        {
+                            DescuentoId = 2,
+                            Activo = true,
+                            Acumulable = false,
+                            Banco = "Banco Nación",
+                            Codigo = "DESC20",
+                            Descripcion = "Descuento del 20% en compras",
+                            Emisor = "Sistema",
+                            FechaFin = new DateTime(2025, 9, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontoFijo = 0m,
+                            MontoMinimo = 500m,
+                            Nombre = "Descuento 20%",
+                            Porcentaje = 20m,
+                            Rubro = "Alimentación",
+                            Tipo = "Porcentual",
+                            TopeReintegro = 2000m
+                        },
+                        new
+                        {
+                            DescuentoId = 3,
+                            Activo = true,
+                            Acumulable = true,
+                            Banco = "Todos",
+                            Codigo = "DESC5",
+                            Descripcion = "Descuento del 5% en compras",
+                            Emisor = "Sistema",
+                            FechaFin = new DateTime(2025, 10, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontoFijo = 0m,
+                            MontoMinimo = 50m,
+                            Nombre = "Descuento 5%",
+                            Porcentaje = 5m,
+                            Rubro = "Todos",
+                            Tipo = "Porcentual",
+                            TopeReintegro = 500m
+                        });
                 });
 
             modelBuilder.Entity("Entidades.Persona", b =>
                 {
                     b.Property<int>("PersonaId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonaId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Apellido")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("DNI")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("PersonaId");
 
                     b.ToTable("Personas");
+
+                    b.HasData(
+                        new
+                        {
+                            PersonaId = 1,
+                            Apellido = "Colombano",
+                            DNI = "44555998",
+                            Nombre = "Gabriel"
+                        },
+                        new
+                        {
+                            PersonaId = 2,
+                            Apellido = "Llanos",
+                            DNI = "12355666",
+                            Nombre = "Matias"
+                        },
+                        new
+                        {
+                            PersonaId = 3,
+                            Apellido = "Gallegos",
+                            DNI = "12577889",
+                            Nombre = "Laureano"
+                        },
+                        new
+                        {
+                            PersonaId = 4,
+                            Apellido = "Lopez",
+                            DNI = "13344895",
+                            Nombre = "Pedro"
+                        });
                 });
 
             modelBuilder.Entity("Entidades.Tarjeta", b =>
                 {
                     b.Property<int>("TarjetaId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TarjetaId"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Alias")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Banco")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("EntidadEmisora")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaVencimiento")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Numero")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("PersonaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("TipoTarjeta")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("TarjetaId");
 
@@ -237,16 +343,16 @@ namespace Modelo.Migrations
                     b.HasBaseType("Entidades.Tarjeta");
 
                     b.Property<decimal>("Disponible")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("IsExtension")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Limite")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("TenedorPersonaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasIndex("TenedorPersonaId");
 
@@ -258,7 +364,7 @@ namespace Modelo.Migrations
                     b.HasBaseType("Entidades.Tarjeta");
 
                     b.Property<decimal>("Saldo")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("Debito");
                 });

@@ -49,11 +49,6 @@ namespace Vista
             try
             {
 
-                if (ControladoraDescuento.Instancia.ListarDescuentos().Count == 0)
-                {
-                    ControladoraDescuento.Instancia.PrecargarDescuentos();
-                }
-
                 CargarTarjetas();
                 CargarRubros();
 
@@ -267,11 +262,6 @@ namespace Vista
             {
                 var todosLosDescuentos = ControladoraDescuento.Instancia.ListarDescuentos();
 
-                if (todosLosDescuentos.Count == 0)
-                {
-                    ControladoraDescuento.Instancia.PrecargarDescuentos();
-                    todosLosDescuentos = ControladoraDescuento.Instancia.ListarDescuentos();
-                }
 
                 _descuentosDisponibles = new List<Descuento>();
                 string rubroSeleccionado = cmbRubro.SelectedItem?.ToString() ?? "";

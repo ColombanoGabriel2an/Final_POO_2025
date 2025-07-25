@@ -63,6 +63,80 @@ namespace Modelo
                 .HasMany(c => c.DescuentosAplicados)
                 .WithMany();
 
+            // 6. Seeding de datos iniciales
+            SeedData(modelBuilder);
+        }
+
+        private void SeedData(ModelBuilder modelBuilder)
+        {
+            // Seed Personas
+            modelBuilder.Entity<Persona>().HasData(
+                new Persona { PersonaId = 1, Nombre = "Gabriel", Apellido = "Colombano", DNI = "44555998" },
+                new Persona { PersonaId = 2, Nombre = "Matias", Apellido = "Llanos", DNI = "12355666" },
+                new Persona { PersonaId = 3, Nombre = "Laureano", Apellido = "Gallegos", DNI = "12577889" },
+                new Persona { PersonaId = 4, Nombre = "Pedro", Apellido = "Lopez", DNI = "13344895" }
+            );
+
+            // Seed Descuentos
+            modelBuilder.Entity<Descuento>().HasData(
+                new Descuento
+                {
+                    DescuentoId = 1,
+                    Codigo = "DESC10",
+                    Nombre = "Descuento 10%",
+                    Descripcion = "Descuento del 10% en compras",
+                    Porcentaje = 10,
+                    MontoMinimo = 100,
+                    MontoFijo = 0,
+                    TopeReintegro = 1000,
+                    FechaInicio = new DateTime(2025, 7, 24),
+                    FechaFin = new DateTime(2025, 8, 24),
+                    Tipo = "Porcentual",
+                    Activo = true,
+                    Acumulable = true,
+                    Banco = "Todos",
+                    Emisor = "Sistema",
+                    Rubro = "Todos"
+                },
+                new Descuento
+                {
+                    DescuentoId = 2,
+                    Codigo = "DESC20",
+                    Nombre = "Descuento 20%",
+                    Descripcion = "Descuento del 20% en compras",
+                    Porcentaje = 20,
+                    MontoMinimo = 500,
+                    MontoFijo = 0,
+                    TopeReintegro = 2000,
+                    FechaInicio = new DateTime(2025, 7, 24),
+                    FechaFin = new DateTime(2025, 9, 24),
+                    Tipo = "Porcentual",
+                    Activo = true,
+                    Acumulable = false,
+                    Banco = "Banco Nación",
+                    Emisor = "Sistema",
+                    Rubro = "Alimentación"
+                },
+                new Descuento
+                {
+                    DescuentoId = 3,
+                    Codigo = "DESC5",
+                    Nombre = "Descuento 5%",
+                    Descripcion = "Descuento del 5% en compras",
+                    Porcentaje = 5,
+                    MontoMinimo = 50,
+                    MontoFijo = 0,
+                    TopeReintegro = 500,
+                    FechaInicio = new DateTime(2025, 7, 24),
+                    FechaFin = new DateTime(2025, 10, 24),
+                    Tipo = "Porcentual",
+                    Activo = true,
+                    Acumulable = true,
+                    Banco = "Todos",
+                    Emisor = "Sistema",
+                    Rubro = "Todos"
+                }
+            );
         }
     }
 }

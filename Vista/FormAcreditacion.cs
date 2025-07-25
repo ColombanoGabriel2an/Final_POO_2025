@@ -42,7 +42,7 @@ namespace Vista
                 // Crear una nueva acreditación
                 var acreditacion = new Acreditacion
                 {
-                    AcreditacionId = ControladoraAcreditacion.Instancia.GenerarIdAcreditacion(), // Se generará automáticamente
+                    // AcreditacionId se genera automáticamente con Entity Framework
                     Fecha = dtpFecha.Value,
                     Descripcion = txtDescripcion.Text,
                     Monto = nudMonto.Value,

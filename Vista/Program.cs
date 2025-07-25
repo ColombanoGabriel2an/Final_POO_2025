@@ -33,13 +33,6 @@ namespace Vista
                 return;
             }
 
-            // Llamar a los métodos para precargar los datos
-            ControladoraPersona.Instancia.PrecargarPersonas();
-            ControladoraTarjeta.Instancia.PrecargarTarjetas();
-            ControladoraDescuento.Instancia.PrecargarDescuentos();
-            ControladoraAcreditacion.Instancia.PrecargarAcreditaciones();
-            ControladoraConsumo.Instancia.PrecargarConsumos();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

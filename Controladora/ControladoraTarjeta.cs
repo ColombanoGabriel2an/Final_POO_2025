@@ -143,35 +143,5 @@ namespace Controladora
                 return null;
             }
         }
-
-        public void PrecargarTarjetas()
-        {
-            try
-            {
-                using (var context = new Context())
-                {
-                    // Solo precargar si no hay datos
-                    if (!context.Tarjetas.Any())
-                    {
-                        var personas = context.Personas.ToList();
-                        if (personas.Any())
-                        {
-                            var tarjetas = new List<Tarjeta>
-                            {
-                                new TarjetaDebito("1234-5678-9012-3456", DateTime.Now.AddYears(3), "Banco Nación", "Visa", personas[0], "Mi Débito", 15000),
-                                new TarjetaCredito("2345-6789-0123-4567", DateTime.Now.AddYears(4), "Banco Galicia", "MasterCard", personas[1], "Mi Crédito", false, personas[1], 50000, 50000)
-                            };
-
-                            context.Tarjetas.AddRange(tarjetas);
-                            context.SaveChanges();
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // Error en precarga, no hacer nada
-            }
-        }
     }
 }

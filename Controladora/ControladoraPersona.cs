@@ -128,33 +128,5 @@ namespace Controladora
                 return null;
             }
         }
-
-        public void PrecargarPersonas()
-        {
-            try
-            {
-                using (var context = new Context())
-                {
-                    // Solo precargar si no hay datos
-                    if (!context.Personas.Any())
-                    {
-                        var personas = new List<Persona>
-                        {
-                            new Persona("Gabriel", "Colombano", "44555998"),
-                            new Persona("Matias", "Llanos", "12355666"),
-                            new Persona("Laureano", "Gallegos", "12577889"),
-                            new Persona("Pedro", "Lopez", "13344895")
-                        };
-
-                        context.Personas.AddRange(personas);
-                        context.SaveChanges();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // Error en precarga, no hacer nada
-            }
-        }
     }
 }

@@ -159,40 +159,5 @@ namespace Controladora
                 return new List<Acreditacion>();
             }
         }
-
-        public void PrecargarAcreditaciones()
-        {
-            try
-            {
-                using (var context = new Context())
-                {
-                    // Solo precargar si no hay datos
-                    if (!context.Acreditaciones.Any())
-                    {
-                        var tarjetas = context.Tarjetas.ToList();
-                        if (tarjetas.Any())
-                        {
-                            var acreditaciones = new List<Acreditacion>
-                            {
-                                new Acreditacion(tarjetas[0], new DateTime(2025, 01, 10), "Transferencia bancaria", 5000, "Transferencia"),
-                                new Acreditacion(tarjetas[0], new DateTime(2025, 01, 20), "Depósito efectivo", 2000, "Efectivo")
-                            };
-
-                            if (tarjetas.Count > 1)
-                            {
-                                acreditaciones.Add(new Acreditacion(tarjetas[1], new DateTime(2025, 01, 15), "Transferencia online", 3000, "Transferencia"));
-                            }
-
-                            context.Acreditaciones.AddRange(acreditaciones);
-                            context.SaveChanges();
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // Error en precarga, no hacer nada
-            }
-        }
     }
 }

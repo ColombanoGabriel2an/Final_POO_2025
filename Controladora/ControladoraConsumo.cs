@@ -113,36 +113,5 @@ namespace Controladora
                 return null;
             }
         }
-
-        public void PrecargarConsumos()
-        {
-            try
-            {
-                using (var context = new Context())
-                {
-                    // Solo precargar si no hay datos
-                    if (!context.Consumos.Any())
-                    {
-                        var tarjetas = context.Tarjetas.ToList();
-                        if (tarjetas.Count >= 2)
-                        {
-                            var consumos = new List<Consumo>
-                            {
-                                new Consumo(tarjetas[0], new DateTime(2025, 01, 15), "12:30", "Compra en tienda de tecnología", 300, "ARG"),
-                                new Consumo(tarjetas[1], new DateTime(2025, 01, 15), "14:00", "Compra en tienda de ropa", 500, "ARG")
-                            };
-
-                            context.Consumos.AddRange(consumos);
-                            context.SaveChanges();
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // Error en precarga, no hacer nada
-            }
-        }
-
     }
 }

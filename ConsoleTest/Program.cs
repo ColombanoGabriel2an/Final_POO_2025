@@ -21,29 +21,7 @@ namespace ConsoleApp
           Console.WriteLine("✓ Base de datos creada exitosamente");
         }
 
-        Console.WriteLine("Precargando datos...");
-
-        // Precargar personas
-        ControladoraPersona.Instancia.PrecargarPersonas();
-        Console.WriteLine("✓ Personas precargadas");
-
-        // Precargar tarjetas
-        ControladoraTarjeta.Instancia.PrecargarTarjetas();
-        Console.WriteLine("✓ Tarjetas precargadas");
-
-        // Precargar descuentos
-        ControladoraDescuento.Instancia.PrecargarDescuentos();
-        Console.WriteLine("✓ Descuentos precargados");
-
-        // Precargar acreditaciones
-        ControladoraAcreditacion.Instancia.PrecargarAcreditaciones();
-        Console.WriteLine("✓ Acreditaciones precargadas");
-
-        // Precargar consumos
-        ControladoraConsumo.Instancia.PrecargarConsumos();
-        Console.WriteLine("✓ Consumos precargados");
-
-        Console.WriteLine("\n¡Base de datos inicializada y datos precargados exitosamente!");
+        Console.WriteLine("\n¡Base de datos inicializada exitosamente!");
 
         // Mostrar estadísticas
         Console.WriteLine("\n=== ESTADÍSTICAS ===");

@@ -1,50 +1,63 @@
 @echo off
-echo 🚀 Configurando proyecto Final_POO_2025 con Entity Framework...
+echo ==================================================
+echo       CONFIGURACION INICIAL DEL PROYECTO
+echo ==================================================
 echo.
 
-REM Verificar que estamos en el directorio correcto
-if not exist "Final_POO_2025.sln" (
-    echo ❌ Error: No se encontró Final_POO_2025.sln
-    echo Asegúrate de ejecutar este script desde el directorio raíz del proyecto
+echo 1. Eliminando migraciones anteriores...
+cd Modelo
+if exist "Migrations" rmdir /s /q "Migrations"
+echo    ✓ Migraciones eliminadas
+
+echo.
+echo 2. Eliminando base de datos anterior...
+cd ..
+if exist "DBregistros.db" del "DBregistros.db"
+if exist "Vista\bin\Debug\net6.0\DBregistros.db" del "Vista\bin\Debug\net6.0\DBregistros.db"
+echo    ✓ Base de datos eliminada
+
+echo.
+echo 3. Creando nueva migración con datos iniciales...
+cd Modelo
+dotnet ef migrations add InitialWithSeedData
+if %errorlevel% neq 0 (
+    echo    ❌ Error al crear la migración
     pause
-    exit /b 1
+    exit /b %errorlevel%
 )
-
-echo 📦 Restaurando paquetes NuGet...
-dotnet restore
+echo    ✓ Migración creada
 
 echo.
-echo 🔨 Construyendo la solución...
+echo 4. Aplicando migración a la base de datos...
+dotnet ef database update
+if %errorlevel% neq 0 (
+    echo    ❌ Error al aplicar la migración
+    pause
+    exit /b %errorlevel%
+)
+echo    ✓ Base de datos actualizada con datos iniciales
+
+echo.
+echo 5. Compilando todo el proyecto...
+cd ..
 dotnet build
-
-if %errorlevel% equ 0 (
-    echo.
-    echo ✅ Construcción exitosa!
-    echo.
-    echo 🗃️ Inicializando base de datos...
-    cd ConsoleTest
-    dotnet run
-    cd ..
-    
-    echo.
-    echo ✅ ¡Configuración completada exitosamente!
-    echo.
-    echo 📋 Próximos pasos:
-    echo   • La base de datos SQLite se creó en: DBregistros.db
-    echo   • Datos de ejemplo se cargaron automáticamente
-    echo   • Abrir Vista/Vista.csproj en Visual Studio para ejecutar la aplicación
-    echo.
-    echo 📊 Datos precargados:
-    echo   • 4 Personas de ejemplo
-    echo   • 2 Tarjetas (débito y crédito)
-    echo   • 3 Descuentos activos
-    echo   • 3 Acreditaciones de ejemplo
-    echo.
-) else (
-    echo ❌ Error en la construcción del proyecto
-    echo Revisa los mensajes de error anteriores
+if %errorlevel% neq 0 (
+    echo    ❌ Error al compilar el proyecto
+    pause
+    exit /b %errorlevel%
 )
+echo    ✓ Proyecto compilado exitosamente
 
 echo.
-echo Presiona cualquier tecla para continuar...
-pause > nul
+echo ==================================================
+echo           CONFIGURACION COMPLETADA
+echo ==================================================
+echo.
+echo ✓ Base de datos creada con datos iniciales
+echo ✓ Proyecto listo para ejecutar
+echo.
+echo Ahora puedes:
+echo - Ejecutar Vista (aplicación Windows Forms)
+echo - Ejecutar ConsoleTest (aplicación de consola)
+echo.
+pause

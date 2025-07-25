@@ -59,7 +59,7 @@ namespace Controladora
                         descuentoExistente.Tipo = descuento.Tipo;
                         descuentoExistente.Activo = descuento.Activo;
                         descuentoExistente.Acumulable = descuento.Acumulable;
-                        
+
                         context.SaveChanges();
                         return $"Descuento '{descuento.Nombre}' actualizado correctamente";
                     }
@@ -119,7 +119,7 @@ namespace Controladora
                         descuentoExistente.Tipo = descuento.Tipo;
                         descuentoExistente.Activo = descuento.Activo;
                         descuentoExistente.Acumulable = descuento.Acumulable;
-                        
+
                         context.SaveChanges();
                         return "Descuento actualizado correctamente";
                     }

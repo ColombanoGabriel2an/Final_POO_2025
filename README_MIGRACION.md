@@ -1,11 +1,13 @@
 # Sistema de Gestión de Tarjetas con Entity Framework
 
 ## 📋 Descripción
+
 Sistema completo de gestión de tarjetas, personas, consumos, acreditaciones y descuentos implementado con Entity Framework Core y base de datos SQLite. El proyecto ha sido migrado completamente de almacenamiento en memoria a persistencia en base de datos.
 
 ## 🔄 Cambios Implementados
 
 ### 1. Migración a Entity Framework
+
 - ✅ **ControladoraPersona**: Migrada completamente a Entity Framework
 - ✅ **ControladoraTarjeta**: Migrada completamente a Entity Framework
 - ✅ **ControladoraConsumo**: Migrada completamente a Entity Framework
@@ -13,11 +15,13 @@ Sistema completo de gestión de tarjetas, personas, consumos, acreditaciones y d
 - ✅ **ControladoraAcreditacion**: Migrada completamente a Entity Framework
 
 ### 2. Base de Datos
+
 - **Motor**: SQLite (compatible con Windows, macOS y Linux)
 - **Archivo**: `DBregistros.db` (se crea automáticamente)
 - **Configuración**: Entity Framework Code First
 
 ### 3. Funcionalidades
+
 - ✅ **CRUD Completo** para todas las entidades
 - ✅ **Relaciones** configuradas correctamente
 - ✅ **Precarga de datos** automática
@@ -27,23 +31,27 @@ Sistema completo de gestión de tarjetas, personas, consumos, acreditaciones y d
 ## 🚀 Configuración para tu Compañero
 
 ### Requisitos Previos
+
 - .NET 6.0 o superior
 - Visual Studio 2022 o VS Code
 
 ### Pasos de Instalación
 
 1. **Clonar el repositorio**
+
    ```bash
    git clone [URL_DEL_REPOSITORIO]
    cd Final_POO_2025
    ```
 
 2. **Restaurar paquetes NuGet**
+
    ```bash
    dotnet restore
    ```
 
 3. **Construir la solución**
+
    ```bash
    dotnet build
    ```
@@ -61,6 +69,7 @@ Sistema completo de gestión de tarjetas, personas, consumos, acreditaciones y d
 La base de datos se crea automáticamente la primera vez que ejecutas la aplicación. El archivo `DBregistros.db` se generará en el directorio del proyecto.
 
 #### Datos Precargados
+
 - **4 Personas** con datos de ejemplo
 - **2 Tarjetas** (1 débito, 1 crédito)
 - **3 Descuentos** activos
@@ -81,6 +90,7 @@ Final_POO_2025/
 ## 🔧 Cambios Técnicos Implementados
 
 ### Controladoras Actualizadas
+
 - **Patrón Singleton** mantenido
 - **Using statements** para manejo correcto de DbContext
 - **Include()** para carga de relaciones
@@ -88,6 +98,7 @@ Final_POO_2025/
 - **Manejo de excepciones** mejorado
 
 ### Configuración de Base de Datos
+
 ```csharp
 // Context.cs - Configuración SQLite
 protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -97,6 +108,7 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 ```
 
 ### Ejemplo de Uso de Controladora
+
 ```csharp
 // Antes (en memoria)
 private List<Persona> personas;

@@ -59,7 +59,7 @@ namespace Controladora
                     consumo.Tarjeta = tarjetaEncontrada;
                     context.Consumos.Add(consumo);
                     context.SaveChanges();
-                    
+
                     return $"Consumo registrado para la tarjeta {tarjetaEncontrada.Numero}";
                 }
             }

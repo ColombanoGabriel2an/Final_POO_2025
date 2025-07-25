@@ -71,7 +71,7 @@ namespace Controladora
                         personaExistente.Nombre = persona.Nombre;
                         personaExistente.Apellido = persona.Apellido;
                         personaExistente.DNI = persona.DNI;
-                        
+
                         context.SaveChanges();
                         return "Persona actualizada correctamente";
                     }

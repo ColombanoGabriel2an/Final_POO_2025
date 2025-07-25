@@ -22,7 +22,7 @@ namespace Modelo
         public DbSet<Descuento> Descuentos { get; set; }
         public DbSet<Acreditacion> Acreditaciones { get; set; }
 
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // Usar SQLite para compatibilidad multiplataforma

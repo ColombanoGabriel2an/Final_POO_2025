@@ -100,7 +100,7 @@ namespace Controladora
                         tarjetaExistente.Banco = tarjeta.Banco;
                         tarjetaExistente.EntidadEmisora = tarjeta.EntidadEmisora;
                         tarjetaExistente.Alias = tarjeta.Alias;
-                        
+
                         if (tarjetaExistente is TarjetaDebito tdExistente && tarjeta is TarjetaDebito tdNueva)
                         {
                             tdExistente.Saldo = tdNueva.Saldo;
@@ -112,7 +112,7 @@ namespace Controladora
                             tcExistente.IsExtension = tcNueva.IsExtension;
                             tcExistente.Tenedor = tcNueva.Tenedor;
                         }
-                        
+
                         context.SaveChanges();
                         return "Tarjeta actualizada correctamente";
                     }

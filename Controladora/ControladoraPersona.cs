@@ -1,10 +1,11 @@
 ﻿using Entidades;
+using Modelo;
+using Microsoft.EntityFrameworkCore;
 
 namespace Controladora
 {
     public class ControladoraPersona
     {
-        private List<Persona> personas;
         private static ControladoraPersona? instancia;
 
         public static ControladoraPersona Instancia
@@ -21,7 +22,6 @@ namespace Controladora
 
         private ControladoraPersona()
         {
-            personas = new List<Persona>();
         }
 
         // Lista todas las personas
@@ -29,7 +29,10 @@ namespace Controladora
         {
             try
             {
-                return personas;
+                using (var context = new Context())
+                {
+                    return context.Personas.Include(p => p.Tarjetas).ToList();
+                }
             }
             catch (Exception)
             {
@@ -37,23 +40,21 @@ namespace Controladora
             }
         }
 
-        // Crea una nueva persona en la lista
+        // Crea una nueva persona en la base de datos
         public string CrearPersona(Persona persona)
         {
             try
             {
-                if (persona.PersonaId <= 0)
+                using (var context = new Context())
                 {
-                    persona.PersonaId = personas.Count > 0
-                        ? personas.Max(p => p.PersonaId) + 1 : 1;
+                    context.Personas.Add(persona);
+                    context.SaveChanges();
+                    return "Persona creada correctamente";
                 }
-
-                personas.Add(persona);
-                return "Persona creada correctamente";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return "Ocurrió un error al crear la persona";
+                return $"Ocurrió un error al crear la persona: {ex.Message}";
             }
         }
 
@@ -62,52 +63,98 @@ namespace Controladora
         {
             try
             {
-                var personaExistente = personas.FirstOrDefault(p => p.PersonaId == persona.PersonaId);
-                if (personaExistente != null)
+                using (var context = new Context())
                 {
-                    // Elimina la persona anterior y agrega la actualizada
-                    personas.Remove(personaExistente);
-                    personas.Add(persona);
-                    return "Persona actualizada correctamente";
-                }
-                else
-                {
-                    return "Persona no encontrada";
+                    var personaExistente = context.Personas.FirstOrDefault(p => p.PersonaId == persona.PersonaId);
+                    if (personaExistente != null)
+                    {
+                        personaExistente.Nombre = persona.Nombre;
+                        personaExistente.Apellido = persona.Apellido;
+                        personaExistente.DNI = persona.DNI;
+                        
+                        context.SaveChanges();
+                        return "Persona actualizada correctamente";
+                    }
+                    else
+                    {
+                        return "Persona no encontrada";
+                    }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return "Ocurrió un error al actualizar la persona";
+                return $"Ocurrió un error al actualizar la persona: {ex.Message}";
             }
         }
 
-        // Elimina una persona de la lista
+        // Elimina una persona de la base de datos
         public string BorrarPersona(Persona persona)
         {
             try
             {
-                var personaEncontrada = personas.FirstOrDefault(p => p.PersonaId == persona.PersonaId);
-                if (personaEncontrada != null)
+                using (var context = new Context())
                 {
-                    personas.Remove(personaEncontrada);
-                    return "Persona eliminada correctamente";
+                    var personaEncontrada = context.Personas.FirstOrDefault(p => p.PersonaId == persona.PersonaId);
+                    if (personaEncontrada != null)
+                    {
+                        context.Personas.Remove(personaEncontrada);
+                        context.SaveChanges();
+                        return "Persona eliminada correctamente";
+                    }
+                    else
+                    {
+                        return "Persona no encontrada";
+                    }
                 }
-                else
+            }
+            catch (Exception ex)
+            {
+                return $"Ocurrió un error al eliminar la persona: {ex.Message}";
+            }
+        }
+
+        // Obtener persona por ID
+        public Persona? ObtenerPersonaPorId(int personaId)
+        {
+            try
+            {
+                using (var context = new Context())
                 {
-                    return "Persona no encontrada";
+                    return context.Personas.Include(p => p.Tarjetas).FirstOrDefault(p => p.PersonaId == personaId);
                 }
             }
             catch (Exception)
             {
-                return "Ocurrió un error al eliminar la persona";
+                return null;
             }
         }
+
         public void PrecargarPersonas()
         {
-            ControladoraPersona.Instancia.CrearPersona(new Persona("Gabriel", "Colombano", "44555998"));
-            ControladoraPersona.Instancia.CrearPersona(new Persona("Matias", "Llanos", "12355666"));
-            ControladoraPersona.Instancia.CrearPersona(new Persona("Laureano", "Gallegos", "12577889"));
-            ControladoraPersona.Instancia.CrearPersona(new Persona("Pedro", "Lopez", "13344895"));
+            try
+            {
+                using (var context = new Context())
+                {
+                    // Solo precargar si no hay datos
+                    if (!context.Personas.Any())
+                    {
+                        var personas = new List<Persona>
+                        {
+                            new Persona("Gabriel", "Colombano", "44555998"),
+                            new Persona("Matias", "Llanos", "12355666"),
+                            new Persona("Laureano", "Gallegos", "12577889"),
+                            new Persona("Pedro", "Lopez", "13344895")
+                        };
+
+                        context.Personas.AddRange(personas);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Error en precarga, no hacer nada
+            }
         }
     }
 }

@@ -18,6 +18,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Controladora\Controladora.csproj" />
 		<ProjectReference Include="..\Entidades\Entidades.csproj" />
+		<ProjectReference Include="..\Modelo\Modelo.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

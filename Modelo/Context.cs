@@ -25,9 +25,8 @@ namespace Modelo
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=DBregistros;
-            Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=True;
-            Encrypt=False;TrustServerCertificate=False");
+            // Usar SQLite para compatibilidad multiplataforma
+            optionsBuilder.UseSqlite(@"Data Source=DBregistros.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

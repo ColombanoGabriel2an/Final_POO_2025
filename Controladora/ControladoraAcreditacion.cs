@@ -1,4 +1,6 @@
-﻿using Entidades;
+using Entidades;
+using Modelo;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +9,6 @@ namespace Controladora
 {
     public class ControladoraAcreditacion
     {
-        // Lista en memoria de las Acreditaciones
-        private List<Acreditacion> acreditaciones;
-
         // Instancia única de la Controladora
         private static ControladoraAcreditacion? instancia;
         public static ControladoraAcreditacion Instancia
@@ -27,13 +26,25 @@ namespace Controladora
         // Constructor privado
         private ControladoraAcreditacion()
         {
-            acreditaciones = new List<Acreditacion>();
         }
 
         // Método para listar todas las Acreditaciones
         public List<Acreditacion> ListarAcreditaciones()
         {
-            return acreditaciones;
+            try
+            {
+                using (var context = new Context())
+                {
+                    return context.Acreditaciones
+                        .Include(a => a.Tarjeta)
+                        .ThenInclude(t => t.Titular)
+                        .ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<Acreditacion>();
+            }
         }
 
         // Crear una nueva Acreditación
@@ -41,28 +52,22 @@ namespace Controladora
         {
             try
             {
-                // Buscar la tarjeta en el sistema
-                var tarjetaEncontrada = ControladoraTarjeta.Instancia.ListarTarjetas()
-                    .FirstOrDefault(t => t.Numero == tarjeta.Numero); // Asumimos que la tarjeta se busca por el número
-
-                if (tarjetaEncontrada == null)
-                    return "La tarjeta no existe";
-
-                // Generar ID si es necesario
-                if (acreditacion.AcreditacionId <= 0)
+                using (var context = new Context())
                 {
-                    acreditacion.AcreditacionId = GenerarIdAcreditacion();
+                    // Buscar la tarjeta en el sistema
+                    var tarjetaEncontrada = context.Tarjetas
+                        .Include(t => t.Titular)
+                        .FirstOrDefault(t => t.TarjetaId == tarjeta.TarjetaId);
+
+                    if (tarjetaEncontrada == null)
+                        return "La tarjeta no existe";
+
+                    acreditacion.Tarjeta = tarjetaEncontrada;
+                    context.Acreditaciones.Add(acreditacion);
+                    context.SaveChanges();
+
+                    return $"Acreditación creada correctamente para la tarjeta {tarjetaEncontrada.Numero}";
                 }
-
-                // Asociamos la tarjeta encontrada a la acreditación
-                acreditacion.Tarjeta = tarjetaEncontrada;
-
-                // Lógica adicional para actualizar saldos o realizar otras operaciones
-
-                // Agregar la acreditación a la lista
-                acreditaciones.Add(acreditacion);
-
-                return $"Acreditación creada para la tarjeta {tarjetaEncontrada.Numero}";
             }
             catch (Exception ex)
             {
@@ -70,78 +75,124 @@ namespace Controladora
             }
         }
 
-        // Borrar una acreditación
-        public string BorrarAcreditacion(Acreditacion acreditacion)
+        // Eliminar una Acreditación
+        public string EliminarAcreditacion(Acreditacion acreditacion)
         {
             try
             {
-                var acreditacionEncontrada = acreditaciones
-                    .FirstOrDefault(a => a.AcreditacionId == acreditacion.AcreditacionId);
+                using (var context = new Context())
+                {
+                    var acreditacionEncontrada = context.Acreditaciones
+                        .FirstOrDefault(a => a.AcreditacionId == acreditacion.AcreditacionId);
 
-                if (acreditacionEncontrada != null)
-                {
-                    acreditaciones.Remove(acreditacionEncontrada);
-                    return "Acreditación eliminada correctamente";
+                    if (acreditacionEncontrada != null)
+                    {
+                        context.Acreditaciones.Remove(acreditacionEncontrada);
+                        context.SaveChanges();
+                        return "Acreditación eliminada correctamente";
+                    }
+                    else
+                        return "Acreditación no encontrada";
                 }
-                else
+            }
+            catch (Exception ex)
+            {
+                return $"Ocurrió un error al eliminar la acreditación: {ex.Message}";
+            }
+        }
+
+        // Obtener acreditación por ID
+        public Acreditacion? ObtenerAcreditacionPorId(int acreditacionId)
+        {
+            try
+            {
+                using (var context = new Context())
                 {
-                    return "Acreditación no encontrada";
+                    return context.Acreditaciones
+                        .Include(a => a.Tarjeta)
+                        .ThenInclude(t => t.Titular)
+                        .FirstOrDefault(a => a.AcreditacionId == acreditacionId);
                 }
             }
             catch (Exception)
             {
-                return "Ocurrió un error al eliminar la acreditación";
+                return null;
             }
         }
 
-        // Precargar datos de Acreditaciones (ejemplo con tarjetas precargadas)
+        // Obtener acreditaciones por tarjeta
+        public List<Acreditacion> ObtenerAcreditacionesPorTarjeta(int tarjetaId)
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    return context.Acreditaciones
+                        .Include(a => a.Tarjeta)
+                        .ThenInclude(t => t.Titular)
+                        .Where(a => a.TarjetaId == tarjetaId)
+                        .ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<Acreditacion>();
+            }
+        }
+
+        // Obtener acreditaciones en un rango de fechas
+        public List<Acreditacion> ObtenerAcreditacionesPorFecha(DateTime fechaInicio, DateTime fechaFin)
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    return context.Acreditaciones
+                        .Include(a => a.Tarjeta)
+                        .ThenInclude(t => t.Titular)
+                        .Where(a => a.Fecha >= fechaInicio && a.Fecha <= fechaFin)
+                        .ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<Acreditacion>();
+            }
+        }
+
         public void PrecargarAcreditaciones()
         {
             try
             {
-                // Precargamos dos tarjetas para asociar a las acreditaciones
-                var tarjeta1 = ControladoraTarjeta.Instancia.ListarTarjetas().First(t => t.Numero == "1111222233334444");
-                var tarjeta2 = ControladoraTarjeta.Instancia.ListarTarjetas().First(t => t.Numero == "5555666677778888");
-
-                // Crear algunas acreditaciones y asociarlas a las tarjetas
-                var acreditacion1 = new Acreditacion
+                using (var context = new Context())
                 {
-                    Descripcion = "Acreditación por compra",
-                    Fecha = DateTime.Now,
-                    Monto = 1000,
-                    Tarjeta = tarjeta1
-                };
+                    // Solo precargar si no hay datos
+                    if (!context.Acreditaciones.Any())
+                    {
+                        var tarjetas = context.Tarjetas.ToList();
+                        if (tarjetas.Any())
+                        {
+                            var acreditaciones = new List<Acreditacion>
+                            {
+                                new Acreditacion(tarjetas[0], new DateTime(2025, 01, 10), "Transferencia bancaria", 5000, "Transferencia"),
+                                new Acreditacion(tarjetas[0], new DateTime(2025, 01, 20), "Depósito efectivo", 2000, "Efectivo")
+                            };
 
-                var acreditacion2 = new Acreditacion
-                {
-                    Descripcion = "Acreditación por pago de factura",
-                    Fecha = DateTime.Now,
-                    Monto = 2000,
-                    Tarjeta = tarjeta2
-                };
+                            if (tarjetas.Count > 1)
+                            {
+                                acreditaciones.Add(new Acreditacion(tarjetas[1], new DateTime(2025, 01, 15), "Transferencia online", 3000, "Transferencia"));
+                            }
 
-                // Agregar las acreditaciones a la lista
-                CrearAcreditacion(acreditacion1, tarjeta1);
-                CrearAcreditacion(acreditacion2, tarjeta2);
+                            context.Acreditaciones.AddRange(acreditaciones);
+                            context.SaveChanges();
+                        }
+                    }
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error al precargar acreditaciones: {ex.Message}");
+                // Error en precarga, no hacer nada
             }
         }
-
-        // Generar un ID único para cada Acreditación
-        public int GenerarIdAcreditacion()
-        {
-            if (acreditaciones.Count > 0)
-            {
-                return acreditaciones.Max(a => a.AcreditacionId) + 1;
-            }
-            else
-            {
-                return 1; // Si no hay acreditaciones, el primer ID será 1
-            }
-        }
-
     }
 }

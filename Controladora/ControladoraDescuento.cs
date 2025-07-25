@@ -1,10 +1,11 @@
-﻿using Entidades;
+using Entidades;
+using Modelo;
+using Microsoft.EntityFrameworkCore;
 
 namespace Controladora
 {
     public class ControladoraDescuento
     {
-        private List<Descuento> descuentos;
         private static ControladoraDescuento? instancia;
 
         public static ControladoraDescuento Instancia
@@ -21,41 +22,59 @@ namespace Controladora
 
         private ControladoraDescuento()
         {
-            descuentos = new List<Descuento>();
         }
 
         public List<Descuento> ListarDescuentos()
         {
-            return descuentos;
+            try
+            {
+                using (var context = new Context())
+                {
+                    return context.Descuentos.ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<Descuento>();
+            }
         }
 
         public string CrearDescuento(Descuento descuento)
         {
             try
             {
-                // Verificar si ya existe un descuento con el mismo código
-                var descuentoExistente = descuentos.FirstOrDefault(d => d.Codigo == descuento.Codigo);
+                using (var context = new Context())
+                {
+                    // Verificar si ya existe un descuento con el mismo código
+                    var descuentoExistente = context.Descuentos.FirstOrDefault(d => d.Codigo == descuento.Codigo);
 
-                if (descuentoExistente != null)
-                {
-                    // Actualizar el descuento existente manteniendo su ID
-                    int indice = descuentos.IndexOf(descuentoExistente);
-                    descuento.DescuentoId = descuentoExistente.DescuentoId;
-                    descuentos[indice] = descuento;
-                    return $"Descuento '{descuento.Nombre}' actualizado correctamente";
-                }
-                else
-                {
-                    // Crear un nuevo descuento con un nuevo ID
-                    descuento.DescuentoId = descuentos.Count > 0
-                        ? descuentos.Max(d => d.DescuentoId) + 1 : 1;
-                    descuentos.Add(descuento);
-                    return $"Descuento '{descuento.Nombre}' creado correctamente";
+                    if (descuentoExistente != null)
+                    {
+                        // Actualizar el descuento existente
+                        descuentoExistente.Nombre = descuento.Nombre;
+                        descuentoExistente.Porcentaje = descuento.Porcentaje;
+                        descuentoExistente.MontoMinimo = descuento.MontoMinimo;
+                        descuentoExistente.FechaInicio = descuento.FechaInicio;
+                        descuentoExistente.FechaFin = descuento.FechaFin;
+                        descuentoExistente.Tipo = descuento.Tipo;
+                        descuentoExistente.Activo = descuento.Activo;
+                        descuentoExistente.Acumulable = descuento.Acumulable;
+                        
+                        context.SaveChanges();
+                        return $"Descuento '{descuento.Nombre}' actualizado correctamente";
+                    }
+                    else
+                    {
+                        // Crear un nuevo descuento
+                        context.Descuentos.Add(descuento);
+                        context.SaveChanges();
+                        return $"Descuento '{descuento.Nombre}' creado correctamente";
+                    }
                 }
             }
             catch (Exception ex)
             {
-                return $"Ocurrió un error al procesar el descuento: {ex.Message}";
+                return $"Ocurrió un error al crear/actualizar el descuento: {ex.Message}";
             }
         }
 
@@ -63,205 +82,198 @@ namespace Controladora
         {
             try
             {
-                var descuentoEncontrado = descuentos.FirstOrDefault(d => d.DescuentoId == descuento.DescuentoId);
-                if (descuentoEncontrado != null)
+                using (var context = new Context())
                 {
-                    descuentos.Remove(descuentoEncontrado);
-                    return "Descuento eliminado correctamente";
+                    var descuentoEncontrado = context.Descuentos.FirstOrDefault(d => d.DescuentoId == descuento.DescuentoId);
+                    if (descuentoEncontrado != null)
+                    {
+                        context.Descuentos.Remove(descuentoEncontrado);
+                        context.SaveChanges();
+                        return "Descuento eliminado correctamente";
+                    }
+                    else
+                        return "Descuento no encontrado";
                 }
-                else
-                    return "Descuento no encontrado";
+            }
+            catch (Exception ex)
+            {
+                return $"Ocurrió un error al eliminar el descuento: {ex.Message}";
+            }
+        }
+
+        public string ActualizarDescuento(Descuento descuento)
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    var descuentoExistente = context.Descuentos.FirstOrDefault(d => d.DescuentoId == descuento.DescuentoId);
+                    if (descuentoExistente != null)
+                    {
+                        descuentoExistente.Nombre = descuento.Nombre;
+                        descuentoExistente.Codigo = descuento.Codigo;
+                        descuentoExistente.Porcentaje = descuento.Porcentaje;
+                        descuentoExistente.MontoMinimo = descuento.MontoMinimo;
+                        descuentoExistente.FechaInicio = descuento.FechaInicio;
+                        descuentoExistente.FechaFin = descuento.FechaFin;
+                        descuentoExistente.Tipo = descuento.Tipo;
+                        descuentoExistente.Activo = descuento.Activo;
+                        descuentoExistente.Acumulable = descuento.Acumulable;
+                        
+                        context.SaveChanges();
+                        return "Descuento actualizado correctamente";
+                    }
+                    else
+                    {
+                        return "Descuento no encontrado";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Ocurrió un error al actualizar el descuento: {ex.Message}";
+            }
+        }
+
+        // Obtener descuento por ID
+        public Descuento? ObtenerDescuentoPorId(int descuentoId)
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    return context.Descuentos.FirstOrDefault(d => d.DescuentoId == descuentoId);
+                }
             }
             catch (Exception)
             {
-                return "Ocurrió un error al eliminar el descuento";
+                return null;
+            }
+        }
+
+        // Buscar descuento por código
+        public Descuento? BuscarDescuentoPorCodigo(string codigo)
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    return context.Descuentos.FirstOrDefault(d => d.Codigo == codigo);
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        // Obtener descuentos válidos
+        public List<Descuento> ObtenerDescuentosValidos()
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    var fechaActual = DateTime.Now;
+                    return context.Descuentos
+                        .Where(d => d.FechaInicio <= fechaActual && d.FechaFin >= fechaActual && d.Activo)
+                        .ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<Descuento>();
+            }
+        }
+
+        public string AplicarDescuento(Consumo consumo, string codigoDescuento)
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    var descuento = context.Descuentos.FirstOrDefault(d => d.Codigo == codigoDescuento);
+
+                    if (descuento == null)
+                        return "El código de descuento no existe";
+
+                    var fechaActual = DateTime.Now;
+                    if (descuento.FechaInicio > fechaActual || descuento.FechaFin < fechaActual)
+                        return "El descuento no está vigente";
+
+                    if (!descuento.Activo)
+                        return "El descuento no está activo";
+
+                    var consumoDb = context.Consumos
+                        .Include(c => c.DescuentosAplicados)
+                        .FirstOrDefault(c => c.ConsumoId == consumo.ConsumoId);
+
+                    if (consumoDb == null)
+                        return "El consumo no existe";
+
+                    // Verificar si ya tiene este descuento aplicado
+                    if (consumoDb.DescuentosAplicados.Any(d => d.DescuentoId == descuento.DescuentoId))
+                        return "Este descuento ya está aplicado al consumo";
+
+                    // Aplicar descuento
+                    consumoDb.DescuentosAplicados.Add(descuento);
+
+                    // Calcular nuevo monto
+                    decimal montoDescuento = (consumoDb.Monto * descuento.Porcentaje) / 100;
+                    if (descuento.TopeReintegro > 0 && montoDescuento > descuento.TopeReintegro)
+                        montoDescuento = descuento.TopeReintegro;
+
+                    context.SaveChanges();
+
+                    return $"Descuento aplicado correctamente. Ahorro: ${montoDescuento:F2}";
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Ocurrió un error al aplicar el descuento: {ex.Message}";
             }
         }
 
         public void PrecargarDescuentos()
         {
-            Descuento descuento1 = new Descuento
+            try
             {
-                Codigo = "SUPER30",
-                Nombre = "Miércoles de descuentos",
-                Descripcion = "30% los miércoles en supermercados",
-                FechaInicio = new DateTime(2025, 01, 01),
-                FechaFin = new DateTime(2025, 06, 30),
-                Porcentaje = 30,
-                MontoFijo = 0,
-                TopeReintegro = 3000,
-                Banco = "Banco Santander",
-                Emisor = "VISA",
-                Rubro = "Supermercados",
-                Tipo = "Porcentual",
-                Activo = true,
-                Acumulable = false
-            };
-            ControladoraDescuento.Instancia.CrearDescuento(descuento1);
+                using (var context = new Context())
+                {
+                    // Solo precargar si no hay datos
+                    if (!context.Descuentos.Any())
+                    {
+                        var descuentos = new List<Descuento>
+                        {
+                            new Descuento("Descuento 10%", DateTime.Now.AddDays(-1), DateTime.Now.AddMonths(1), 10, 0, 1000, "Banco Nación", "Visa", "Supermercados")
+                            {
+                                Codigo = "DESC10",
+                                Nombre = "Descuento 10%",
+                                Tipo = "Porcentual"
+                            },
+                            new Descuento("Descuento 20%", DateTime.Now.AddDays(-1), DateTime.Now.AddMonths(2), 20, 0, 2000, "Banco Galicia", "MasterCard", "Restaurantes")
+                            {
+                                Codigo = "DESC20",
+                                Nombre = "Descuento 20%",
+                                Tipo = "Porcentual"
+                            },
+                            new Descuento("Descuento 5%", DateTime.Now.AddDays(-1), DateTime.Now.AddMonths(3), 5, 0, 500, "Banco Santander", "Visa", "Combustible")
+                            {
+                                Codigo = "DESC5",
+                                Nombre = "Descuento 5%",
+                                Tipo = "Porcentual"
+                            }
+                        };
 
-            // Restaurantes
-            Descuento descuento2 = new Descuento
+                        context.Descuentos.AddRange(descuentos);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception)
             {
-                Codigo = "REST2X1",
-                Nombre = "2x1 en Restaurantes",
-                Descripcion = "2x1 en restaurantes adheridos",
-                FechaInicio = new DateTime(2025, 03, 01),
-                FechaFin = new DateTime(2025, 04, 30),
-                Porcentaje = 50,
-                MontoFijo = 0,
-                TopeReintegro = 1500,
-                Banco = "Banco BBVA",
-                Emisor = "American Express",
-                Rubro = "Restaurantes",
-                Tipo = "Porcentual",
-                Activo = true,
-                Acumulable = false
-            };
-            ControladoraDescuento.Instancia.CrearDescuento(descuento2);
-
-            // Farmacias
-            Descuento descuento3 = new Descuento
-            {
-                Codigo = "FARM15",
-                Nombre = "Descuento en Farmacias",
-                Descripcion = "15% todos los días en farmacias",
-                FechaInicio = new DateTime(2025, 01, 01),
-                FechaFin = new DateTime(2025, 12, 31),
-                Porcentaje = 15,
-                MontoFijo = 0,
-                TopeReintegro = 1000,
-                Banco = "Banco Nación",
-                Emisor = "Mastercard",
-                Rubro = "Farmacias",
-                Tipo = "Porcentual",
-                Activo = true,
-                Acumulable = true
-            };
-            ControladoraDescuento.Instancia.CrearDescuento(descuento3);
-
-            // Farmacias - Monto fijo
-            Descuento descuento4 = new Descuento
-            {
-                Codigo = "FARM500",
-                Nombre = "Reintegro en Farmacias",
-                Descripcion = "$500 de descuento en compras superiores a $3000",
-                FechaInicio = new DateTime(2025, 03, 15),
-                FechaFin = new DateTime(2025, 04, 15),
-                Porcentaje = 0,
-                MontoFijo = 500,
-                TopeReintegro = 3000,
-                Banco = "Banco BBVA",
-                Emisor = "VISA",
-                Rubro = "Farmacias",
-                Tipo = "Monto Fijo",
-                Activo = true,
-                Acumulable = false
-            };
-            ControladoraDescuento.Instancia.CrearDescuento(descuento4);
-
-            // Electrónica - Cuotas
-            Descuento descuento5 = new Descuento
-            {
-                Codigo = "TECH12C",
-                Nombre = "12 Cuotas Tecnología",
-                Descripcion = "12 cuotas sin interés en tecnología",
-                FechaInicio = new DateTime(2025, 01, 01),
-                FechaFin = new DateTime(2025, 12, 31),
-                Porcentaje = 0,
-                MontoFijo = 0,
-                MontoMinimo = 0,
-                TopeReintegro = 10000,
-                Banco = "Banco Santander",
-                Emisor = "VISA",
-                Rubro = "Electrónica",
-                Tipo = "Financiación",
-                Activo = true,
-                Acumulable = true
-            };
-            ControladoraDescuento.Instancia.CrearDescuento(descuento5);
-
-            // Electrónica - Porcentual
-            Descuento descuento6 = new Descuento
-            {
-                Codigo = "TECH20",
-                Nombre = "Descuento en Tecnología",
-                Descripcion = "20% en artículos seleccionados de tecnología",
-                FechaInicio = new DateTime(2025, 03, 01),
-                FechaFin = new DateTime(2025, 03, 31),
-                Porcentaje = 20,
-                MontoFijo = 0,
-                TopeReintegro = 5000,
-                Banco = "Banco BBVA",
-                Emisor = "Mastercard",
-                Rubro = "Electrónica",
-                Tipo = "Porcentual",
-                Activo = true,
-                Acumulable = false
-            };
-            ControladoraDescuento.Instancia.CrearDescuento(descuento6);
-
-            // Indumentaria - Fines de semana
-            Descuento descuento7 = new Descuento
-            {
-                Codigo = "ROPA30FDS",
-                Nombre = "Fines de Semana de Moda",
-                Descripcion = "30% en ropa los fines de semana",
-                FechaInicio = new DateTime(2025, 02, 01),
-                FechaFin = new DateTime(2025, 08, 31),
-                Porcentaje = 30,
-                MontoFijo = 0,
-                TopeReintegro = 4000,
-                Banco = "Banco Macro",
-                Emisor = "VISA",
-                Rubro = "Indumentaria",
-                Tipo = "Porcentual",
-                Activo = true,
-                Acumulable = false
-            };
-            ControladoraDescuento.Instancia.CrearDescuento(descuento7);
-
-            // Indumentaria - Cuotas + Descuento
-            Descuento descuento8 = new Descuento
-            {
-                Codigo = "ROPA3C10",
-                Nombre = "Cuotas + Descuento",
-                Descripcion = "3 cuotas sin interés + 10% off",
-                FechaInicio = new DateTime(2025, 01, 01),
-                FechaFin = new DateTime(2025, 12, 31),
-                Porcentaje = 10,
-                MontoFijo = 0,
-                MontoMinimo = 2000,
-                TopeReintegro = 5000,
-                Banco = "Banco Macro",
-                Emisor = "Mastercard",
-                Rubro = "Indumentaria",
-                Tipo = "Mixto",
-                Activo = true,
-                Acumulable = true
-            };
-            ControladoraDescuento.Instancia.CrearDescuento(descuento8);
-
-            // Indumentaria - Cuotas + Descuento
-            Descuento descuento9 = new Descuento
-            {
-                Codigo = "ROPA6C20",
-                Nombre = "Cuotas + Descuento",
-                Descripcion = "6 cuotas sin interés + 20% off",
-                FechaInicio = new DateTime(2025, 01, 01),
-                FechaFin = new DateTime(2025, 12, 31),
-                Porcentaje = 20,
-                MontoFijo = 0,
-                MontoMinimo = 2000,
-                TopeReintegro = 5000,
-                Banco = "Banco BBVA",
-                Emisor = "Mastercard",
-                Rubro = "Indumentaria",
-                Tipo = "Mixto",
-                Activo = true,
-                Acumulable = true
-            };
-            ControladoraDescuento.Instancia.CrearDescuento(descuento9);
+                // Error en precarga, no hacer nada
+            }
         }
-
     }
 }

@@ -13,6 +13,7 @@ namespace Entidades
         public DateTime FechaVencimiento { get; set; }
         public string Banco { get; set; }
         public string EntidadEmisora { get; set; }
+        public int PersonaId { get; set; } // clave de Titular (heredada)
         public Persona Titular { get; set; }
         public string Alias { get; set; }
 
@@ -47,8 +48,8 @@ namespace Entidades
         public decimal Limite { get; set; }
         public decimal Disponible { get; set; }
         public bool IsExtension { get; set; }
+        public int TenedorId { get; set; } 
         public Persona Tenedor { get; set; }
-
         public TarjetaCredito() : base("", default, "", "", null!, "")
         {
             // Deja con valores por defecto
@@ -63,7 +64,7 @@ namespace Entidades
         }
 
         // ---------------------------------------------------
-        public int PersonaId { get; set; }
+        //public int PersonaId { get; set; }
 
         // Relaciones con Acreditaciones y Consumos
         public virtual ICollection<Acreditacion> Acreditaciones { get; set; } = new List<Acreditacion>();

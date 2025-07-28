@@ -16,9 +16,9 @@ namespace Entidades
         public decimal Monto { get; set; }
         public string Moneda { get; set; }
         public List<Descuento> DescuentosAplicados { get; set; } = new List<Descuento>();
-        public string Rubro { get; set; }
-        public string Comercio { get; set; }
-        public bool EsRecurrente { get; set; }
+        public string? Rubro { get; set; }
+        public string? Comercio { get; set; }
+        public bool? EsRecurrente { get; set; }
 
         public int TarjetaId { get; set; }
 

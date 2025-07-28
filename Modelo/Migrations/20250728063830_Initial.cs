@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Modelo.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialWithSeedData : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,7 +71,7 @@ namespace Modelo.Migrations
                     Limite = table.Column<decimal>(type: "TEXT", nullable: true),
                     Disponible = table.Column<decimal>(type: "TEXT", nullable: true),
                     IsExtension = table.Column<bool>(type: "INTEGER", nullable: true),
-                    TenedorPersonaId = table.Column<int>(type: "INTEGER", nullable: true),
+                    TenedorId = table.Column<int>(type: "INTEGER", nullable: true),
                     Saldo = table.Column<decimal>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -84,8 +84,8 @@ namespace Modelo.Migrations
                         principalColumn: "PersonaId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tarjetas_Personas_TenedorPersonaId",
-                        column: x => x.TenedorPersonaId,
+                        name: "FK_Tarjetas_Personas_TenedorId",
+                        column: x => x.TenedorId,
                         principalTable: "Personas",
                         principalColumn: "PersonaId",
                         onDelete: ReferentialAction.Cascade);
@@ -131,9 +131,9 @@ namespace Modelo.Migrations
                     Descripcion = table.Column<string>(type: "TEXT", nullable: false),
                     Monto = table.Column<decimal>(type: "TEXT", nullable: false),
                     Moneda = table.Column<string>(type: "TEXT", nullable: false),
-                    Rubro = table.Column<string>(type: "TEXT", nullable: false),
-                    Comercio = table.Column<string>(type: "TEXT", nullable: false),
-                    EsRecurrente = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Rubro = table.Column<string>(type: "TEXT", nullable: true),
+                    Comercio = table.Column<string>(type: "TEXT", nullable: true),
+                    EsRecurrente = table.Column<bool>(type: "INTEGER", nullable: true),
                     TarjetaId = table.Column<int>(type: "INTEGER", nullable: false),
                     TarjetaCreditoTarjetaId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
@@ -182,9 +182,15 @@ namespace Modelo.Migrations
                 columns: new[] { "DescuentoId", "Activo", "Acumulable", "Banco", "Codigo", "Descripcion", "Emisor", "FechaFin", "FechaInicio", "MontoFijo", "MontoMinimo", "Nombre", "Porcentaje", "Rubro", "Tipo", "TopeReintegro" },
                 values: new object[,]
                 {
-                    { 1, true, true, "Todos", "DESC10", "Descuento del 10% en compras", "Sistema", new DateTime(2025, 8, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 100m, "Descuento 10%", 10m, "Todos", "Porcentual", 1000m },
-                    { 2, true, false, "Banco Nación", "DESC20", "Descuento del 20% en compras", "Sistema", new DateTime(2025, 9, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 500m, "Descuento 20%", 20m, "Alimentación", "Porcentual", 2000m },
-                    { 3, true, true, "Todos", "DESC5", "Descuento del 5% en compras", "Sistema", new DateTime(2025, 10, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 50m, "Descuento 5%", 5m, "Todos", "Porcentual", 500m }
+                    { 1, true, false, "Banco Santander", "SUPER30", "30% los miércoles en supermercados", "VISA", new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "Miércoles de descuentos", 30m, "Supermercados", "Porcentual", 3000m },
+                    { 2, true, false, "Banco BBVA", "REST2X1", "2x1 en restaurantes adheridos", "American Express", new DateTime(2025, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "2x1 en Restaurantes", 50m, "Restaurantes", "Porcentual", 1500m },
+                    { 3, true, true, "Banco Nación", "FARM15", "15% todos los días en farmacias", "Mastercard", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "Descuento en Farmacias", 15m, "Farmacias", "Porcentual", 1000m },
+                    { 4, true, false, "Banco BBVA", "FARM500", "$500 de descuento en compras superiores a $3000", "VISA", new DateTime(2025, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 500m, 0m, "Reintegro en Farmacias", 0m, "Farmacias", "Monto Fijo", 3000m },
+                    { 5, true, true, "Banco Santander", "TECH12C", "12 cuotas sin interés en tecnología", "VISA", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "12 Cuotas Tecnología", 0m, "Electrónica", "Financiación", 10000m },
+                    { 6, true, false, "Banco BBVA", "TECH20", "20% en artículos seleccionados de tecnología", "Mastercard", new DateTime(2025, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "Descuento en Tecnología", 20m, "Electrónica", "Porcentual", 5000m },
+                    { 7, true, false, "Banco Macro", "ROPA30FDS", "30% en ropa los fines de semana", "VISA", new DateTime(2025, 8, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "Fines de Semana de Moda", 30m, "Indumentaria", "Porcentual", 4000m },
+                    { 8, true, true, "Banco Macro", "ROPA3C10", "3 cuotas sin interés + 10% off", "Mastercard", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 2000m, "Cuotas + Descuento", 10m, "Indumentaria", "Mixto", 5000m },
+                    { 9, true, true, "Banco BBVA", "ROPA6C20", "6 cuotas sin interés + 20% off", "Mastercard", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 2000m, "Cuotas + Descuento", 20m, "Indumentaria", "Mixto", 5000m }
                 });
 
             migrationBuilder.InsertData(
@@ -196,6 +202,39 @@ namespace Modelo.Migrations
                     { 2, "Llanos", "12355666", "Matias" },
                     { 3, "Gallegos", "12577889", "Laureano" },
                     { 4, "Lopez", "13344895", "Pedro" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tarjetas",
+                columns: new[] { "TarjetaId", "Alias", "Banco", "EntidadEmisora", "FechaVencimiento", "Numero", "PersonaId", "Saldo", "TipoTarjeta" },
+                values: new object[] { 1, "BBVA Mati", "Banco BBVA", "VISA", new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "1111222233334444", 2, 100000m, "Debito" });
+
+            migrationBuilder.InsertData(
+                table: "Tarjetas",
+                columns: new[] { "TarjetaId", "Alias", "Banco", "Disponible", "EntidadEmisora", "FechaVencimiento", "IsExtension", "Limite", "Numero", "PersonaId", "TenedorId", "TipoTarjeta" },
+                values: new object[,]
+                {
+                    { 2, "Macro Mati", "Banco Macro", 500000m, "Mastercard", new DateTime(2028, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1000000m, "5555666677778888", 2, 2, "Credito" },
+                    { 3, "VISA Gabi", "Banco Santander", 1200000m, "VISA", new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1500000m, "1234123412341234", 1, 1, "Credito" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tarjetas",
+                columns: new[] { "TarjetaId", "Alias", "Banco", "EntidadEmisora", "FechaVencimiento", "Numero", "PersonaId", "Saldo", "TipoTarjeta" },
+                values: new object[] { 4, "Naranja Pedro", "Banco BBVA", "Mastercard", new DateTime(2030, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "567856785678", 4, 200000m, "Debito" });
+
+            migrationBuilder.InsertData(
+                table: "Tarjetas",
+                columns: new[] { "TarjetaId", "Alias", "Banco", "Disponible", "EntidadEmisora", "FechaVencimiento", "IsExtension", "Limite", "Numero", "PersonaId", "TenedorId", "TipoTarjeta" },
+                values: new object[] { 5, "BBVA MC Mati", "Banco BBVA", 500000m, "Mastercard", new DateTime(2028, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1000000m, "5555666677778888", 2, 2, "Credito" });
+
+            migrationBuilder.InsertData(
+                table: "Consumos",
+                columns: new[] { "ConsumoId", "Comercio", "Descripcion", "EsRecurrente", "Fecha", "Hora", "Moneda", "Monto", "Rubro", "TarjetaCreditoTarjetaId", "TarjetaId" },
+                values: new object[,]
+                {
+                    { 1, "Star Computacion", "Compra en tienda de tecnología", false, new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "12:30", "ARG", 300m, "Electrónica", null, 1 },
+                    { 2, "Sport 78", "Compra en tienda de ropa", false, new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "14:00", "ARG", 500m, "Ropa", null, 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -229,9 +268,9 @@ namespace Modelo.Migrations
                 column: "PersonaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tarjetas_TenedorPersonaId",
+                name: "IX_Tarjetas_TenedorId",
                 table: "Tarjetas",
-                column: "TenedorPersonaId");
+                column: "TenedorId");
         }
 
         /// <inheritdoc />

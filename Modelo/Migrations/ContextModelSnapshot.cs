@@ -74,14 +74,13 @@ namespace Modelo.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Comercio")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("EsRecurrente")
+                    b.Property<bool?>("EsRecurrente")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Fecha")
@@ -99,7 +98,6 @@ namespace Modelo.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Rubro")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("TarjetaCreditoTarjetaId")
@@ -115,6 +113,34 @@ namespace Modelo.Migrations
                     b.HasIndex("TarjetaId");
 
                     b.ToTable("Consumos");
+
+                    b.HasData(
+                        new
+                        {
+                            ConsumoId = 1,
+                            Comercio = "Star Computacion",
+                            Descripcion = "Compra en tienda de tecnología",
+                            EsRecurrente = false,
+                            Fecha = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Hora = "12:30",
+                            Moneda = "ARG",
+                            Monto = 300m,
+                            Rubro = "Electrónica",
+                            TarjetaId = 1
+                        },
+                        new
+                        {
+                            ConsumoId = 2,
+                            Comercio = "Sport 78",
+                            Descripcion = "Compra en tienda de ropa",
+                            EsRecurrente = false,
+                            Fecha = new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Hora = "14:00",
+                            Moneda = "ARG",
+                            Monto = 500m,
+                            Rubro = "Ropa",
+                            TarjetaId = 2
+                        });
                 });
 
             modelBuilder.Entity("Entidades.Descuento", b =>
@@ -184,58 +210,172 @@ namespace Modelo.Migrations
                         {
                             DescuentoId = 1,
                             Activo = true,
-                            Acumulable = true,
-                            Banco = "Todos",
-                            Codigo = "DESC10",
-                            Descripcion = "Descuento del 10% en compras",
-                            Emisor = "Sistema",
-                            FechaFin = new DateTime(2025, 8, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaInicio = new DateTime(2025, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Acumulable = false,
+                            Banco = "Banco Santander",
+                            Codigo = "SUPER30",
+                            Descripcion = "30% los miércoles en supermercados",
+                            Emisor = "VISA",
+                            FechaFin = new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MontoFijo = 0m,
-                            MontoMinimo = 100m,
-                            Nombre = "Descuento 10%",
-                            Porcentaje = 10m,
-                            Rubro = "Todos",
+                            MontoMinimo = 0m,
+                            Nombre = "Miércoles de descuentos",
+                            Porcentaje = 30m,
+                            Rubro = "Supermercados",
                             Tipo = "Porcentual",
-                            TopeReintegro = 1000m
+                            TopeReintegro = 3000m
                         },
                         new
                         {
                             DescuentoId = 2,
                             Activo = true,
                             Acumulable = false,
-                            Banco = "Banco Nación",
-                            Codigo = "DESC20",
-                            Descripcion = "Descuento del 20% en compras",
-                            Emisor = "Sistema",
-                            FechaFin = new DateTime(2025, 9, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaInicio = new DateTime(2025, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Banco = "Banco BBVA",
+                            Codigo = "REST2X1",
+                            Descripcion = "2x1 en restaurantes adheridos",
+                            Emisor = "American Express",
+                            FechaFin = new DateTime(2025, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MontoFijo = 0m,
-                            MontoMinimo = 500m,
-                            Nombre = "Descuento 20%",
-                            Porcentaje = 20m,
-                            Rubro = "Alimentación",
+                            MontoMinimo = 0m,
+                            Nombre = "2x1 en Restaurantes",
+                            Porcentaje = 50m,
+                            Rubro = "Restaurantes",
                             Tipo = "Porcentual",
-                            TopeReintegro = 2000m
+                            TopeReintegro = 1500m
                         },
                         new
                         {
                             DescuentoId = 3,
                             Activo = true,
                             Acumulable = true,
-                            Banco = "Todos",
-                            Codigo = "DESC5",
-                            Descripcion = "Descuento del 5% en compras",
-                            Emisor = "Sistema",
-                            FechaFin = new DateTime(2025, 10, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaInicio = new DateTime(2025, 7, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Banco = "Banco Nación",
+                            Codigo = "FARM15",
+                            Descripcion = "15% todos los días en farmacias",
+                            Emisor = "Mastercard",
+                            FechaFin = new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MontoFijo = 0m,
-                            MontoMinimo = 50m,
-                            Nombre = "Descuento 5%",
-                            Porcentaje = 5m,
-                            Rubro = "Todos",
+                            MontoMinimo = 0m,
+                            Nombre = "Descuento en Farmacias",
+                            Porcentaje = 15m,
+                            Rubro = "Farmacias",
                             Tipo = "Porcentual",
-                            TopeReintegro = 500m
+                            TopeReintegro = 1000m
+                        },
+                        new
+                        {
+                            DescuentoId = 4,
+                            Activo = true,
+                            Acumulable = false,
+                            Banco = "Banco BBVA",
+                            Codigo = "FARM500",
+                            Descripcion = "$500 de descuento en compras superiores a $3000",
+                            Emisor = "VISA",
+                            FechaFin = new DateTime(2025, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontoFijo = 500m,
+                            MontoMinimo = 0m,
+                            Nombre = "Reintegro en Farmacias",
+                            Porcentaje = 0m,
+                            Rubro = "Farmacias",
+                            Tipo = "Monto Fijo",
+                            TopeReintegro = 3000m
+                        },
+                        new
+                        {
+                            DescuentoId = 5,
+                            Activo = true,
+                            Acumulable = true,
+                            Banco = "Banco Santander",
+                            Codigo = "TECH12C",
+                            Descripcion = "12 cuotas sin interés en tecnología",
+                            Emisor = "VISA",
+                            FechaFin = new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontoFijo = 0m,
+                            MontoMinimo = 0m,
+                            Nombre = "12 Cuotas Tecnología",
+                            Porcentaje = 0m,
+                            Rubro = "Electrónica",
+                            Tipo = "Financiación",
+                            TopeReintegro = 10000m
+                        },
+                        new
+                        {
+                            DescuentoId = 6,
+                            Activo = true,
+                            Acumulable = false,
+                            Banco = "Banco BBVA",
+                            Codigo = "TECH20",
+                            Descripcion = "20% en artículos seleccionados de tecnología",
+                            Emisor = "Mastercard",
+                            FechaFin = new DateTime(2025, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontoFijo = 0m,
+                            MontoMinimo = 0m,
+                            Nombre = "Descuento en Tecnología",
+                            Porcentaje = 20m,
+                            Rubro = "Electrónica",
+                            Tipo = "Porcentual",
+                            TopeReintegro = 5000m
+                        },
+                        new
+                        {
+                            DescuentoId = 7,
+                            Activo = true,
+                            Acumulable = false,
+                            Banco = "Banco Macro",
+                            Codigo = "ROPA30FDS",
+                            Descripcion = "30% en ropa los fines de semana",
+                            Emisor = "VISA",
+                            FechaFin = new DateTime(2025, 8, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontoFijo = 0m,
+                            MontoMinimo = 0m,
+                            Nombre = "Fines de Semana de Moda",
+                            Porcentaje = 30m,
+                            Rubro = "Indumentaria",
+                            Tipo = "Porcentual",
+                            TopeReintegro = 4000m
+                        },
+                        new
+                        {
+                            DescuentoId = 8,
+                            Activo = true,
+                            Acumulable = true,
+                            Banco = "Banco Macro",
+                            Codigo = "ROPA3C10",
+                            Descripcion = "3 cuotas sin interés + 10% off",
+                            Emisor = "Mastercard",
+                            FechaFin = new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontoFijo = 0m,
+                            MontoMinimo = 2000m,
+                            Nombre = "Cuotas + Descuento",
+                            Porcentaje = 10m,
+                            Rubro = "Indumentaria",
+                            Tipo = "Mixto",
+                            TopeReintegro = 5000m
+                        },
+                        new
+                        {
+                            DescuentoId = 9,
+                            Activo = true,
+                            Acumulable = true,
+                            Banco = "Banco BBVA",
+                            Codigo = "ROPA6C20",
+                            Descripcion = "6 cuotas sin interés + 20% off",
+                            Emisor = "Mastercard",
+                            FechaFin = new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaInicio = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MontoFijo = 0m,
+                            MontoMinimo = 2000m,
+                            Nombre = "Cuotas + Descuento",
+                            Porcentaje = 20m,
+                            Rubro = "Indumentaria",
+                            Tipo = "Mixto",
+                            TopeReintegro = 5000m
                         });
                 });
 
@@ -348,12 +488,56 @@ namespace Modelo.Migrations
                     b.Property<decimal>("Limite")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TenedorPersonaId")
+                    b.Property<int>("TenedorId")
                         .HasColumnType("INTEGER");
 
-                    b.HasIndex("TenedorPersonaId");
+                    b.HasIndex("TenedorId");
 
                     b.HasDiscriminator().HasValue("Credito");
+
+                    b.HasData(
+                        new
+                        {
+                            TarjetaId = 2,
+                            Alias = "Macro Mati",
+                            Banco = "Banco Macro",
+                            EntidadEmisora = "Mastercard",
+                            FechaVencimiento = new DateTime(2028, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Numero = "5555666677778888",
+                            PersonaId = 2,
+                            Disponible = 500000m,
+                            IsExtension = true,
+                            Limite = 1000000m,
+                            TenedorId = 2
+                        },
+                        new
+                        {
+                            TarjetaId = 3,
+                            Alias = "VISA Gabi",
+                            Banco = "Banco Santander",
+                            EntidadEmisora = "VISA",
+                            FechaVencimiento = new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Numero = "1234123412341234",
+                            PersonaId = 1,
+                            Disponible = 1200000m,
+                            IsExtension = false,
+                            Limite = 1500000m,
+                            TenedorId = 1
+                        },
+                        new
+                        {
+                            TarjetaId = 5,
+                            Alias = "BBVA MC Mati",
+                            Banco = "Banco BBVA",
+                            EntidadEmisora = "Mastercard",
+                            FechaVencimiento = new DateTime(2028, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Numero = "5555666677778888",
+                            PersonaId = 2,
+                            Disponible = 500000m,
+                            IsExtension = true,
+                            Limite = 1000000m,
+                            TenedorId = 2
+                        });
                 });
 
             modelBuilder.Entity("Entidades.TarjetaDebito", b =>
@@ -364,6 +548,30 @@ namespace Modelo.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("Debito");
+
+                    b.HasData(
+                        new
+                        {
+                            TarjetaId = 1,
+                            Alias = "BBVA Mati",
+                            Banco = "Banco BBVA",
+                            EntidadEmisora = "VISA",
+                            FechaVencimiento = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Numero = "1111222233334444",
+                            PersonaId = 2,
+                            Saldo = 100000m
+                        },
+                        new
+                        {
+                            TarjetaId = 4,
+                            Alias = "Naranja Pedro",
+                            Banco = "Banco BBVA",
+                            EntidadEmisora = "Mastercard",
+                            FechaVencimiento = new DateTime(2030, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Numero = "567856785678",
+                            PersonaId = 4,
+                            Saldo = 200000m
+                        });
                 });
 
             modelBuilder.Entity("ConsumoDescuento", b =>
@@ -426,7 +634,7 @@ namespace Modelo.Migrations
                 {
                     b.HasOne("Entidades.Persona", "Tenedor")
                         .WithMany()
-                        .HasForeignKey("TenedorPersonaId")
+                        .HasForeignKey("TenedorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

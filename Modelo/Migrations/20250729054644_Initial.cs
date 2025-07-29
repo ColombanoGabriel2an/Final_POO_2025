@@ -184,13 +184,7 @@ namespace Modelo.Migrations
                 {
                     { 1, true, false, "Banco Santander", "SUPER30", "30% los miércoles en supermercados", "VISA", new DateTime(2025, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "Miércoles de descuentos", 30m, "Supermercados", "Porcentual", 3000m },
                     { 2, true, false, "Banco BBVA", "REST2X1", "2x1 en restaurantes adheridos", "American Express", new DateTime(2025, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "2x1 en Restaurantes", 50m, "Restaurantes", "Porcentual", 1500m },
-                    { 3, true, true, "Banco Nación", "FARM15", "15% todos los días en farmacias", "Mastercard", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "Descuento en Farmacias", 15m, "Farmacias", "Porcentual", 1000m },
-                    { 4, true, false, "Banco BBVA", "FARM500", "$500 de descuento en compras superiores a $3000", "VISA", new DateTime(2025, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 500m, 0m, "Reintegro en Farmacias", 0m, "Farmacias", "Monto Fijo", 3000m },
-                    { 5, true, true, "Banco Santander", "TECH12C", "12 cuotas sin interés en tecnología", "VISA", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "12 Cuotas Tecnología", 0m, "Electrónica", "Financiación", 10000m },
-                    { 6, true, false, "Banco BBVA", "TECH20", "20% en artículos seleccionados de tecnología", "Mastercard", new DateTime(2025, 3, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "Descuento en Tecnología", 20m, "Electrónica", "Porcentual", 5000m },
-                    { 7, true, false, "Banco Macro", "ROPA30FDS", "30% en ropa los fines de semana", "VISA", new DateTime(2025, 8, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "Fines de Semana de Moda", 30m, "Indumentaria", "Porcentual", 4000m },
-                    { 8, true, true, "Banco Macro", "ROPA3C10", "3 cuotas sin interés + 10% off", "Mastercard", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 2000m, "Cuotas + Descuento", 10m, "Indumentaria", "Mixto", 5000m },
-                    { 9, true, true, "Banco BBVA", "ROPA6C20", "6 cuotas sin interés + 20% off", "Mastercard", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 2000m, "Cuotas + Descuento", 20m, "Indumentaria", "Mixto", 5000m }
+                    { 3, true, true, "Banco Nación", "FARM15", "15% todos los días en farmacias", "Mastercard", new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0m, 0m, "Descuento en Farmacias", 15m, "Farmacias", "Porcentual", 1000m }
                 });
 
             migrationBuilder.InsertData(
@@ -212,30 +206,7 @@ namespace Modelo.Migrations
             migrationBuilder.InsertData(
                 table: "Tarjetas",
                 columns: new[] { "TarjetaId", "Alias", "Banco", "Disponible", "EntidadEmisora", "FechaVencimiento", "IsExtension", "Limite", "Numero", "PersonaId", "TenedorId", "TipoTarjeta" },
-                values: new object[,]
-                {
-                    { 2, "Macro Mati", "Banco Macro", 500000m, "Mastercard", new DateTime(2028, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1000000m, "5555666677778888", 2, 2, "Credito" },
-                    { 3, "VISA Gabi", "Banco Santander", 1200000m, "VISA", new DateTime(2027, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1500000m, "1234123412341234", 1, 1, "Credito" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Tarjetas",
-                columns: new[] { "TarjetaId", "Alias", "Banco", "EntidadEmisora", "FechaVencimiento", "Numero", "PersonaId", "Saldo", "TipoTarjeta" },
-                values: new object[] { 4, "Naranja Pedro", "Banco BBVA", "Mastercard", new DateTime(2030, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "5678567856785678", 4, 200000m, "Debito" });
-
-            migrationBuilder.InsertData(
-                table: "Tarjetas",
-                columns: new[] { "TarjetaId", "Alias", "Banco", "Disponible", "EntidadEmisora", "FechaVencimiento", "IsExtension", "Limite", "Numero", "PersonaId", "TenedorId", "TipoTarjeta" },
-                values: new object[] { 5, "BBVA MC Mati", "Banco BBVA", 500000m, "Mastercard", new DateTime(2028, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1000000m, "5555666677778888", 2, 2, "Credito" });
-
-            migrationBuilder.InsertData(
-                table: "Consumos",
-                columns: new[] { "ConsumoId", "Comercio", "Descripcion", "EsRecurrente", "Fecha", "Hora", "Moneda", "Monto", "Rubro", "TarjetaCreditoTarjetaId", "TarjetaId" },
-                values: new object[,]
-                {
-                    { 1, "Star Computacion", "Compra en tienda de tecnología", false, new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "12:30", "ARG", 300m, "Electrónica", null, 1 },
-                    { 2, "Sport 78", "Compra en tienda de ropa", false, new DateTime(2025, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "14:00", "ARG", 500m, "Ropa", null, 2 }
-                });
+                values: new object[] { 2, "Macro Mati", "Banco Macro", 500000m, "Mastercard", new DateTime(2028, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 1000000m, "5555666677778888", 2, 2, "Credito" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Acreditaciones_TarjetaCreditoTarjetaId",

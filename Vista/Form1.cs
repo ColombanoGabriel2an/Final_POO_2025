@@ -8,6 +8,7 @@ namespace Vista
         public Form1()
         {
             InitializeComponent();
+            btnReporte.Enabled = false;
         }
 
         private void btnPersona_Click(object sender, EventArgs e)
@@ -30,6 +31,13 @@ namespace Vista
 
         private void btnReporte_Click(object sender, EventArgs e)
         {
+            if (!btnReporte.Enabled)
+            {
+                MessageBox.Show("La funcionalidad de Reportes no está disponible.",
+                    "Función no disponible", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             var frm = new FormReporte();
             frm.ShowDialog();
         }

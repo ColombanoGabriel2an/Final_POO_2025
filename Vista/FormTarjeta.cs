@@ -88,7 +88,7 @@ namespace Vista
             }
         }
 
-        private void btnGuardar_Click(object sender, EventArgs e)
+        private void btnCrear_Click(object sender, EventArgs e)
         {
             try
             {
@@ -172,7 +172,94 @@ namespace Vista
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al guardar la tarjeta: {ex.Message}",
+                MessageBox.Show($"Error al crear la tarjeta: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (tarjetaSeleccionada == null)
+                {
+                    MessageBox.Show("Debe seleccionar una tarjeta para modificar.",
+                        "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Validar campos obligatorios
+                if (string.IsNullOrEmpty(txtNumero.Text) ||
+                    cmbBanco.SelectedItem == null ||
+                    cmbEntidadEmisora.SelectedItem == null ||
+                    string.IsNullOrEmpty(txtDisponible.Text))
+                {
+                    MessageBox.Show("Debe completar todos los campos obligatorios",
+                        "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Actualizar los datos de la tarjeta seleccionada
+                tarjetaSeleccionada.Numero = txtNumero.Text;
+                tarjetaSeleccionada.FechaVencimiento = dtpFechaVencimiento.Value;
+                tarjetaSeleccionada.Banco = cmbBanco.SelectedItem.ToString();
+                tarjetaSeleccionada.EntidadEmisora = cmbEntidadEmisora.SelectedItem.ToString();
+                tarjetaSeleccionada.Alias = txtAlias.Text;
+
+                if (tarjetaSeleccionada is TarjetaCredito tarjetaCredito)
+                {
+                    if (decimal.TryParse(txtLimite.Text, out decimal limite))
+                        tarjetaCredito.Limite = limite;
+                    if (decimal.TryParse(txtDisponible.Text, out decimal disponible))
+                        tarjetaCredito.Disponible = disponible;
+                    tarjetaCredito.IsExtension = chkIsExtension.Checked;
+                }
+                else if (tarjetaSeleccionada is TarjetaDebito tarjetaDebito)
+                {
+                    if (decimal.TryParse(txtDisponible.Text, out decimal saldo))
+                        tarjetaDebito.Saldo = saldo;
+                }
+
+                string resultado = ControladoraTarjeta.Instancia.ModificarTarjeta(tarjetaSeleccionada);
+                MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+                LimpiarFormulario();
+                ActualizarDataGridView();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al modificar la tarjeta: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (tarjetaSeleccionada == null)
+                {
+                    MessageBox.Show("Debe seleccionar una tarjeta para eliminar.",
+                        "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                DialogResult resultado = MessageBox.Show(
+                    $"¿Está seguro que desea eliminar la tarjeta {tarjetaSeleccionada.Alias}?",
+                    "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (resultado == DialogResult.Yes)
+                {
+                    string resultadoOperacion = ControladoraTarjeta.Instancia.EliminarTarjeta(tarjetaSeleccionada);
+                    MessageBox.Show(resultadoOperacion, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
+                    LimpiarFormulario();
+                    ActualizarDataGridView();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al eliminar la tarjeta: {ex.Message}",
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -182,12 +269,57 @@ namespace Vista
             if (e.RowIndex >= 0)
             {
                 // Seleccionar la tarjeta
-                int id = Convert.ToInt32(dgvTarjetas.Rows[e.RowIndex].Cells["ID"].Value);
-                tarjetaSeleccionada = ControladoraTarjeta.Instancia.ListarTarjetas()
-                    .FirstOrDefault(t => t.TarjetaId == id);
+                tarjetaSeleccionada = (Tarjeta)dgvTarjetas.Rows[e.RowIndex].DataBoundItem;
+                
+                // Cargar datos en el formulario
+                CargarDatosTarjeta(tarjetaSeleccionada);
+            }
+        }
 
-                // Mostrar sus datos en el formulario (si se requiere)
-                // CargarDatosTarjeta(tarjetaSeleccionada);
+        private void CargarDatosTarjeta(Tarjeta tarjeta)
+        {
+            if (tarjeta == null) return;
+
+            txtNumero.Text = tarjeta.Numero;
+            dtpFechaVencimiento.Value = tarjeta.FechaVencimiento;
+            cmbBanco.SelectedItem = tarjeta.Banco;
+            cmbEntidadEmisora.SelectedItem = tarjeta.EntidadEmisora;
+            txtAlias.Text = tarjeta.Alias;
+
+            // Configurar según el tipo de tarjeta
+            if (tarjeta is TarjetaCredito tarjetaCredito)
+            {
+                rbCredito.Checked = true;
+                txtLimite.Text = tarjetaCredito.Limite.ToString();
+                txtDisponible.Text = tarjetaCredito.Disponible.ToString();
+                chkIsExtension.Checked = tarjetaCredito.IsExtension;
+                
+                // Seleccionar el tenedor correcto
+                for (int i = 0; i < cmbTenedor.Items.Count; i++)
+                {
+                    dynamic item = cmbTenedor.Items[i];
+                    if (item.Value.PersonaId == tarjetaCredito.TenedorId)
+                    {
+                        cmbTenedor.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            else if (tarjeta is TarjetaDebito tarjetaDebito)
+            {
+                rbDebito.Checked = true;
+                txtDisponible.Text = tarjetaDebito.Saldo.ToString();
+                
+                // Seleccionar el titular correcto
+                for (int i = 0; i < cmbTenedor.Items.Count; i++)
+                {
+                    dynamic item = cmbTenedor.Items[i];
+                    if (item.Value.PersonaId == tarjetaDebito.PersonaId)
+                    {
+                        cmbTenedor.SelectedIndex = i;
+                        break;
+                    }
+                }
             }
         }
 
@@ -203,6 +335,7 @@ namespace Vista
             chkIsExtension.Checked = false;
             cmbTenedor.SelectedIndex = 0;
             rbCredito.Checked = true;
+            tarjetaSeleccionada = null;
         }
 
         private void rbTipoTarjeta_CheckedChanged(object sender, EventArgs e)

@@ -39,6 +39,14 @@ namespace Vista
                     return;
                 }
 
+                // Validar tope de monto en 100
+                if (nudMonto.Value > 100)
+                {
+                    MessageBox.Show("El monto no puede ser mayor a $100",
+                        "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 // Crear una nueva acreditación
                 var acreditacion = new Acreditacion
                 {
@@ -50,8 +58,8 @@ namespace Vista
                 };
 
                 // Guardar la acreditación
-                //string resultado = ControladoraAcreditacion.Instancia.CrearAcreditacion(acreditacion);
-                //MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string resultado = ControladoraAcreditacion.Instancia.CrearAcreditacion(acreditacion);
+                MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Limpiar el formulario
                 LimpiarFormulario();

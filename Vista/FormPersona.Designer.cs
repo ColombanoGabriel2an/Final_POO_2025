@@ -7,6 +7,7 @@
         private System.Windows.Forms.DataGridView dgvPersonas;
         private System.Windows.Forms.Button btnListar;
         private System.Windows.Forms.Button btnCrear;
+        private System.Windows.Forms.Button btnModificar;
         private System.Windows.Forms.Button btnBorrar;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.TextBox txtApellido;
@@ -31,6 +32,7 @@
             this.dgvPersonas = new System.Windows.Forms.DataGridView();
             this.btnListar = new System.Windows.Forms.Button();
             this.btnCrear = new System.Windows.Forms.Button();
+            this.btnModificar = new System.Windows.Forms.Button();
             this.btnBorrar = new System.Windows.Forms.Button();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.txtApellido = new System.Windows.Forms.TextBox();
@@ -48,6 +50,7 @@
             this.dgvPersonas.Name = "dgvPersonas";
             this.dgvPersonas.Size = new System.Drawing.Size(460, 150);
             this.dgvPersonas.TabIndex = 0;
+            this.dgvPersonas.SelectionChanged += new System.EventHandler(this.dgvPersonas_SelectionChanged);
             // 
             // btnListar
             // 
@@ -69,12 +72,22 @@
             this.btnCrear.UseVisualStyleBackColor = true;
             this.btnCrear.Click += new System.EventHandler(this.btnCrear_Click);
             // 
+            // btnModificar
+            // 
+            this.btnModificar.Location = new System.Drawing.Point(12, 70);
+            this.btnModificar.Name = "btnModificar";
+            this.btnModificar.Size = new System.Drawing.Size(75, 23);
+            this.btnModificar.TabIndex = 3;
+            this.btnModificar.Text = "Modificar";
+            this.btnModificar.UseVisualStyleBackColor = true;
+            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
+            // 
             // btnBorrar
             // 
-            this.btnBorrar.Location = new System.Drawing.Point(12, 70);
+            this.btnBorrar.Location = new System.Drawing.Point(12, 99);
             this.btnBorrar.Name = "btnBorrar";
             this.btnBorrar.Size = new System.Drawing.Size(75, 23);
-            this.btnBorrar.TabIndex = 3;
+            this.btnBorrar.TabIndex = 4;
             this.btnBorrar.Text = "Borrar";
             this.btnBorrar.UseVisualStyleBackColor = true;
             this.btnBorrar.Click += new System.EventHandler(this.btnBorrar_Click);
@@ -84,21 +97,21 @@
             this.txtNombre.Location = new System.Drawing.Point(181, 14);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(139, 20);
-            this.txtNombre.TabIndex = 4;
+            this.txtNombre.TabIndex = 5;
             // 
             // txtApellido
             // 
             this.txtApellido.Location = new System.Drawing.Point(181, 40);
             this.txtApellido.Name = "txtApellido";
             this.txtApellido.Size = new System.Drawing.Size(139, 20);
-            this.txtApellido.TabIndex = 5;
+            this.txtApellido.TabIndex = 6;
             // 
             // txtDNI
             // 
             this.txtDNI.Location = new System.Drawing.Point(181, 66);
             this.txtDNI.Name = "txtDNI";
             this.txtDNI.Size = new System.Drawing.Size(139, 20);
-            this.txtDNI.TabIndex = 6;
+            this.txtDNI.TabIndex = 7;
             // 
             // lblNombre
             // 
@@ -106,7 +119,7 @@
             this.lblNombre.Location = new System.Drawing.Point(126, 17);
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(47, 13);
-            this.lblNombre.TabIndex = 7;
+            this.lblNombre.TabIndex = 8;
             this.lblNombre.Text = "Nombre:";
             // 
             // lblApellido
@@ -115,7 +128,7 @@
             this.lblApellido.Location = new System.Drawing.Point(126, 43);
             this.lblApellido.Name = "lblApellido";
             this.lblApellido.Size = new System.Drawing.Size(47, 13);
-            this.lblApellido.TabIndex = 8;
+            this.lblApellido.TabIndex = 9;
             this.lblApellido.Text = "Apellido:";
             // 
             // lblDNI
@@ -124,7 +137,7 @@
             this.lblDNI.Location = new System.Drawing.Point(126, 69);
             this.lblDNI.Name = "lblDNI";
             this.lblDNI.Size = new System.Drawing.Size(29, 13);
-            this.lblDNI.TabIndex = 9;
+            this.lblDNI.TabIndex = 10;
             this.lblDNI.Text = "DNI:";
             // 
             // FormPersona
@@ -137,6 +150,7 @@
             this.Controls.Add(this.txtApellido);
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.btnBorrar);
+            this.Controls.Add(this.btnModificar);
             this.Controls.Add(this.btnCrear);
             this.Controls.Add(this.btnListar);
             this.Controls.Add(this.dgvPersonas);

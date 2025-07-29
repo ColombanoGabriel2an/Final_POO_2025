@@ -52,7 +52,9 @@
             // 
             // nudMonto
             // 
+            nudMonto.DecimalPlaces = 2;
             nudMonto.Location = new Point(130, 70);
+            nudMonto.Maximum = 100;
             nudMonto.Name = "nudMonto";
             nudMonto.Size = new Size(200, 23);
             nudMonto.TabIndex = 3;

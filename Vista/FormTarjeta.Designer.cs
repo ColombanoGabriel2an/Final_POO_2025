@@ -34,7 +34,9 @@
             this.txtDisponible = new System.Windows.Forms.TextBox();
             this.chkIsExtension = new System.Windows.Forms.CheckBox();
             this.cmbTenedor = new System.Windows.Forms.ComboBox();
-            this.btnGuardar = new System.Windows.Forms.Button();
+            this.btnCrear = new System.Windows.Forms.Button();
+            this.btnModificar = new System.Windows.Forms.Button();
+            this.btnEliminar = new System.Windows.Forms.Button();
             this.lblNumero = new System.Windows.Forms.Label();
             this.lblFechaVencimiento = new System.Windows.Forms.Label();
             this.lblBanco = new System.Windows.Forms.Label();
@@ -142,15 +144,35 @@
             this.cmbTenedor.Size = new System.Drawing.Size(200, 21);
             this.cmbTenedor.TabIndex = 8;
             // 
-            // btnGuardar
+            // btnCrear
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(12, 538);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(200, 23);
-            this.btnGuardar.TabIndex = 9;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = true;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            this.btnCrear.Location = new System.Drawing.Point(12, 538);
+            this.btnCrear.Name = "btnCrear";
+            this.btnCrear.Size = new System.Drawing.Size(95, 23);
+            this.btnCrear.TabIndex = 9;
+            this.btnCrear.Text = "Crear";
+            this.btnCrear.UseVisualStyleBackColor = true;
+            this.btnCrear.Click += new System.EventHandler(this.btnCrear_Click);
+            // 
+            // btnModificar
+            // 
+            this.btnModificar.Location = new System.Drawing.Point(117, 538);
+            this.btnModificar.Name = "btnModificar";
+            this.btnModificar.Size = new System.Drawing.Size(95, 23);
+            this.btnModificar.TabIndex = 10;
+            this.btnModificar.Text = "Modificar";
+            this.btnModificar.UseVisualStyleBackColor = true;
+            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.Location = new System.Drawing.Point(222, 538);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(95, 23);
+            this.btnEliminar.TabIndex = 11;
+            this.btnEliminar.Text = "Eliminar";
+            this.btnEliminar.UseVisualStyleBackColor = true;
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
             // lblNumero
             // 
@@ -287,7 +309,9 @@
             this.Controls.Add(this.lblBanco);
             this.Controls.Add(this.lblFechaVencimiento);
             this.Controls.Add(this.lblNumero);
-            this.Controls.Add(this.btnGuardar);
+            this.Controls.Add(this.btnEliminar);
+            this.Controls.Add(this.btnModificar);
+            this.Controls.Add(this.btnCrear);
             this.Controls.Add(this.cmbTenedor);
             this.Controls.Add(this.chkIsExtension);
             this.Controls.Add(this.txtDisponible);
@@ -314,7 +338,9 @@
         private System.Windows.Forms.TextBox txtDisponible;
         private System.Windows.Forms.CheckBox chkIsExtension;
         private System.Windows.Forms.ComboBox cmbTenedor;
-        private System.Windows.Forms.Button btnGuardar;
+        private System.Windows.Forms.Button btnCrear;
+        private System.Windows.Forms.Button btnModificar;
+        private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.DataGridView dgvTarjetas;
         private System.Windows.Forms.Label lblTenedor;
     }

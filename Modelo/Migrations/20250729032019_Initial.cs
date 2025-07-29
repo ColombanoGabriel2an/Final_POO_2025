@@ -221,7 +221,7 @@ namespace Modelo.Migrations
             migrationBuilder.InsertData(
                 table: "Tarjetas",
                 columns: new[] { "TarjetaId", "Alias", "Banco", "EntidadEmisora", "FechaVencimiento", "Numero", "PersonaId", "Saldo", "TipoTarjeta" },
-                values: new object[] { 4, "Naranja Pedro", "Banco BBVA", "Mastercard", new DateTime(2030, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "567856785678", 4, 200000m, "Debito" });
+                values: new object[] { 4, "Naranja Pedro", "Banco BBVA", "Mastercard", new DateTime(2030, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "5678567856785678", 4, 200000m, "Debito" });
 
             migrationBuilder.InsertData(
                 table: "Tarjetas",

@@ -25,9 +25,12 @@ namespace Modelo
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Usar SQLite para compatibilidad multiplataforma
-            optionsBuilder.UseSqlite(@"Data Source=DBregistros.db");
 
+            string currentDir = Directory.GetCurrentDirectory();
+            string projectRoot = Path.GetFullPath(Path.Combine(currentDir, "..", "..", ".."));
+            string dbPath = Path.Combine(projectRoot, "DBregistros.db");
+
+            optionsBuilder.UseSqlite($"Data Source={dbPath}");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -165,7 +168,7 @@ namespace Modelo
                 new TarjetaDebito
                 {
                     TarjetaId = 4,
-                    Numero = "567856785678",
+                    Numero = "5678567856785678",
                     FechaVencimiento = new DateTime(2030, 2, 2),
                     Banco = "Banco BBVA",
                     EntidadEmisora = "Mastercard",

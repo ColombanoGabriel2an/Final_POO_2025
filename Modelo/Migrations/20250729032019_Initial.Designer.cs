@@ -11,7 +11,7 @@ using Modelo;
 namespace Modelo.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250728063830_Initial")]
+    [Migration("20250729032019_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -571,7 +571,7 @@ namespace Modelo.Migrations
                             Banco = "Banco BBVA",
                             EntidadEmisora = "Mastercard",
                             FechaVencimiento = new DateTime(2030, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Numero = "567856785678",
+                            Numero = "5678567856785678",
                             PersonaId = 4,
                             Saldo = 200000m
                         });

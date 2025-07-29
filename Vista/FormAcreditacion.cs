@@ -57,8 +57,18 @@ namespace Vista
                     TarjetaId = (int)cmbTarjetas.SelectedValue
                 };
 
+                // Obtener la tarjeta seleccionada
+                var tarjetaSeleccionada = ControladoraTarjeta.Instancia.ObtenerTarjetaPorId((int)cmbTarjetas.SelectedValue);
+
+                if (tarjetaSeleccionada == null)
+                {
+                    MessageBox.Show("Error: No se pudo encontrar la tarjeta seleccionada",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 // Guardar la acreditación
-                string resultado = ControladoraAcreditacion.Instancia.CrearAcreditacion(acreditacion);
+                string resultado = ControladoraAcreditacion.Instancia.CrearAcreditacion(acreditacion, tarjetaSeleccionada);
                 MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Limpiar el formulario

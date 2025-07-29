@@ -53,7 +53,7 @@ namespace Vista
             personaSeleccionada.Apellido = txtApellido.Text;
             personaSeleccionada.DNI = txtDNI.Text;
 
-            var mensaje = ControladoraPersona.Instancia.ModificarPersona(personaSeleccionada);
+            var mensaje = ControladoraPersona.Instancia.ActualizarPersona(personaSeleccionada);
             MessageBox.Show(mensaje);
 
             // Refrescar la grilla y limpiar campos

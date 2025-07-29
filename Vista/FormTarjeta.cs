@@ -220,9 +220,9 @@ namespace Vista
                         tarjetaDebito.Saldo = saldo;
                 }
 
-                string resultado = ControladoraTarjeta.Instancia.ModificarTarjeta(tarjetaSeleccionada);
+                string resultado = ControladoraTarjeta.Instancia.ActualizarTarjeta(tarjetaSeleccionada);
                 MessageBox.Show(resultado, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+
                 LimpiarFormulario();
                 ActualizarDataGridView();
             }
@@ -250,9 +250,9 @@ namespace Vista
 
                 if (resultado == DialogResult.Yes)
                 {
-                    string resultadoOperacion = ControladoraTarjeta.Instancia.EliminarTarjeta(tarjetaSeleccionada);
+                    string resultadoOperacion = ControladoraTarjeta.Instancia.BorrarTarjeta(tarjetaSeleccionada);
                     MessageBox.Show(resultadoOperacion, "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
+
                     LimpiarFormulario();
                     ActualizarDataGridView();
                 }
@@ -270,7 +270,7 @@ namespace Vista
             {
                 // Seleccionar la tarjeta
                 tarjetaSeleccionada = (Tarjeta)dgvTarjetas.Rows[e.RowIndex].DataBoundItem;
-                
+
                 // Cargar datos en el formulario
                 CargarDatosTarjeta(tarjetaSeleccionada);
             }
@@ -293,7 +293,7 @@ namespace Vista
                 txtLimite.Text = tarjetaCredito.Limite.ToString();
                 txtDisponible.Text = tarjetaCredito.Disponible.ToString();
                 chkIsExtension.Checked = tarjetaCredito.IsExtension;
-                
+
                 // Seleccionar el tenedor correcto
                 for (int i = 0; i < cmbTenedor.Items.Count; i++)
                 {
@@ -309,7 +309,7 @@ namespace Vista
             {
                 rbDebito.Checked = true;
                 txtDisponible.Text = tarjetaDebito.Saldo.ToString();
-                
+
                 // Seleccionar el titular correcto
                 for (int i = 0; i < cmbTenedor.Items.Count; i++)
                 {

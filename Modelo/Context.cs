@@ -32,82 +32,10 @@ namespace Modelo
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
         }
 
-        // Método para inicializar datos cuando se crea la base de datos
-        public void InicializarDatos()
+        // Método para aplicar migraciones pendientes
+        public void AplicarMigraciones()
         {
-            if (Database.EnsureCreated())
-            {
-                // Solo se ejecuta si la base de datos fue creada (no existía antes)
-                AgregarDatosIniciales();
-            }
-        }
-
-        private void AgregarDatosIniciales()
-        {
-            // Agregar personas
-            var personas = new List<Persona>
-            {
-                new Persona { Nombre = "Gabriel", Apellido = "Colombano", DNI = "44555998" },
-                new Persona { Nombre = "Matias", Apellido = "Llanos", DNI = "12355666" },
-                new Persona { Nombre = "Laureano", Apellido = "Gallegos", DNI = "12577889" },
-                new Persona { Nombre = "Pedro", Apellido = "Lopez", DNI = "13344895" }
-            };
-            Personas.AddRange(personas);
-            SaveChanges();
-
-            // Agregar descuentos
-            var descuentos = new List<Descuento>
-            {
-                new Descuento { 
-                    Codigo = "SUPER30", Nombre = "Miércoles de descuentos", 
-                    Descripcion = "30% los miércoles en supermercados", 
-                    FechaInicio = new DateTime(2025, 1, 1), FechaFin = new DateTime(2025, 6, 30), 
-                    Porcentaje = 30, MontoFijo = 0, TopeReintegro = 3000, Banco = "Banco Santander", 
-                    Emisor = "VISA", Rubro = "Supermercados", Tipo = "Porcentual", Activo = true, Acumulable = false },
-                
-                new Descuento { 
-                    Codigo = "REST2X1", Nombre = "2x1 en Restaurantes", 
-                    Descripcion = "2x1 en restaurantes adheridos", FechaInicio = new DateTime(2025, 3, 1), 
-                    FechaFin = new DateTime(2025, 4, 30), Porcentaje = 50, MontoFijo = 0, TopeReintegro = 1500, Banco = "Banco BBVA", 
-                    Emisor = "American Express", Rubro = "Restaurantes", Tipo = "Porcentual", Activo = true, Acumulable = false },
-
-                new Descuento { 
-                    Codigo = "FARM15", Nombre = "Descuento en Farmacias", 
-                    Descripcion = "15% todos los días en farmacias", FechaInicio = new DateTime(2025, 1, 1), 
-                    FechaFin = new DateTime(2025, 12, 31), Porcentaje = 15, MontoFijo = 0, TopeReintegro = 1000, Banco = "Banco Nación", 
-                    Emisor = "Mastercard", Rubro = "Farmacias", Tipo = "Porcentual", Activo = true, Acumulable = true }
-            };
-            Descuentos.AddRange(descuentos);
-            SaveChanges();
-
-            // Agregar tarjetas
-            var tarjetaDebito1 = new TarjetaDebito
-            {
-                Numero = "1111222233334444",
-                FechaVencimiento = new DateTime(2026, 12, 31),
-                Banco = "Banco BBVA",
-                EntidadEmisora = "VISA",
-                PersonaId = personas[1].PersonaId, // Matias
-                Alias = "BBVA Mati",
-                Saldo = 100000
-            };
-
-            var tarjetaCredito1 = new TarjetaCredito
-            {
-                Numero = "5555666677778888",
-                FechaVencimiento = new DateTime(2028, 10, 1),
-                Banco = "Banco Macro",
-                EntidadEmisora = "Mastercard",
-                PersonaId = personas[1].PersonaId, // Matias
-                TenedorId = personas[1].PersonaId,
-                Alias = "Macro Mati",
-                IsExtension = true,
-                Limite = 1000000,
-                Disponible = 500000
-            };
-
-            Tarjetas.AddRange(new Tarjeta[] { tarjetaDebito1, tarjetaCredito1 });
-            SaveChanges();
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -162,7 +90,100 @@ namespace Modelo
                 .HasMany(c => c.DescuentosAplicados)
                 .WithMany();
 
-            // 7. No usar seeding automático, usar inicialización manual
+            // 7. Seeding de datos con HasData (sin IDs explícitos para auto-incremento)
+            modelBuilder.Entity<Persona>().HasData(
+                new Persona { PersonaId = 1, Nombre = "Gabriel", Apellido = "Colombano", DNI = "44555998" },
+                new Persona { PersonaId = 2, Nombre = "Matias", Apellido = "Llanos", DNI = "12355666" },
+                new Persona { PersonaId = 3, Nombre = "Laureano", Apellido = "Gallegos", DNI = "12577889" },
+                new Persona { PersonaId = 4, Nombre = "Pedro", Apellido = "Lopez", DNI = "13344895" }
+            );
+
+            modelBuilder.Entity<Descuento>().HasData(
+                new Descuento { 
+                    DescuentoId = 1,
+                    Codigo = "SUPER30", 
+                    Nombre = "Miércoles de descuentos", 
+                    Descripcion = "30% los miércoles en supermercados", 
+                    FechaInicio = new DateTime(2025, 1, 1), 
+                    FechaFin = new DateTime(2025, 6, 30), 
+                    Porcentaje = 30, 
+                    MontoMinimo = 0,
+                    MontoFijo = 0, 
+                    TopeReintegro = 3000, 
+                    Banco = "Banco Santander", 
+                    Emisor = "VISA", 
+                    Rubro = "Supermercados", 
+                    Tipo = "Porcentual", 
+                    Activo = true, 
+                    Acumulable = false },
+                
+                new Descuento { 
+                    DescuentoId = 2,
+                    Codigo = "REST2X1", 
+                    Nombre = "2x1 en Restaurantes", 
+                    Descripcion = "2x1 en restaurantes adheridos", 
+                    FechaInicio = new DateTime(2025, 3, 1), 
+                    FechaFin = new DateTime(2025, 4, 30), 
+                    Porcentaje = 50, 
+                    MontoMinimo = 0,
+                    MontoFijo = 0, 
+                    TopeReintegro = 1500, 
+                    Banco = "Banco BBVA", 
+                    Emisor = "American Express", 
+                    Rubro = "Restaurantes", 
+                    Tipo = "Porcentual", 
+                    Activo = true, 
+                    Acumulable = false },
+
+                new Descuento { 
+                    DescuentoId = 3,
+                    Codigo = "FARM15", 
+                    Nombre = "Descuento en Farmacias", 
+                    Descripcion = "15% todos los días en farmacias", 
+                    FechaInicio = new DateTime(2025, 1, 1), 
+                    FechaFin = new DateTime(2025, 12, 31), 
+                    Porcentaje = 15, 
+                    MontoMinimo = 0,
+                    MontoFijo = 0, 
+                    TopeReintegro = 1000, 
+                    Banco = "Banco Nación", 
+                    Emisor = "Mastercard", 
+                    Rubro = "Farmacias", 
+                    Tipo = "Porcentual", 
+                    Activo = true, 
+                    Acumulable = true }
+            );
+
+            modelBuilder.Entity<TarjetaDebito>().HasData(
+                new TarjetaDebito
+                {
+                    TarjetaId = 1,
+                    Numero = "1111222233334444",
+                    FechaVencimiento = new DateTime(2026, 12, 31),
+                    Banco = "Banco BBVA",
+                    EntidadEmisora = "VISA",
+                    PersonaId = 2, // Referencia a Matias
+                    Alias = "BBVA Mati",
+                    Saldo = 100000
+                }
+            );
+
+            modelBuilder.Entity<TarjetaCredito>().HasData(
+                new TarjetaCredito
+                {
+                    TarjetaId = 2,
+                    Numero = "5555666677778888",
+                    FechaVencimiento = new DateTime(2028, 10, 1),
+                    Banco = "Banco Macro",
+                    EntidadEmisora = "Mastercard",
+                    PersonaId = 2, // Referencia a Matias
+                    TenedorId = 2,
+                    Alias = "Macro Mati",
+                    IsExtension = true,
+                    Limite = 1000000,
+                    Disponible = 500000
+                }
+            );
         }
     }
 }

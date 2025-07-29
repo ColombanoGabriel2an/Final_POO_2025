@@ -31,7 +31,6 @@ namespace Controladora
             {
                 using (var context = new Context())
                 {
-                    context.InicializarDatos(); // Inicializar datos si es necesario
                     return context.Personas.Include(p => p.Tarjetas).ToList();
                 }
             }

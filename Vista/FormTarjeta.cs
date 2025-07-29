@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Entidades;
 using Controladora;
@@ -59,14 +60,16 @@ namespace Vista
                 cmbTenedor.SelectedIndex = 0;
         }
 
+        private List<Tarjeta> tarjetasActuales = new List<Tarjeta>();
+
         private void ActualizarDataGridView()
         {
-            List<Tarjeta> tarjetas = ControladoraTarjeta.Instancia.ListarTarjetas();
+            tarjetasActuales = ControladoraTarjeta.Instancia.ListarTarjetas();
 
             dgvTarjetas.DataSource = null;
 
             // Crear una lista de objetos anónimos para mostrar solo las propiedades relevantes
-            var tarjetasVista = tarjetas.Select(t => new
+            var tarjetasVista = tarjetasActuales.Select(t => new
             {
                 ID = t.TarjetaId,
                 Tipo = t is TarjetaCredito ? "Crédito" : "Débito",
@@ -268,14 +271,22 @@ namespace Vista
         {
             if (e.RowIndex >= 0)
             {
-                // Seleccionar la tarjeta
-                tarjetaSeleccionada = (Tarjeta)dgvTarjetas.Rows[e.RowIndex].DataBoundItem;
+                // Obtener el ID de la tarjeta desde el objeto anónimo
+                var tarjetaVista = dgvTarjetas.Rows[e.RowIndex].DataBoundItem;
+                var idProperty = tarjetaVista.GetType().GetProperty("ID");
 
-                // Cargar datos en el formulario
-                CargarDatosTarjeta(tarjetaSeleccionada);
+                if (idProperty != null)
+                {
+                    int tarjetaId = (int)idProperty.GetValue(tarjetaVista);
+
+                    // Buscar la tarjeta real en la lista
+                    tarjetaSeleccionada = tarjetasActuales.FirstOrDefault(t => t.TarjetaId == tarjetaId);
+
+                    // Cargar datos en el formulario
+                    CargarDatosTarjeta(tarjetaSeleccionada);
+                }
             }
         }
-
         private void CargarDatosTarjeta(Tarjeta tarjeta)
         {
             if (tarjeta == null) return;

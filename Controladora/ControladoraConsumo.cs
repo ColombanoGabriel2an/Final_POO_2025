@@ -57,6 +57,7 @@ namespace Controladora
                         return "La tarjeta no existe";
 
                     consumo.Tarjeta = tarjetaEncontrada;
+                    consumo.TarjetaId = tarjetaEncontrada.TarjetaId;
                     context.Consumos.Add(consumo);
                     context.SaveChanges();
 

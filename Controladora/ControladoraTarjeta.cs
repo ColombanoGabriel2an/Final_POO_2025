@@ -51,6 +51,15 @@ namespace Controladora
                         return "El titular no existe";
 
                     tarjeta.Titular = personaEncontrada;
+                    tarjeta.PersonaId = personaEncontrada.PersonaId;
+
+                    // Para tarjetas de crédito, también configurar TenedorId y Tenedor
+                    if (tarjeta is TarjetaCredito tarjetaCredito)
+                    {
+                        tarjetaCredito.TenedorId = personaEncontrada.PersonaId;
+                        tarjetaCredito.Tenedor = personaEncontrada;
+                    }
+
                     context.Tarjetas.Add(tarjeta);
                     context.SaveChanges();
 
